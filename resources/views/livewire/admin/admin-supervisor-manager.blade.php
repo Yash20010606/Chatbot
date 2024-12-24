@@ -124,12 +124,12 @@
         </div>
     </div>
 
-   <!-- Add Supervisor Modal -->
+   <!-- Update Supervisor Modal -->
 <div class="modal" id="updateSupervisortModal" tabindex="-1" aria-labelledby="updateSupervisortModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
-                <h5 class="modal-title" id="updateSupervisorModalLabel">Add Supervisor</h5>
+                <h5 class="modal-title" id="updateSupervisorModalLabel">Update Supervisor</h5>
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -185,7 +185,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Add</button>
+                        <button type="submit" class="btn btn-success">Update</button>
                     </div>
                 </form>
             </div>

@@ -59,7 +59,9 @@
             <td>Languages</td>
             <td>Proficiency in communicating with...</td>
             <td>
-                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSkillModal" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </a>
                 &nbsp;
                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
             </td>
@@ -69,7 +71,9 @@
             <td>PEO TV</td>
             <td>Expertise in understanding products...</td>
             <td>
-                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSkillModal" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </a>
                 &nbsp;
                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
             </td>
@@ -79,7 +83,9 @@
             <td>PEO TV</td>
             <td>Expertise in understanding products...</td>
             <td>
-                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSkillModal" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </a>
                 &nbsp;
                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
             </td>
@@ -91,5 +97,42 @@
         </div>
     </div>
 </body>
-</html>
+
+ <!-- Update Skill Modal -->
+ <div class="modal" id="updateSkillModal" tabindex="-1" aria-labelledby="updateSkillModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
+                <h5 class="modal-title" id="updateSkillModalLabel">Update Skills</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form wire:submit.prevent="#">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Skill Name</label>
+                        <input type="text" id="name" class="form-control" wire:model="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Group</label>
+                        <select id="category" class="form-select" wire:model="category">
+                            <option value="">Select</option>
+                            <option value="1">English</option>
+                            <option value="2">Service and Product</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" class="form-control" rows="3" placeholder="Enter Address" wire:model="description"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endsection

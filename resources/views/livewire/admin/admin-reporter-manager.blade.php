@@ -125,12 +125,12 @@
         </div>
     </div>
 
-    <!-- Add Reporter Modal -->
+    <!-- Update Reporter Modal -->
     <div class="modal" id="updateReporterModal" tabindex="-1" aria-labelledby="updateReporterModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
-                    <h5 class="modal-title" id="updateReporterModalLabel">Add Reporter</h5>
+                    <h5 class="modal-title" id="updateReporterModalLabel">Update Reporter</h5>
                     <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -225,7 +225,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-success">Add</button>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </div>
                     </form>
                 </div>
