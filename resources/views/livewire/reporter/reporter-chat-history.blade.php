@@ -1,4 +1,4 @@
-@extends('layouts.supervisor-app')
+@extends('layouts.reporter-app')
 @section('content')
 
 <!DOCTYPE html>
@@ -32,13 +32,13 @@
 
                 <!-- Chat Table -->
                 <table
-                    id="table"
-                    class="table table-bordered"
-                    data-toggle="table"
-                    data-pagination="true"
-                    data-page-size="2"
-                    data-sortable="false"
-                >
+                id="table"
+                class="table table-bordered"
+                data-toggle="table"
+                data-pagination="true"
+                data-page-size="2"
+                data-sortable="false"
+            >
                     <thead class="table-success">
                         <tr>
                             <th>Phone Number</th>
