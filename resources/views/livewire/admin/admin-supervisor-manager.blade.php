@@ -59,7 +59,9 @@
                             <td>Colombo</td>
                             <td>rasika@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -70,7 +72,9 @@
                             <td>Kurunegala</td>
                             <td>rosheperis@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -81,7 +85,9 @@
                             <td>Colombo</td>
                             <td>annes12@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -92,7 +98,9 @@
                             <td>Gampha</td>
                             <td>jerrywilson@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -103,7 +111,9 @@
                             <td>Colombo</td>
                             <td>madawa@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -113,4 +123,107 @@
             </div>
         </div>
     </div>
+
+   <!-- Add Supervisor Modal -->
+<div class="modal" id="updateSupervisortModal" tabindex="-1" aria-labelledby="updateSupervisortModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
+                <h5 class="modal-title" id="updateSupervisorModalLabel">Add Supervisor</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form wire:submit.prevent="#">
+                    <div class="mb-3">
+                        <label for="employeeId" class="form-label">Employee ID</label>
+                        <input type="text" id="employeeId" class="form-control" wire:model="employeeId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" class="form-control" wire:model="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" wire:model="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="callCenter" class="form-label">Group</label>
+                        <select id="callCenter" class="form-select" wire:model="callCenter">
+                            <option value="">Select</option>
+                            <option value="1">Group 1</option>
+                            <option value="2">Group 2</option>
+                            <option value="3">Group 3</option>
+                            <option value="4">Group 4</option>
+                            <option value="5">Group 5</option>
+                            <option value="6">Group 6</option>
+                            <option value="7">Group 7</option>
+                            <option value="8">Group 8</option>
+                            <option value="9">Group 9</option>
+                            <option value="10">Group 10</option>
+                            <option value="11">Group 11</option>
+                            <option value="12">Group 12</option>
+                            <option value="19">Group 13</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordSupervisorUpdate" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="passwordsSupervisorUpdate" class="form-control" wire:model="passwordSupervisorUpdate" placeholder="Enter your password" aria-describedby="togglePasswordSupervisorUpdate">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordsSupervisorUpdate" onclick="togglePasswordVisibility()">
+                                <i class="fa fa-eye" id="passwordIconsSupervisorUpdate"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPasswordSupervisorUpdate" class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" id="confirmPasswordsSupervisorUpdate" class="form-control" wire:model="confirmPasswordSupervisorUpdate" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordSupervisorUpdate">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordsSupervisorUpdate" onclick="toggleConfirmPasswordVisibility()">
+                                <i class="fa fa-eye" id="confirmPasswordIconsSupervisorUpdate"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordField = document.getElementById('passwordsSupervisorUpdate');
+        const passwordIcon = document.getElementById('passwordIconsSupervisorUpdate');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            passwordIcon.classList.remove('fa-eye');
+            passwordIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            passwordIcon.classList.remove('fa-eye-slash');
+            passwordIcon.classList.add('fa-eye');
+        }
+    }
+
+    function toggleConfirmPasswordVisibility() {
+        const confirmPasswordField = document.getElementById('confirmPasswordsSupervisorUpdate');
+        const confirmPasswordIcon = document.getElementById('confirmPasswordIconsSupervisorUpdate');
+
+        if (confirmPasswordField.type === 'password') {
+            confirmPasswordField.type = 'text';
+            confirmPasswordIcon.classList.remove('fa-eye');
+            confirmPasswordIcon.classList.add('fa-eye-slash');
+        } else {
+            confirmPasswordField.type = 'password';
+            confirmPasswordIcon.classList.remove('fa-eye-slash');
+            confirmPasswordIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+
+
 @endsection
