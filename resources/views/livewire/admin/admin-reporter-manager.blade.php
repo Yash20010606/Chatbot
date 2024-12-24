@@ -60,7 +60,9 @@
                             <td>Colombo</td>
                             <td>rasika@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -71,7 +73,9 @@
                             <td>Kurunegala</td>
                             <td>rosheperis@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -82,7 +86,9 @@
                             <td>Colombo</td>
                             <td>annes12@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -93,7 +99,9 @@
                             <td>Gampha</td>
                             <td>jerrywilson@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -104,7 +112,9 @@
                             <td>Colombo</td>
                             <td>madawa@gmail.com</td>
                             <td>
-                                <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -114,4 +124,145 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Reporter Modal -->
+    <div class="modal" id="updateReporterModal" tabindex="-1" aria-labelledby="updateReporterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
+                    <h5 class="modal-title" id="updateReporterModalLabel">Add Reporter</h5>
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent="#">
+                        <div class="mb-3">
+                            <label for="employeeId" class="form-label">Employee ID</label>
+                            <input type="text" id="employeeId" class="form-control" wire:model="employeeId">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" class="form-control" wire:model="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" class="form-control" wire:model="email">
+                        </div>
+                
+                        <!-- Language Group -->
+                        <div class="mb-3">
+                            <label class="form-label">Group</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 1" class="form-check-input" wire:model="group1">
+                                <label for="Group 1" class="form-check-label">Group 1</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 2" class="form-check-input" wire:model="group2">
+                                <label for="Group 2" class="form-check-label">Group 2</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 3" class="form-check-input" wire:model="group3">
+                                <label for="Group 3" 1 class="form-check-label">Group 3</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 4" class="form-check-input" wire:model="group4">
+                                <label for="Group 4" class="form-check-label">Group 4</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 5" class="form-check-input" wire:model="group5">
+                                <label for="Group 5" class="form-check-label">Group 5</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 6" class="form-check-input" wire:model="group6">
+                                <label for="Group 6" class="form-check-label">Group 6</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 7" class="form-check-input" wire:model="group7">
+                                <label for="Group 7" class="form-check-label">Group 7</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 8" class="form-check-input" wire:model="group8">
+                                <label for="Group 8" class="form-check-label">Group 8</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 9" class="form-check-input" wire:model="group9">
+                                <label for="Group 9" class="form-check-label">Group 9</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 10" class="form-check-input" wire:model="group10">
+                                <label for="Group 10" class="form-check-label">Group 10</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 11" class="form-check-input" wire:model="group11">
+                                <label for="Group 11" class="form-check-label">Group 11</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 12" class="form-check-input" wire:model="group12">
+                                <label for="Group 12" class="form-check-label">Group 12</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="Group 13" class="form-check-input" wire:model="group13">
+                                <label for="Group 13" class="form-check-label">Group 13</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="passwordReporterUpdate" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input type="password" id="passwordReporterUpdate" class="form-control" wire:model="passwordReporterUpdate" placeholder="Enter your password" aria-describedby="togglePasswordReporterUpdate">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePasswordReporterUpdate" onclick="togglePasswordVisibility()">
+                                    <i class="fa fa-eye" id="passwordIconReporterUpdate"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" id="confirmPasswordReporterUpdate" class="form-control" wire:model="confirmPasswordReporterUpdate" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordReporterUpdate">
+                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordReporterUpdate" onclick="toggleConfirmPasswordVisibility()">
+                                    <i class="fa fa-eye" id="confirmPasswordIconReporterUpdate"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('passwordReporterUpdate');
+            const passwordIcon = document.getElementById('passwordIconReporterUpdate');
+    
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            }
+        }
+    
+        function toggleConfirmPasswordVisibility() {
+            const confirmPasswordField = document.getElementById('confirmPasswordReporterUpdate');
+            const confirmPasswordIcon = document.getElementById('confirmPasswordIconReporterUpdate');
+    
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text';
+                confirmPasswordIcon.classList.remove('fa-eye');
+                confirmPasswordIcon.classList.add('fa-eye-slash');
+            } else {
+                confirmPasswordField.type = 'password';
+                confirmPasswordIcon.classList.remove('fa-eye-slash');
+                confirmPasswordIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
 @endsection
