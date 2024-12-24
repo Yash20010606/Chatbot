@@ -6,6 +6,7 @@ use App\Livewire\Admin\AdminGroupManager;
 use App\Livewire\Admin\AdminReporterManager;
 use App\Livewire\Admin\AdminSkillManager;
 use App\Livewire\Admin\AdminSupervisorManager;
+use App\Livewire\Supervisor\SupervisorAgentManager;
 use App\Livewire\Supervisor\SupervisorChatHistory;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,6 @@ Route::get('/skill-manage', [AdminSkillManager::class, 'render'])->name('admin.s
 //supervisor
 Route::get('/supervisor-dashboard', [SupervisorChatHistory::class, 'render'])->name('supervisor.dashboard');
 Route::get('/supervisor-chat-history', [SupervisorChatHistory::class, 'render'])->name('supervisor.chat.history');
+Route::get('/supervisor-agent', [SupervisorAgentManager::class, 'render'])->name('supervisor.agent');
+
 
