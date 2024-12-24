@@ -18,11 +18,11 @@
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        @livewire('supervisor.sidebar')
+        @livewire('supervisor.supervisor-sidebar')
 
         <!-- Main Content -->
         <div class="flex-grow-1 p-4">
-            @livewire('supervisor.dashboard')
+            @livewire('supervisor.supervisor-dashboard')
         </div>
         <div class="flex-grow-1 p-4">
             @yield('content')
