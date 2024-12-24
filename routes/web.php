@@ -6,13 +6,12 @@ use App\Livewire\Admin\AdminGroupManager;
 use App\Livewire\Admin\AdminReporterManager;
 use App\Livewire\Admin\AdminSkillManager;
 use App\Livewire\Admin\AdminSupervisorManager;
+use App\Livewire\Login;
 use App\Livewire\Supervisor\SupervisorAgentManager;
 use App\Livewire\Supervisor\SupervisorChatHistory;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [Login::class, 'render'])->name('login');
 
 //Admin
 Route::get('/dashboard', [AdminChatHistory::class, 'render'])->name('admin.dashboard');
