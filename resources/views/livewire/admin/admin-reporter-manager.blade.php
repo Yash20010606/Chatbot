@@ -4,7 +4,7 @@
     <div class="container mt-4">
         <div class="card shadow bg-white border-white">
             <div class="card-header bg-white">
-                <h5 class="text-success mb-0">Reporter</h5>
+                <h5 class="text-success mb-0">Reporters</h5>
             </div>
             <div class="card-body bg-white">
                 <div class="row">

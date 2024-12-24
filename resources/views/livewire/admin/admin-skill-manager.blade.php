@@ -5,7 +5,7 @@
     <div class="container mt-3">
         <div class="card shadow bg-white">
             <div class="card-header bg-white">
-                <h4 class="text-success mb-0">Skills</h4>
+                <h5 class="text-success mb-0">Skills</h5>
             </div>
             <div class="card-body">
                 <form>
