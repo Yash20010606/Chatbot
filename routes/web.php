@@ -1,6 +1,9 @@
 <?php
 
+use App\Livewire\Admin\AdminAgentManager;
 use App\Livewire\Admin\AdminChatHistory;
+use App\Livewire\Admin\AdminReporterManager;
+use App\Livewire\Admin\AdminSupervisorManager;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,5 +11,8 @@ Route::get('/', function () {
 });
 
 //Admin
-Route::get('/dashboard', [AdminChatHistory::class, 'render'])->name('dashboard');
-Route::get('/chat-history', [AdminChatHistory::class, 'render'])->name('chat-history');
+Route::get('/dashboard', [AdminChatHistory::class, 'render'])->name('admin.dashboard');
+Route::get('/chat-history', [AdminChatHistory::class, 'render'])->name('admin.chat-history');
+Route::get('/agent', [AdminAgentManager::class, 'render'])->name('admin.agent');
+Route::get('/supervisors', [AdminSupervisorManager::class, 'render'])->name('admin.supervisor');
+Route::get('/reporters', [AdminReporterManager::class, 'render'])->name('admin.reporter');
