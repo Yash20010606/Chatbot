@@ -41,8 +41,8 @@
                 >
                     <thead class="table-success">
                         <tr>
-                            <th>Phone Number</th>
-                            <th>Language | Skill</th>
+                            <th>Chat ID</th>
+                            <th>Category</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Actions</th>
@@ -50,12 +50,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>0753412678</td>
+                            <td>G001_311224_001</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -86,12 +86,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0712264126</td>
+                            <td>G001_311224_002</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>8.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -122,12 +122,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0712345678</td>
+                            <td>G001_311224_003</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -158,12 +158,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0753214578</td>
+                            <td>G001_311224_004</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->

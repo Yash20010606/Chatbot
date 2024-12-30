@@ -8,6 +8,10 @@
     <!-- Exclude dashboard for this page -->
 @endsection
 
+@section('chat-dashboard')
+    <!-- Exclude dashboard for this page -->
+@endsection
+
 @section('content')
 <head>
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">

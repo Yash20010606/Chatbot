@@ -58,7 +58,7 @@
                     <thead class="table-success">
                         <tr>
                             <th data-field="name" data-sortable="true">Name</th>
-                            <th data-field="emp_id" data-sortable="true">Emp_id</th>
+                            <th data-field="emp_id" data-sortable="true">Employee ID</th>
                             <th data-field="group" data-sortable="true">Group</th>
                             <th data-field="email" data-sortable="true">Email</th>
                             <th>Action</th>

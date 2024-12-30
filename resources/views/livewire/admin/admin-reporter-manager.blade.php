@@ -19,25 +19,25 @@
                 <h5 class="text-success mb-0">Reporters</h5>
             </div>
             <div class="card-body bg-white">
-                <div class="row">
+            <div class="row mb-3">
                     <div class="col-md-4 search-section">
                         <input type="text" id="employee-id" class="form-control" placeholder="Employee ID">
                     </div>
                     <div class="col-md-4 search-section">
                         <select class="form-select">
                             <option selected>Group</option>
-                            <option value="1">G001</option> 
-                            <option value="2">G002</option> 
-                            <option value="3">G003</option> 
-                            <option value="3">G004</option> 
-                            <option value="3">G005</option> 
-                            <option value="3">G006</option> 
-                            <option value="3">G007</option> 
-                            <option value="3">G008</option> 
-                            <option value="3">G009</option> 
-                            <option value="3">G0010</option> 
-                            <option value="3">G0011</option> 
-                            <option value="3">G0012</option> 
+                            <option value="1">G001</option>
+                            <option value="2">G002</option>
+                            <option value="3">G003</option>
+                            <option value="3">G004</option>
+                            <option value="3">G005</option>
+                            <option value="3">G006</option>
+                            <option value="3">G007</option>
+                            <option value="3">G008</option>
+                            <option value="3">G009</option>
+                            <option value="3">G0010</option>
+                            <option value="3">G0011</option>
+                            <option value="3">G0012</option>
                             <option value="3">G0013</option>
                         </select>
                     </div>
@@ -59,7 +59,7 @@
                     <thead class="table-success">
                         <tr>
                             <th data-field="name" data-sortable="true">Name</th>
-                            <th data-field="emp_id" data-sortable="true">Emp_id</th>
+                            <th data-field="emp_id" data-sortable="true">Employee ID</th>
                             <th data-field="group" data-sortable="true">Group</th>
                             <th data-field="email" data-sortable="true">Email</th>
                             <th>Action</th>
@@ -69,7 +69,7 @@
                         <tr data-group="Colombo" class="group">
                             <td>Rasika Sampath</td>
                             <td>23234</td>
-                            <td>Colombo</td>
+                            <td>G001</td>
                             <td>rasika@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
@@ -82,7 +82,7 @@
                         <tr data-group="Kurunegala" class="group">
                             <td>Roshel Perise</td>
                             <td>23453</td>
-                            <td>Kurunegala</td>
+                            <td>G002</td>
                             <td>rosheperis@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
@@ -95,7 +95,7 @@
                         <tr data-group="Colombo" class="group">
                             <td>Anne Silva</td>
                             <td>34567</td>
-                            <td>Colombo</td>
+                            <td>G003</td>
                             <td>annes12@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
@@ -108,7 +108,7 @@
                         <tr data-group="Gampha" class="group">
                             <td>Jerry Wilson</td>
                             <td>34568</td>
-                            <td>Gampha</td>
+                            <td>G004</td>
                             <td>jerrywilson@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">
@@ -121,7 +121,7 @@
                         <tr data-group="Colombo" class="group">
                             <td>Madawa Silva</td>
                             <td>23589</td>
-                            <td>Colombo</td>
+                            <td>G005</td>
                             <td>madawa@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateReporterModal" title="Edit">

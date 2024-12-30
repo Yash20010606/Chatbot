@@ -32,7 +32,7 @@
                     <thead class="table-success">
                         <tr>
                             <th data-field="name" data-sortable="true">Supervisor</th>
-                            <th data-field="emp_id" data-sortable="true">Emp_id</th>
+                            <th data-field="emp_id" data-sortable="true">Employee ID</th>
                             <th data-field="group" data-sortable="true">Group</th>
                             <th data-field="address" data-sortable="true">Address</th>
                             <th data-field="email" data-sortable="true">Email</th>
@@ -69,7 +69,7 @@
                     <thead class="table-success">
                         <tr>
                             <th data-field="name" data-sortable="true">Agent</th>
-                            <th data-field="emp_id" data-sortable="true">Emp_id</th>
+                            <th data-field="emp_id" data-sortable="true">Employee ID</th>
                             <th data-field="group" data-sortable="true">Group</th>
                             <th data-field="address" data-sortable="true">Address</th>
                             <th data-field="email" data-sortable="true">Email</th>

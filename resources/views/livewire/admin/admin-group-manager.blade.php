@@ -21,24 +21,28 @@
 </div>
 
             <div class="card-body bg-white">
-                <!-- Search Section -->
-                <div class="search-section">   
-                    <select class="form-select">
-                        <option selected>Group</option>
-                        <option value="1">Group 1</option>
-                        <option value="2">Group 2</option>
-                        <option value="3">Group 3</option>
-                        <option value="3">Group 4</option>
-                        <option value="3">Group 5</option>
-                        <option value="3">Group 6</option>
-                        <option value="3">Group 7</option>
-                        <option value="3">Group 8</option>
-                        <option value="3">Group 9</option>
-                        <option value="3">Group 10</option>
-                        <option value="3">Group 11</option>
-                        <option value="3">Group 12</option>
-                        <option value="3">Group 13</option>
-                    </select>
+                <div class="row mb-3">
+                    <div class="col-md-4 search-section">
+                        <select class="form-select">
+                            <option selected>Group</option>
+                            <option value="1">G001</option>
+                            <option value="2">G002</option>
+                            <option value="3">G003</option>
+                            <option value="3">G004</option>
+                            <option value="3">G005</option>
+                            <option value="3">G006</option>
+                            <option value="3">G007</option>
+                            <option value="3">G008</option>
+                            <option value="3">G009</option>
+                            <option value="3">G0010</option>
+                            <option value="3">G0011</option>
+                            <option value="3">G0012</option>
+                            <option value="3">G0013</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-success w-100">Search</button>
+                    </div>
                 </div>
         
                 <!-- Table -->
@@ -53,8 +57,8 @@
                 >
                     <thead class="table-success">
                         <tr>
-                            <th data-field="name" data-sortable="true">Group</th>
-                            <th data-field="emp_id" data-sortable="true">Group_Code</th>
+                            <th data-field="name" data-sortable="true">Group Name</th>
+                            <th data-field="emp_id" data-sortable="true">Group Code</th>
                             <th data-field="group" data-sortable="true">Address</th>
                             <th data-field="email" data-sortable="true">Contact Number</th>
                             <th>Action</th>

@@ -25,8 +25,8 @@
                     <div class="col-md-4">
                         <select class="form-select">
                             <option selected>Group</option>
-                            <option value="1">Group 1</option>
-                            <option value="2">Group 2</option>
+                            <option value="1">G001</option>
+                            <option value="2">G002</option>
                         </select>
                     </div>
                     <div class="col-md-4">

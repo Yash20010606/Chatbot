@@ -28,10 +28,10 @@
                         <p><strong>Employee ID:</strong>  234567</p>
                         <p><strong>Name:</strong>  Dulan Perera</p>
                         <p><strong>Email:</strong>  dulan.perera@gmail.com</p>
-                        <p><strong>Group:</strong>  Kurunegala</p>
-                        <p><strong>Group Code:</strong>  KU</p>
-                        <p><strong>Group:</strong>  Colombo</p>
-                        <p><strong>Group Code:</strong>  CO</p>
+                        <p><strong>Group Name:</strong> Colombo</p>
+                        <p><strong>Group Code:</strong> G001</p>
+                        <p><strong>Group Name:</strong> Kurunegala</p>
+                        <p><strong>Group Code:</strong> G002</p>
                     </div>
                 </div>
 

@@ -21,7 +21,7 @@
                     id="table"
                     class="table table-bordered"
                     data-toggle="table"
-                    data-search="true"
+                    data-search="false"
                     data-pagination="true"
                     data-page-size="2"
                     data-sortable="false"
@@ -29,8 +29,8 @@
                     <thead class="table-success">
                         <tr>
                             <th data-field="name" data-sortable="true">Name</th>
-                            <th data-field="emp_id" data-sortable="true">Emp_id</th>
-                            <th data-field="group" data-sortable="true">Group</th>
+                            <th data-field="emp_id" data-sortable="true">Employee ID</th>
+                            <th data-field="contact_no" data-sortable="true">Contact Number</th>
                             <th data-field="email" data-sortable="true">Email</th>
                             <th>Action</th>
                         </tr>
@@ -39,7 +39,7 @@
                         <tr data-group="Colombo" class="group">
                             <td>Rasika Sampath</td>
                             <td>23234</td>
-                            <td>Colombo</td>
+                            <td>0776543217</td>
                             <td>rasika@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateAgentModal" title="Edit">
@@ -52,7 +52,7 @@
                         <tr data-group="Kurunegala" class="group">
                             <td>Roshel Perise</td>
                             <td>23453</td>
-                            <td>Colombo</td>
+                            <td>0701094099</td>
                             <td>rosheperis@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateAgentModal" title="Edit">
@@ -65,7 +65,7 @@
                         <tr data-group="Colombo" class="group">
                             <td>Anne Silva</td>
                             <td>34567</td>
-                            <td>Colombo</td>
+                            <td>0778965432</td>
                             <td>annes12@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateAgentModal" title="Edit">
@@ -78,7 +78,7 @@
                         <tr data-group="Gampha" class="group">
                             <td>Jerry Wilson</td>
                             <td>34568</td>
-                            <td>Colombo</td>
+                            <td>0786543213</td>
                             <td>jerrywilson@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateAgentModal" title="Edit">
@@ -91,7 +91,7 @@
                         <tr data-group="Colombo" class="group">
                             <td>Madawa Silva</td>
                             <td>23589</td>
-                            <td>Colombo</td>
+                            <td>0712345678</td>
                             <td>madawa@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateAgentModal" title="Edit">
