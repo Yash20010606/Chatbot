@@ -6,12 +6,15 @@ use App\Livewire\Admin\AdminGroupManager;
 use App\Livewire\Admin\AdminReporterManager;
 use App\Livewire\Admin\AdminSkillManager;
 use App\Livewire\Admin\AdminSupervisorManager;
+use App\Livewire\Admin\AdminProfile;
 use App\Livewire\Login;
 use App\Livewire\Reporter\ReporterChatHistory;
 use App\Livewire\Reporter\ReporterDashboard;
+use App\Livewire\Reporter\ReporterProfile;
 use App\Livewire\Reporter\ReporterUsers;
 use App\Livewire\Supervisor\SupervisorAgentManager;
 use App\Livewire\Supervisor\SupervisorChatHistory;
+use App\Livewire\Supervisor\SupervisorProfile;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [Login::class, 'render'])->name('login');
@@ -24,13 +27,17 @@ Route::get('/supervisors', [AdminSupervisorManager::class, 'render'])->name('adm
 Route::get('/reporters', [AdminReporterManager::class, 'render'])->name('admin.reporter');
 Route::get('/groups', [AdminGroupManager::class, 'render'])->name('admin.group');
 Route::get('/skill-manage', [AdminSkillManager::class, 'render'])->name('admin.skill');
+Route::get('/profile', [AdminProfile::class, 'render'])->name('admin.profile');
 
 //supervisor
 Route::get('/supervisor-dashboard', [SupervisorChatHistory::class, 'render'])->name('supervisor.dashboard');
 Route::get('/supervisor-chat-history', [SupervisorChatHistory::class, 'render'])->name('supervisor.chat.history');
 Route::get('/supervisor-agent', [SupervisorAgentManager::class, 'render'])->name('supervisor.agent');
+Route::get('/supervisor-profile', [SupervisorProfile::class, 'render'])->name('supervisor.profile');
 
 //reporter
 Route::get('/reporter-dashboard', [ReporterChatHistory::class, 'render'])->name('reporter.dashboard');
 Route::get('/reporter-chat-history', [ReporterChatHistory::class, 'render'])->name('reporter.chat.history');
+Route::get('/reporter-profile', [ReporterProfile::class, 'render'])->name('reporter.profile');
 Route::get('/reporter-users', [ ReporterUsers::class, 'render'])->name('reporter.reporter-users');
+

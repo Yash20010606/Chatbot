@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@section('sidebar')
+    @livewire('admin.admin-sidebar')
+@endsection
+
+@section('dashboard')
+    @livewire('admin.admin-dashboard')
+@endsection
+
+@section('chat-dashboard')
+    <!-- Exclude dashboard for this page -->
+@endsection
+
 @section('content')
     <div class="container mt-4">
         <div class="card shadow bg-white border-white">
@@ -14,19 +26,19 @@
                     <div class="col-md-4 search-section">
                         <select class="form-select">
                             <option selected>Group</option>
-                            <option value="1">Group 1</option>
-                            <option value="2">Group 2</option>
-                            <option value="3">Group 3</option>
-                            <option value="3">Group 4</option>
-                            <option value="3">Group 5</option>
-                            <option value="3">Group 6</option>
-                            <option value="3">Group 7</option>
-                            <option value="3">Group 8</option>
-                            <option value="3">Group 9</option>
-                            <option value="3">Group 10</option>
-                            <option value="3">Group 11</option>
-                            <option value="3">Group 12</option>
-                            <option value="3">Group 13</option>
+                            <option value="1">G001</option>
+                            <option value="2">G002</option>
+                            <option value="3">G003</option>
+                            <option value="3">G004</option>
+                            <option value="3">G005</option>
+                            <option value="3">G006</option>
+                            <option value="3">G007</option>
+                            <option value="3">G008</option>
+                            <option value="3">G009</option>
+                            <option value="3">G0010</option>
+                            <option value="3">G0011</option>
+                            <option value="3">G0012</option>
+                            <option value="3">G0013</option>
                         </select>
                     </div>
                     <div class="col-md-4">

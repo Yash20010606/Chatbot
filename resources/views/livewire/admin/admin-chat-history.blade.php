@@ -1,4 +1,17 @@
 @extends('layouts.app')
+
+@section('sidebar')
+    @livewire('admin.admin-sidebar')
+@endsection
+
+@section('dashboard')
+    <!-- Exclude dashboard for this page -->
+@endsection
+
+@section('chat-dashboard')
+    @livewire('admin.admin-chat-view-dashboard')
+@endsection
+
 @section('content')
 
 <!DOCTYPE html>
@@ -25,19 +38,19 @@
                     <div class="col-md-4">
                         <select class="form-select">
                             <option selected>Group</option>
-                            <option value="1">Group 1</option>
-                            <option value="2">Group 2</option>
-                            <option value="3">Group 3</option>
-                            <option value="3">Group 4</option>
-                            <option value="3">Group 5</option>
-                            <option value="3">Group 6</option>
-                            <option value="3">Group 7</option>
-                            <option value="3">Group 8</option>
-                            <option value="3">Group 9</option>
-                            <option value="3">Group 10</option>
-                            <option value="3">Group 11</option>
-                            <option value="3">Group 12</option>
-                            <option value="3">Group 13</option>
+                            <option value="1">G001</option> 
+                            <option value="2">G002</option> 
+                            <option value="3">G003</option> 
+                            <option value="3">G004</option> 
+                            <option value="3">G005</option> 
+                            <option value="3">G006</option> 
+                            <option value="3">G007</option> 
+                            <option value="3">G008</option> 
+                            <option value="3">G009</option> 
+                            <option value="3">G0010</option> 
+                            <option value="3">G0011</option> 
+                            <option value="3">G0012</option> 
+                            <option value="3">G0013</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -59,8 +72,8 @@
                 >
                     <thead class="table-success">
                         <tr>
-                            <th>Phone Number</th>
-                            <th>Language | Skill</th>
+                            <th>Chat ID</th>
+                            <th>Category</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Actions</th>
@@ -68,12 +81,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>0753412678</td>
+                            <td>G001_311224_001</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -104,12 +117,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0712264126</td>
+                            <td>G001_311224_002</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>8.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -140,12 +153,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0712345678</td>
+                            <td>G002_311224_001</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -176,7 +189,7 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0753214578</td>
+                            <td>G002_311224_002</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>

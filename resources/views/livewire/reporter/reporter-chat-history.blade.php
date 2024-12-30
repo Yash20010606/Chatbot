@@ -23,6 +23,13 @@
                 <!-- Search and Filters -->
                 <div class="row mb-3">
                     <div class="col-md-4">
+                        <select class="form-select">
+                            <option selected>Group</option>
+                            <option value="1">Group 1</option>
+                            <option value="2">Group 2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
                         <input type="date" class="form-control">
                     </div>
                     <div class="col-md-4">
@@ -41,8 +48,8 @@
             >
                     <thead class="table-success">
                         <tr>
-                            <th>Phone Number</th>
-                            <th>Language | Skill</th>
+                            <th>Chat ID</th>
+                            <th>Category</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Actions</th>
@@ -50,12 +57,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>0753412678</td>
+                            <td>G001_311224_001</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -86,12 +93,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0712264126</td>
+                            <td>G001_311224_002</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>8.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -122,12 +129,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0712345678</td>
+                            <td>G002_311224_001</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->
@@ -158,12 +165,12 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td>0753214578</td>
+                            <td>G002_311224_001</td>
                             <td>
                                 <span class="badge bg-success">English</span>
                                 <span class="badge bg-success">Peo TV</span>
                             </td>
-                            <td>2024/12/25</td>
+                            <td>2024/12/31</td>
                             <td>9.56</td>
                             <td>
                                 <!-- Dropdown Action Button -->

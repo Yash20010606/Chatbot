@@ -14,17 +14,6 @@
                             <option selected>Group</option>
                             <option value="1">Group 1</option>
                             <option value="2">Group 2</option>
-                            <option value="3">Group 3</option>
-                            <option value="4">Group 4</option>
-                            <option value="5">Group 5</option>
-                            <option value="6">Group 6</option>
-                            <option value="7">Group 7</option>
-                            <option value="8">Group 8</option>
-                            <option value="9">Group 9</option>
-                            <option value="10">Group 10</option>
-                            <option value="11">Group 11</option>
-                            <option value="12">Group 12</option>
-                            <option value="13">Group 13</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -42,9 +31,10 @@
                 >
                     <thead class="table-success">
                         <tr>
-                            <th data-field="name" data-sortable="true">Name</th>
+                            <th data-field="name" data-sortable="true">Supervisor</th>
                             <th data-field="emp_id" data-sortable="true">Emp_id</th>
                             <th data-field="group" data-sortable="true">Group</th>
+                            <th data-field="address" data-sortable="true">Address</th>
                             <th data-field="email" data-sortable="true">Email</th>
                         </tr>
                     </thead>
@@ -52,26 +42,16 @@
                         <tr>
                             <td>Rasika Sampath</td>
                             <td>23234</td>
-                            <td>Colombo</td>
+                            <td>G001</td>
+                            <td>123 Main St, Colombo</td>
                             <td>rasika@gmail.com</td>
                         </tr>
                         <tr>
                             <td>Roshel Perise</td>
                             <td>23453</td>
-                            <td>Kurunegala</td>
+                            <td>G002</td>
+                            <td>456 High St, Kurunegala</td>
                             <td>rosheperis@gmail.com</td>
-                        </tr>
-                        <tr>
-                            <td>Anne Silva</td>
-                            <td>34567</td>
-                            <td>Colombo</td>
-                            <td>annes12@gmail.com</td>
-                        </tr>
-                        <tr>
-                            <td>Jerry Wilson</td>
-                            <td>34568</td>
-                            <td>Gampha</td>
-                            <td>jerrywilson@gmail.com</td>
                         </tr>
                     </tbody>
                 </table>
@@ -88,9 +68,10 @@
                 >
                     <thead class="table-success">
                         <tr>
-                            <th data-field="name" data-sortable="true">Name</th>
+                            <th data-field="name" data-sortable="true">Agent</th>
                             <th data-field="emp_id" data-sortable="true">Emp_id</th>
                             <th data-field="group" data-sortable="true">Group</th>
+                            <th data-field="address" data-sortable="true">Address</th>
                             <th data-field="email" data-sortable="true">Email</th>
                         </tr>
                     </thead>
@@ -98,25 +79,29 @@
                         <tr>
                             <td>Saman Kumara</td>
                             <td>23244</td>
-                            <td>Colombo</td>
+                            <td>G001</td>
+                            <td>123 Main St, Colombo</td>
                             <td>Saman@gmail.com</td>
                         </tr>
                         <tr>
                             <td>Sherara Perise</td>
                             <td>23478</td>
-                            <td>Mathara</td>
+                            <td>G001</td>
+                            <td>123 Main St, Colombo</td>
                             <td>Sherara@gmail.com</td>
                         </tr>
                         <tr>
                             <td>Raj Kumar</td>
                             <td>34569</td>
-                            <td>Vauniya</td>
+                            <td>G002</td>
+                            <td>456 High St, Kurunegala</td>
                             <td>Raj12@gmail.com</td>
                         </tr>
                         <tr>
                             <td>Marie Wilson</td>
                             <td>34572</td>
-                            <td>Gampha</td>
+                            <td>G002</td>
+                            <td>456 High St, Kurunegala</td>
                             <td>Marie@gmail.com</td>
                         </tr>
                     </tbody>

@@ -1,11 +1,25 @@
 @extends('layouts.app')
 
+@section('sidebar')
+    @livewire('admin.admin-sidebar')
+@endsection
+
+@section('dashboard')
+    @livewire('admin.admin-dashboard')
+@endsection
+
+@section('chat-dashboard')
+    <!-- Exclude dashboard for this page -->
+@endsection
+
 @section('content')
     <div class="container mt-4">
         <div class="card shadow bg-white border-white">
-            <div class="card-header bg-white">
-                <h5 class="text-success mb-0">Groups</h5>
-            </div>
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <h5 class="text-success mb-0">Groups</h5>
+    <a href="#" class="nav-link text-green py-2"><i class="bi bi-geo-alt"></i> View Groups</a>
+</div>
+
             <div class="card-body bg-white">
                 <!-- Search Section -->
                 <div class="search-section">   
@@ -24,7 +38,7 @@
                         <option value="3">Group 11</option>
                         <option value="3">Group 12</option>
                         <option value="3">Group 13</option>
-                    </select>   
+                    </select>
                 </div>
         
                 <!-- Table -->
@@ -32,7 +46,7 @@
                     id="table"
                     class="table table-bordered"
                     data-toggle="table"
-                    data-search="true"
+                    data-search="false"
                     data-pagination="true"
                     data-page-size="2"
                     data-sortable="false"

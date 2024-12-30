@@ -14,21 +14,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="{{ asset('css/table.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/header-footer.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="d-flex">
-        <!-- Sidebar -->
-        @livewire('supervisor.supervisor-sidebar')
+@include('livewire.supervisor.supervisor-header')
+<div class="main">
+    <div class="app">
+        <div class="d-flex">
+            <!-- Sidebar -->
+            @livewire('supervisor.supervisor-sidebar')
 
-        <!-- Main Content -->
-        <div class="flex-grow-1 p-4">
-            @livewire('supervisor.supervisor-dashboard')
+            <!-- Main Content -->
+            <div class="flex-grow-1 p-4">
+                @hasSection('dashboard')
+                    @yield('dashboard')
+                @else
+                    @livewire('supervisor.supervisor-dashboard')
+                @endif
+            </div>
+            
+            <div class="flex-grow-1 p-4">
+                @yield('content')
+            </div>
         </div>
-        <div class="flex-grow-1 p-4">
-            @yield('content')
-        </div>
-    
     </div>
+</div>
+@include('livewire.footer')
 
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

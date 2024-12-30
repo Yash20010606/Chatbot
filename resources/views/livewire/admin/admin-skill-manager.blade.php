@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@section('sidebar')
+    @livewire('admin.admin-sidebar')
+@endsection
+
+@section('dashboard')
+    @livewire('admin.admin-dashboard')
+@endsection
+
+@section('chat-dashboard')
+    <!-- Exclude dashboard for this page -->
+@endsection
+
 @section('content')
 <body>
     <div class="container mt-3">
@@ -47,7 +59,8 @@
                 >
     <thead class="table-success">
         <tr>
-            <th>Skills</th>
+            <th>Skill ID</th>
+            <th>Skill Name</th>
             <th>Category</th>
             <th>Description</th>
             <th>Action</th>
@@ -55,8 +68,9 @@
     </thead>
     <tbody>
         <tr>
+            <TD>1</TD>
             <td>English</td>
-            <td>Languages</td>
+            <td>Language</td>
             <td>Proficiency in communicating with...</td>
             <td>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateSkillModal" title="Edit">
@@ -67,8 +81,9 @@
             </td>
         </tr>
         <tr>
-            <td>Service and Product</td>
+            <TD>2</TD>
             <td>PEO TV</td>
+            <td>Service and Product</td>
             <td>Expertise in understanding products...</td>
             <td>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateSkillModal" title="Edit">
@@ -79,8 +94,9 @@
             </td>
         </tr>
         <tr>
+            <TD>3</TD>
+            <td>Voice</td>
             <td>Service and Product</td>
-            <td>PEO TV</td>
             <td>Expertise in understanding products...</td>
             <td>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateSkillModal" title="Edit">

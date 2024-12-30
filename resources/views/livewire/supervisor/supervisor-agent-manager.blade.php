@@ -52,7 +52,7 @@
                         <tr data-group="Kurunegala" class="group">
                             <td>Roshel Perise</td>
                             <td>23453</td>
-                            <td>Kurunegala</td>
+                            <td>Colombo</td>
                             <td>rosheperis@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateAgentModal" title="Edit">
@@ -78,7 +78,7 @@
                         <tr data-group="Gampha" class="group">
                             <td>Jerry Wilson</td>
                             <td>34568</td>
-                            <td>Gampha</td>
+                            <td>Colombo</td>
                             <td>jerrywilson@gmail.com</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateAgentModal" title="Edit">

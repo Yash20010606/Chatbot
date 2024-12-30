@@ -1,12 +1,12 @@
 <body>
     <div class="container py-3">
-        <div class="row gy-1">
-             <!-- Supervisor Section -->
-        <div class="col-md-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="fa fa-user-tie fa-2x me-2"></i>
+        <div class="row gy-1 justify-content-center">
+              <!-- Supervisor Section -->
+            <div class="col-md-3">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="card-body d-flex align-items-center">
+                            <i class="fa fa-comments fa-2x me-2"></i>
                         <h4 class="card-title mb-0">Supervisor</h4>
                     </div>
                     <div class="circle mx-auto mb-3">10</div>
@@ -17,12 +17,12 @@
             </div>
         </div>
             
-             <!-- Agent Section -->
+        <!-- Agent Section -->
         <div class="col-md-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="fa fa-user fa-2x me-2"></i>
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fa fa-comments fa-2x me-2"></i>
                         <h4 class="card-title mb-0">Agent</h4>
                     </div>
                     <div class="circle mx-auto mb-3">95</div>
@@ -36,10 +36,10 @@
 
             <!-- Reporter Section -->
         <div class="col-md-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="fa fa-newspaper fa-2x me-2"></i>
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fa fa-comments fa-2x me-2"></i>
                         <h4 class="card-title mb-0">Reporter</h4>
                     </div>
                     <div class="circle mx-auto mb-3">20</div>
@@ -52,10 +52,10 @@
 
         <!-- Group Section -->
         <div class="col-md-3">
-            <div class="card shadow-sm text-center">
-                <div class="card-body">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="fa fa-users fa-2x me-2"></i>
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <div class="card-body d-flex align-items-center">
+                    <i class="fa fa-comments fa-2x me-2"></i>
                         <h4 class="card-title mb-0">Group</h4>
                     </div>
                     <div class="circle mx-auto mb-3">13</div>
