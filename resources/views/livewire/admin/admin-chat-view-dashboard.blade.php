@@ -1,6 +1,6 @@
 <body>
     <div class="container py-3">
-        <div class="row gy-1 justify-content-center">
+        <div class="row gy-1 justify-content-left">
               <!-- Active Chats -->
             <div class="col-md-3">
                 <div class="card shadow-sm text-center">
@@ -47,38 +47,7 @@
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <script>
-        function togglePasswordVisibility() {
-            const passwordField = document.getElementById('password');
-            const passwordIcon = document.getElementById('passwordIcon');
-        
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                passwordIcon.classList.remove('fa-eye');
-                passwordIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                passwordIcon.classList.remove('fa-eye-slash');
-                passwordIcon.classList.add('fa-eye');
-            }
-        }
-        
-        function toggleConfirmPasswordVisibility() {
-            const confirmPasswordField = document.getElementById('confirmPassword');
-            const confirmPasswordIcon = document.getElementById('confirmPasswordIcon');
-        
-            if (confirmPasswordField.type === 'password') {
-                confirmPasswordField.type = 'text';
-                confirmPasswordIcon.classList.remove('fa-eye');
-                confirmPasswordIcon.classList.add('fa-eye-slash');
-            } else {
-                confirmPasswordField.type = 'password';
-                confirmPasswordIcon.classList.remove('fa-eye-slash');
-                confirmPasswordIcon.classList.add('fa-eye');
-            }
-        }
-        
-        </script>
+    
           
 </body>
 </html>
