@@ -15,8 +15,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="{{ asset('css/table.css') }}" rel="stylesheet">
     <link href="{{ asset('css/header-footer.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <div>
 @include('livewire.admin.admin-header')
 <div class="app">
     <div class="main">
@@ -47,9 +49,12 @@
 </div>
 @include('livewire.footer')
 
-    @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.js"></script>
+
+    <div>
+        
+    @livewireScripts
 </body>
 </html>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminSkillController;
 use App\Livewire\Admin\AdminAgentManager;
 use App\Livewire\Admin\AdminChatHistory;
 use App\Livewire\Admin\AdminDashboardExtended;
@@ -27,8 +28,12 @@ Route::get('/agent', [AdminAgentManager::class, 'render'])->name('admin.agent');
 Route::get('/supervisors', [AdminSupervisorManager::class, 'render'])->name('admin.supervisor');
 Route::get('/reporters', [AdminReporterManager::class, 'render'])->name('admin.reporter');
 Route::get('/groups', [AdminGroupManager::class, 'render'])->name('admin.group');
-Route::get('/skill-manage', [AdminSkillManager::class, 'render'])->name('admin.skill');
+Route::get('/skill-manager', AdminSkillManager::class)->name('admin.skill');
 Route::get('/profile', [AdminProfile::class, 'render'])->name('admin.profile');
+Route::post('skills', [AdminSkillController::class, 'store'])->name('skills.store');
+Route::delete('skills/{id}', [AdminSkillController::class, 'destroy'])->name('skills.destroy');
+Route::put('skills/{skill}', [AdminSkillController::class, 'update'])->name('skills.update');
+
 
 //supervisor
 Route::get('/supervisor-dashboard', [SupervisorChatHistory::class, 'render'])->name('supervisor.dashboard');
@@ -41,4 +46,8 @@ Route::get('/reporter-dashboard', [ReporterChatHistory::class, 'render'])->name(
 Route::get('/reporter-chat-history', [ReporterChatHistory::class, 'render'])->name('reporter.chat.history');
 Route::get('/reporter-profile', [ReporterProfile::class, 'render'])->name('reporter.profile');
 Route::get('/reporter-users', [ ReporterUsers::class, 'render'])->name('reporter.reporter-users');
+
+ 
+
+
 
