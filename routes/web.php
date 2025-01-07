@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminSkillController;
+use App\Http\Controllers\AuthController;
 use App\Livewire\Admin\AdminAgentManager;
 use App\Livewire\Admin\AdminChatHistory;
 use App\Livewire\Admin\AdminDashboardExtended;
@@ -17,9 +18,12 @@ use App\Livewire\Reporter\ReporterUsers;
 use App\Livewire\Supervisor\SupervisorAgentManager;
 use App\Livewire\Supervisor\SupervisorChatHistory;
 use App\Livewire\Supervisor\SupervisorProfile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [Login::class, 'render'])->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Admin
 Route::get('/dashboard', [AdminDashboardExtended::class, 'render'])->name('admin.dashboard');
@@ -47,7 +51,6 @@ Route::get('/reporter-chat-history', [ReporterChatHistory::class, 'render'])->na
 Route::get('/reporter-profile', [ReporterProfile::class, 'render'])->name('reporter.profile');
 Route::get('/reporter-users', [ ReporterUsers::class, 'render'])->name('reporter.reporter-users');
 
- 
 
 
 

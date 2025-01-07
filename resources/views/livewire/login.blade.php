@@ -75,14 +75,15 @@
             text-decoration: underline;
         }
         .navbar {
-            background-color: #AAAAAA;
-            padding: 0.5rem 1rem;
+            background: linear-gradient(to right, #ffffff, #d3d3d3); /* Gradient from white to grey */
+            color: black; 
+            padding: 0.3rem 1rem;
         }
         .footer {
-            background-color: #AAAAAA;
-            color: white;
+            background: linear-gradient(to right, #d3d3d3, #ffffff); /* Gradient from white to grey */
+            color: #6c757d; /* Dark text color */
             text-align: center;
-            padding: 15px 0;
+            padding:0.4rem 1rem;
             margin-top: auto;
         }
         @media (max-width: 768px) {
@@ -101,36 +102,50 @@
         <nav class="navbar">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="assets/Logo.png" alt="SLT Logo" width="80">
+                    <img src="{{ asset('assets/Logo.png') }}" alt="SLT Logo" width="80">
                 </a>
             </div>
         </nav>
         <div class="login-container">
             <div class="left-section">
-                <img src="assets/slt_logo.png" alt="SLT Logo">
+                <img src="{{ asset('assets/slt_logo.png') }}" alt="SLT Logo">
             </div>
             <div class="right-section">
                 <h2>Login</h2>
-                <form>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                        <label for="emp_id" class="form-label">Username</label>
+                        <input type="text" id="emp_id" class="form-control" name="emp_id" value="{{ old('emp_id') }}" placeholder="Enter your username" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                        <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" required>
                     </div>
                     <div class="mb-3">
                         <a href="#" class="forgot-password" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot your Password?</a>
                     </div>
+
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
+                @if ($errors->has('emp_id'))
+                <div class="alert alert-danger mt-3">
+                    {{ $errors->first('emp_id') }}
+                </div>
+            @endif
+            @if ($errors->has('password'))
+                <div class="alert alert-danger mt-3">
+                    {{ $errors->first('password') }}
+                </div>
+            @endif
             </div>
         </div>
     </div>
+
     <div class="footer">
-        Powered By Sri Lanka Telecom
+        {{ date('Y') }} SLT. All rights reserved.
     </div>
+
     <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -150,6 +165,8 @@
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
