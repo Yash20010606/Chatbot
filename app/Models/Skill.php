@@ -10,5 +10,6 @@ class Skill extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'category', 'description'];
+    protected $primaryKey = 'id';
 }
 

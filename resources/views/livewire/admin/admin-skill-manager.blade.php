@@ -42,7 +42,7 @@
                             <label for="category" class="form-label me-2">Category:</label>
                             <select id="category" name="category" class="form-select" required>
                                 <option value="">Select Category</option>
-                                <option value="language">Languages</option>
+                                <option value="language">Language</option>
                                 <option value="tech">Service and Product</option>
                             </select>
                         </div>
