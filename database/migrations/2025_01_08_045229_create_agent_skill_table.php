@@ -10,7 +10,6 @@ class CreateAgentSkillTable extends Migration
     {
         Schema::create('agent_skill', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id');
             $table->string('emp_id');
             $table->timestamps();
         });
