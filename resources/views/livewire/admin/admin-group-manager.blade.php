@@ -14,11 +14,27 @@
 
 @section('content')
     <div class="container mt-4">
-        <div class="card shadow bg-white border-white">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
+    <div class="card shadow bg-white border-white">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
     <h5 class="text-success mb-0">Groups</h5>
     <a href="#" class="nav-link text-green py-2"><i class="bi bi-geo-alt"></i> View Groups</a>
-</div>
+    </div>
 
             <div class="card-body bg-white">
                 <div class="row mb-3">
@@ -65,11 +81,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-group="Group 1" class="group">
-                            <td>Group 1</td>
-                            <td>G001</td>
-                            <td>123 Main St, Colombo</td>
-                            <td>+94123456789</td>
+                        @foreach ($groups as $group)
+                        <tr>
+                            <td>{{ $group->group_name }}</td>
+                            <td>{{ $group->group_code }}</td>
+                            <td>{{ $group->address }}</td>
+                            <td>{{ $group->contact_number }}</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
                                     <i class="fas fa-edit"></i>
@@ -77,59 +94,8 @@
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
-                        </tr>
-                        <tr data-group="Group 2" class="group">
-                            <td>Group 2</td>
-                            <td>G002</td>
-                            <td>456 High St, Kurunegala</td>
-                            <td>+94198765432</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Group 3" class="group">
-                            <td>Group 3</td>
-                            <td>G003</td>
-                            <td>789 Park Ave, Colombo</td>
-                            <td>+94123456780</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Group 4" class="group">
-                            <td>Group 4</td>
-                            <td>G004</td>
-                            <td>101 Lake Rd, Gampha</td>
-                            <td>+94198765431</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Group 5" class="group">
-                            <td>Group 5</td>
-                            <td>G005</td>
-                            <td>202 Hill St, Colombo</td>
-                            <td>+94123456781</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
+                        </tr>   
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -5,14 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class GroupTableSeeder extends Seeder
+class GroupsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('group')->insert([ 
+        DB::table('groups')->insert([ 
             [ 
                 'group_name' => 'Group 1', 
                 'group_code' => 'G001', 

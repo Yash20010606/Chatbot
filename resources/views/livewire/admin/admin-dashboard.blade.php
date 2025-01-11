@@ -355,45 +355,46 @@
             </div>
         </div>
 
-       <!-- Add Group Modal -->
-<div class="modal" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
-                <h5 class="modal-title" id="addGroupModalLabel">Add Group</h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form wire:submit.prevent="#">
-                    <div class="mb-3">
-                        <label for="groupCode" class="form-label">Group Code</label>
-                        <input type="text" id="groupCode" class="form-control" wire:model="groupCode">
+        <!-- Add Group Modal -->
+        <div class="modal" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
+                        <h5 class="modal-title" id="addGroupModalLabel">Add Group</h5>
+                        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Group Name</label>
-                        <input type="text" id="name" class="form-control" wire:model="name">
+                    <div class="modal-body">
+                        <form action="{{ route('group.store') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="groupCode" class="form-label">Group Code</label>
+                                <input type="text" id="groupCode" class="form-control" name="group_code">
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Group Name</label>
+                                <input type="text" id="name" class="form-control" name="group_name">
+                            </div>
+                            
+                            <!-- Address Section with Textarea -->
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" name="address"></textarea>
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="cnumber" class="form-label">Contact Number</label>
+                                <input type="text" id="cnumber" class="form-control" name="contact_number">
+                            </div>
+        
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </div>
+                        </form>
                     </div>
-                    
-                    <!-- Address Section with Textarea -->
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" wire:model="address"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="cnumber" class="form-label">Contact Number</label>
-                        <input type="text" id="cnumber" class="form-control" wire:model="cnumber">
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Add</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
   
     
 
