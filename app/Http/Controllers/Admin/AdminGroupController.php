@@ -33,6 +33,15 @@ class AdminGroupController extends Controller
         $group = Group::findOrFail($id);
         $group->update($validated);
         return redirect()->route('admin.group')->with('success', 'Group updated successfully!');
-    }      
+    }     
+    
+    // Remove the specified group from storage
+    public function destroy($id)
+    {
+        $group = Group::findOrFail($id);
+        $group->delete();
+
+        return redirect()->route('admin.group')->with('success', 'Group deleted successfully!');
+    }
 }
 

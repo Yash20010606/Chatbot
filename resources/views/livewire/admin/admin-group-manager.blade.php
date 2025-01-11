@@ -92,8 +92,15 @@
                                 <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateGroupModal" onclick="openUpdateModal({{ json_encode($group) }})">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                                
+                                <!-- Delete button -->
+                                <form action="{{ route('group.destroy', $group->id) }}" method="POST" style="display:inline;" id="deleteForm{{ $group->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" title="Delete" class="btn btn-link text-danger" onclick="confirmDelete({{ $group->id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button> 
+                                </form>       
                             </td>
                         </tr>   
                         @endforeach
@@ -162,6 +169,18 @@
             // Show the modal
             const modal = new bootstrap.Modal(document.getElementById('updateGroupModal'));
             modal.show();
+        }
+    </script>
+
+    <script>
+        // JavaScript to show a confirmation dialog before deleting a group
+        function confirmDelete(groupId) {
+            const deleteForm = document.getElementById('deleteForm' + groupId);
+
+            // Display a confirmation dialog
+            if (confirm("Are you sure you want to delete this group?")) {
+                deleteForm.submit(); // Submit the form if confirmed
+            }
         }
     </script>
 @endsection
