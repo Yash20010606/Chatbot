@@ -368,22 +368,22 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="groupCode" class="form-label">Group Code</label>
-                                <input type="text" id="groupCode" class="form-control" name="group_code">
+                                <input type="text" id="groupCode" class="form-control" name="group_code" required>
                             </div>
                             <div class="mb-3">
                                 <label for="name" class="form-label">Group Name</label>
-                                <input type="text" id="name" class="form-control" name="group_name">
+                                <input type="text" id="name" class="form-control" name="group_name" required>
                             </div>
                             
                             <!-- Address Section with Textarea -->
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" name="address"></textarea>
+                                <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" name="address" required></textarea>
                             </div>
         
                             <div class="mb-3">
                                 <label for="cnumber" class="form-label">Contact Number</label>
-                                <input type="text" id="cnumber" class="form-control" name="contact_number">
+                                <input type="text" id="cnumber" class="form-control" name="contact_number" required>
                             </div>
         
                             <div class="modal-footer">

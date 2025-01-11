@@ -40,6 +40,7 @@ Route::post('skills', [AdminSkillController::class, 'store'])->name('skills.stor
 Route::delete('skills/{id}', [AdminSkillController::class, 'destroy'])->name('skills.destroy');
 Route::put('skills/{skill}', [AdminSkillController::class, 'update'])->name('skills.update');
 Route::post('/groups', [AdminGroupController::class, 'store'])->name('group.store');
+Route::put('/groups/{group}', [AdminGroupController::class, 'update'])->name('group.update');
 
 //supervisor
 Route::get('/supervisor-dashboard', [SupervisorChatHistory::class, 'render'])->name('supervisor.dashboard');

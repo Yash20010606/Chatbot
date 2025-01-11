@@ -88,9 +88,10 @@
                             <td>{{ $group->address }}</td>
                             <td>{{ $group->contact_number }}</td>
                             <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
+                                <!-- Edit button -->
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateGroupModal" onclick="openUpdateModal({{ json_encode($group) }})">
                                     <i class="fas fa-edit"></i>
-                                </a>
+                                </button>
                                 &nbsp;
                                 <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                             </td>
@@ -111,25 +112,28 @@
                     <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form wire:submit.prevent="#">
+                    <form id="updateGroupForm" action="{{ route('group.update', ':id') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="updateGroupId" name="id">
                         <div class="mb-3">
-                            <label for="groupCode" class="form-label">Group Code</label>
-                            <input type="text" id="groupCode" class="form-control" wire:model="groupCode">
+                            <label for="updateGroupCode" class="form-label">Group Code</label>
+                            <input type="text" id="updateGroupCode" class="form-control" name="group_code" required>
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Group Name</label>
-                            <input type="text" id="name" class="form-control" wire:model="name">
+                            <label for="updateName" class="form-label">Group Name</label>
+                            <input type="text" id="updateName" class="form-control" name="group_name" required>
                         </div>
                         
                         <!-- Address Section with Textarea -->
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" wire:model="address"></textarea>
+                            <label for="updateAddress" class="form-label">Address</label>
+                            <textarea id="updateAddress" class="form-control" rows="3" placeholder="Enter Address" name="address" required></textarea>
                         </div>
     
                         <div class="mb-3">
-                            <label for="cnumber" class="form-label">Contact Number</label>
-                            <input type="text" id="cnumber" class="form-control" wire:model="cnumber">
+                            <label for="updateContactNumber" class="form-label">Contact Number</label>
+                            <input type="text" id="updateContactNumber" class="form-control" name="contact_number" required>
                         </div>
     
                         <div class="modal-footer">
@@ -141,4 +145,23 @@
             </div>
         </div>
     </div>
+    <script>
+        // JavaScript to populate the modal with the selected group data
+        function openUpdateModal(group) {
+            // Set the form action URL with the group ID
+            const formAction = '{{ route('group.update', ':id') }}'.replace(':id', group.id);
+            document.getElementById('updateGroupForm').action = formAction;
+
+            // Set the form input values
+            document.getElementById('updateGroupId').value = group.id;
+            document.getElementById('updateGroupCode').value = group.group_code;
+            document.getElementById('updateName').value = group.group_name;
+            document.getElementById('updateAddress').value = group.address;
+            document.getElementById('updateContactNumber').value = group.contact_number;
+
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('updateGroupModal'));
+            modal.show();
+        }
+    </script>
 @endsection
