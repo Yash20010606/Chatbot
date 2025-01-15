@@ -42,8 +42,8 @@
                             <label for="category" class="form-label me-2">Category:</label>
                             <select id="category" name="category" class="form-select" required>
                                 <option value="">Select Category</option>
-                                <option value="language">Language</option>
-                                <option value="tech">Service and Product</option>
+                                <option value="Language">Language</option>
+                                <option value="Service and Product">Service and Product</option>
                             </select>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                         <label for="updateCategory" class="form-label">Category</label>
                         <select id="updateCategory" class="form-select" name="category" required>
                             <option value="language">Languages</option>
-                            <option value="tech">Service and Product</option>
+                            <option value="Service and Product">Service and Product</option>
                         </select>
                     </div>
                     <div class="mb-3">

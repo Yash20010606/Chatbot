@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class AdminSkillController extends Controller
 {
+
     // Store a new skill
     public function store(Request $request)
     {

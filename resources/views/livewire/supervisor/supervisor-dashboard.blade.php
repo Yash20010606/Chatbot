@@ -1,4 +1,11 @@
 <body>
+<div class="container py-3">
+        @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
     <div class="container py-3">
         <div class="row gy-1">
             <!-- Agent Section -->
@@ -60,109 +67,88 @@
 
         
             <!-- Add Agent Modal -->
-            <div class="modal" id="addAgentModal" tabindex="-1" aria-labelledby="addAgentModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
-                            <h5 class="modal-title" id="addAgentModalLabel">Add Agent</h5>
-                            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form wire:submit.prevent="#">
-                                <div class="mb-3">
-                                    <label for="employeeId" class="form-label">Employee ID</label>
-                                    <input type="text" id="employeeId" class="form-control" wire:model="employeeId">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Name</label>
-                                    <input type="text" id="name" class="form-control" wire:model="name">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" class="form-control" wire:model="email">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="callCenter" class="form-label">Group</label>
-                                    <select id="callCenter" class="form-select" wire:model="callCenter">
-                                        <option value="">Select</option>
-                                        <option value="1">Group 1</option>
-                                        <option value="2">Group 2</option>
-                                        <option value="3">Group 3</option>
-                                        <option value="4">Group 4</option>
-                                        <option value="5">Group 5</option>
-                                        <option value="6">Group 6</option>
-                                        <option value="7">Group 7</option>
-                                        <option value="8">Group 8</option>
-                                        <option value="9">Group 9</option>
-                                        <option value="10">Group 10</option>
-                                        <option value="11">Group 11</option>
-                                        <option value="12">Group 12</option>
-                                        <option value="13">Group 13</option>
-                                    </select>
-                                </div>
-    
-                                <!-- Language Skills -->
-                                <div class="mb-3">
-                                    <label class="form-label">Language</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="english" class="form-check-input" wire:model="skills.language.english">
-                                        <label for="english" class="form-check-label">English</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="sinhala" class="form-check-input" wire:model="skills.language.sinhala">
-                                        <label for="sinhala" class="form-check-label">Sinhala</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="tamil" class="form-check-input" wire:model="skills.language.tamil">
-                                        <label for="tamil" class="form-check-label">Tamil</label>
-                                    </div>
-                                </div>
-    
-                                <!-- Service Skills -->
-                                <div class="mb-3">
-                                    <label class="form-label">Service and Product</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="broadband" class="form-check-input" wire:model="skills.service.broadband">
-                                        <label for="broadband" class="form-check-label">Broadband</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="voice" class="form-check-input" wire:model="skills.service.voice">
-                                        <label for="voice" class="form-check-label">Peo Tv</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="voice" class="form-check-input" wire:model="skills.service.voice">
-                                        <label for="voice" class="form-check-label">Voice</label>
-                                    </div>
-                                </div>
-    
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <div class="input-group">
-                                        <input type="password" id="password" class="form-control" wire:model="password" placeholder="Enter your password" aria-describedby="togglePassword">
-                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword" onclick="togglePasswordVisibility()">
-                                            <i class="fa fa-eye" id="passwordIcon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                    <div class="input-group">
-                                        <input type="password" id="confirmPassword" class="form-control" wire:model="confirmPassword" placeholder="Confirm your password" aria-describedby="toggleConfirmPassword">
-                                        <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
-                                            <i class="fa fa-eye" id="confirmPasswordIcon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-    
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-success">Add</button>
-                                </div>
-                            </form>
+<div class="modal" id="addAgentModal" tabindex="-1" aria-labelledby="addAgentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
+                <h5 class="modal-title" id="addAgentModalLabel">Add Agent</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addAgentForm" action="{{ route('supervisor.agents.store') }}" method="POST">
+                    @csrf
+                    <!-- Error Message -->
+                    <div id="error-message" class="text-danger" style="display: none;"></div>
+
+                    <div class="mb-3">
+                        <label for="employeeId" class="form-label">Employee ID</label>
+                        <input type="text" id="employeeId" class="form-control" name="employeeId">
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" class="form-control" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" name="email">
+                    </div>
+
+                    <!-- Group Section -->
+                    <div class="mb-3">
+                        <label for="callCenter" class="form-label">Group</label>
+                        <select id="callCenter" class="form-select" name="group">
+                            @if($groups->isEmpty())
+                                <option value="">No groups available</option>
+                            @else
+                                <option value="">Select</option>
+                                @foreach($groups as $group)
+                                    <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div class="mb-3">
+                        <label for="skills" class="form-label">Skills</label>
+                        @foreach($skills as $skill)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="skills[]" value="{{ $skill->id }}" id="update_skill_{{ $skill->id }}">
+                                <label class="form-check-label" for="update_skill_{{ $skill->id }}">
+                                    {{ $skill->name }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" aria-describedby="togglePassword">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword" onclick="togglePasswordVisibility()">
+                                <i class="fa fa-eye" id="passwordIcon"></i>
+                            </button>
                         </div>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" id="confirmPassword" class="form-control" name="password_confirmation" placeholder="Confirm your password" aria-describedby="toggleConfirmPassword">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
+                                <i class="fa fa-eye" id="confirmPasswordIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear</button>
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </div>
+                </form>
             </div>
+        </div>
+    </div>
+</div>
           
     
         

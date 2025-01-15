@@ -11,5 +11,10 @@ class Skill extends Model
 
     protected $fillable = ['name', 'category', 'description'];
     protected $primaryKey = 'id';
+
+    public function agents()
+    {
+        return $this->belongsToMany(Agent::class, 'agent_skills', 'skill_id', 'emp_id');
+    }
 }
 
