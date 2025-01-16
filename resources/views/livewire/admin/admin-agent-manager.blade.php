@@ -38,13 +38,13 @@
             </div>
 
             <table
-                id="table"
-                class="table table-bordered"
-                data-toggle="table"
-                data-search="false"
-                data-pagination="true"
-                data-page-size="5"
-                data-sortable="false"
+                    id="table"
+                    class="table table-bordered"
+                    data-toggle="table"
+                    data-search="false"
+                    data-pagination="true"
+                    data-page-size="2"
+                    data-sortable="false"
             >
                 <thead class="table-success">
                     <tr>

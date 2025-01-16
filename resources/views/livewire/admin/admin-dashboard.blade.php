@@ -338,7 +338,7 @@
         </div>
 
        <!-- Add Group Modal -->
-        <div class="modal" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+       <div class="modal" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
@@ -346,27 +346,28 @@
                         <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form wire:submit.prevent="#">
+                        <form action="{{ route('group.store') }}" method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <label for="groupCode" class="form-label">Group Code</label>
-                                <input type="text" id="groupCode" class="form-control" wire:model="groupCode">
+                                <input type="text" id="groupCode" class="form-control" name="group_code" required>
                             </div>
                             <div class="mb-3">
                                 <label for="name" class="form-label">Group Name</label>
-                                <input type="text" id="name" class="form-control" wire:model="name">
+                                <input type="text" id="name" class="form-control" name="group_name" required>
                             </div>
                             
                             <!-- Address Section with Textarea -->
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" wire:model="address"></textarea>
+                                <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" name="address" required></textarea>
                             </div>
-
+        
                             <div class="mb-3">
                                 <label for="cnumber" class="form-label">Contact Number</label>
-                                <input type="text" id="cnumber" class="form-control" wire:model="cnumber">
+                                <input type="text" id="cnumber" class="form-control" name="contact_number" required>
                             </div>
-
+        
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-success">Add</button>
@@ -378,8 +379,7 @@
         </div>
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
+<script>
 
 function resetForm() {
     // Reset text input fields

@@ -14,31 +14,37 @@
 
 @section('content')
     <div class="container mt-4">
-        <div class="card shadow bg-white border-white">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
+    <div class="card shadow bg-white border-white">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
     <h5 class="text-success mb-0">Groups</h5>
     <a href="#" class="nav-link text-green py-2"><i class="bi bi-geo-alt"></i> View Groups</a>
-</div>
+    </div>
 
             <div class="card-body bg-white">
                 <div class="row mb-3">
                     <div class="col-md-4 search-section">
-                        <select class="form-select">
-                            <option selected>Group</option>
-                            <option value="1">G001</option>
-                            <option value="2">G002</option>
-                            <option value="3">G003</option>
-                            <option value="3">G004</option>
-                            <option value="3">G005</option>
-                            <option value="3">G006</option>
-                            <option value="3">G007</option>
-                            <option value="3">G008</option>
-                            <option value="3">G009</option>
-                            <option value="3">G0010</option>
-                            <option value="3">G0011</option>
-                            <option value="3">G0012</option>
-                            <option value="3">G0013</option>
-                        </select>
+                    <select class="form-select" id="group-filter">
+                        <option selected value="">Select Group</option>
+                        @foreach($groups as $group)
+                        <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
+                        @endforeach
+                    </select>
                     </div>
                     <div class="col-md-4">
                         <button class="btn btn-success w-100">Search</button>
@@ -65,71 +71,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-group="Group 1" class="group">
-                            <td>Group 1</td>
-                            <td>G001</td>
-                            <td>123 Main St, Colombo</td>
-                            <td>+94123456789</td>
+                        @foreach ($groups as $group)
+                        <tr>
+                            <td>{{ $group->group_name }}</td>
+                            <td>{{ $group->group_code }}</td>
+                            <td>{{ $group->address }}</td>
+                            <td>{{ $group->contact_number }}</td>
                             <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
+                                <!-- Edit button -->
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateGroupModal" onclick="openUpdateModal({{ json_encode($group) }})">
                                     <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                                </button>
+                                
+                                <!-- Delete button -->
+                                <form action="{{ route('group.destroy', $group->id) }}" method="POST" style="display:inline;" id="deleteForm{{ $group->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" title="Delete" class="btn btn-link text-danger" onclick="confirmDelete({{ $group->id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button> 
+                                </form>       
                             </td>
-                        </tr>
-                        <tr data-group="Group 2" class="group">
-                            <td>Group 2</td>
-                            <td>G002</td>
-                            <td>456 High St, Kurunegala</td>
-                            <td>+94198765432</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Group 3" class="group">
-                            <td>Group 3</td>
-                            <td>G003</td>
-                            <td>789 Park Ave, Colombo</td>
-                            <td>+94123456780</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Group 4" class="group">
-                            <td>Group 4</td>
-                            <td>G004</td>
-                            <td>101 Lake Rd, Gampha</td>
-                            <td>+94198765431</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Group 5" class="group">
-                            <td>Group 5</td>
-                            <td>G005</td>
-                            <td>202 Hill St, Colombo</td>
-                            <td>+94123456781</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateGroupModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
+                        </tr>   
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -145,25 +109,28 @@
                     <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form wire:submit.prevent="#">
+                    <form id="updateGroupForm" action="{{ route('group.update', ':id') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="updateGroupId" name="id">
                         <div class="mb-3">
-                            <label for="groupCode" class="form-label">Group Code</label>
-                            <input type="text" id="groupCode" class="form-control" wire:model="groupCode">
+                            <label for="updateGroupCode" class="form-label">Group Code</label>
+                            <input type="text" id="updateGroupCode" class="form-control" name="group_code" required>
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Group Name</label>
-                            <input type="text" id="name" class="form-control" wire:model="name">
+                            <label for="updateName" class="form-label">Group Name</label>
+                            <input type="text" id="updateName" class="form-control" name="group_name" required>
                         </div>
                         
                         <!-- Address Section with Textarea -->
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea id="address" class="form-control" rows="3" placeholder="Enter Address" wire:model="address"></textarea>
+                            <label for="updateAddress" class="form-label">Address</label>
+                            <textarea id="updateAddress" class="form-control" rows="3" placeholder="Enter Address" name="address" required></textarea>
                         </div>
     
                         <div class="mb-3">
-                            <label for="cnumber" class="form-label">Contact Number</label>
-                            <input type="text" id="cnumber" class="form-control" wire:model="cnumber">
+                            <label for="updateContactNumber" class="form-label">Contact Number</label>
+                            <input type="text" id="updateContactNumber" class="form-control" name="contact_number" required>
                         </div>
     
                         <div class="modal-footer">
@@ -175,4 +142,35 @@
             </div>
         </div>
     </div>
+    <script>
+        // JavaScript to populate the modal with the selected group data
+        function openUpdateModal(group) {
+            // Set the form action URL with the group ID
+            const formAction = '{{ route('group.update', ':id') }}'.replace(':id', group.id);
+            document.getElementById('updateGroupForm').action = formAction;
+
+            // Set the form input values
+            document.getElementById('updateGroupId').value = group.id;
+            document.getElementById('updateGroupCode').value = group.group_code;
+            document.getElementById('updateName').value = group.group_name;
+            document.getElementById('updateAddress').value = group.address;
+            document.getElementById('updateContactNumber').value = group.contact_number;
+
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('updateGroupModal'));
+            modal.show();
+        }
+    </script>
+
+    <script>
+        // JavaScript to show a confirmation dialog before deleting a group
+        function confirmDelete(groupId) {
+            const deleteForm = document.getElementById('deleteForm' + groupId);
+
+            // Display a confirmation dialog
+            if (confirm("Are you sure you want to delete this group?")) {
+                deleteForm.submit(); // Submit the form if confirmed
+            }
+        }
+    </script>
 @endsection

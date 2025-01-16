@@ -56,7 +56,7 @@ class AdminAgentController extends Controller
         }
 
         // Return a success response or redirect
-        return redirect()->route('admin.dashboard')->with('success', 'Agent added successfully');
+        return redirect()->route('agents.index')->with('success', 'Agent added successfully');
     }
 
     // Display all agents

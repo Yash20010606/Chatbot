@@ -54,7 +54,7 @@ class SupervisorAgentController extends Controller
         }
 
         // Return a success response or redirect
-        return redirect()->route('supervisor.dashboard')->with('success', 'Agent added successfully');
+        return redirect()->route('supervisor.agents.index')->with('success', 'Agent added successfully');
     }
 
     // Display all agents
@@ -112,7 +112,7 @@ class SupervisorAgentController extends Controller
             ]);
         }
 
-        return redirect()->route('agents.index')->with('success', 'Agent updated successfully.');
+        return redirect()->route('supervisor.agents.index')->with('success', 'Agent updated successfully.');
     }
 
     // Delete an agent
@@ -122,7 +122,7 @@ class SupervisorAgentController extends Controller
         Agent::where('emp_id', $emp_id)->delete();
         AgentSkill::where('emp_id', $emp_id)->delete();
 
-        return redirect()->route('agents.index')->with('success', 'Agent deleted successfully.');
+        return redirect()->route('supervisor.agents.index')->with('success', 'Agent deleted successfully.');
     }
 
 }

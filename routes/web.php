@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminSkillController;
 use App\Http\Controllers\Admin\AdminAgentController;
+use App\Http\Controllers\Admin\AdminGroupController;
 use App\Http\Controllers\Supervisor\SupervisorAgentController;
 use App\Http\Controllers\AuthController;
 use App\Livewire\Admin\AdminAgentManager;
@@ -33,7 +34,7 @@ Route::get('/chat-history', [AdminChatHistory::class, 'render'])->name('admin.ch
 Route::get('/agent', [AdminAgentManager::class, 'render'])->name('admin.agent');
 Route::get('/supervisors', [AdminSupervisorManager::class, 'render'])->name('admin.supervisor');
 Route::get('/reporters', [AdminReporterManager::class, 'render'])->name('admin.reporter');
-Route::get('/groups', [AdminGroupManager::class, 'render'])->name('admin.group');
+Route::get('/groups', AdminGroupManager::class)->name('admin.group');
 Route::get('/skill-manager', AdminSkillManager::class)->name('admin.skill');
 Route::get('/profile', [AdminProfile::class, 'render'])->name('admin.profile');
 Route::post('skills', [AdminSkillController::class, 'store'])->name('skills.store');
@@ -44,6 +45,9 @@ Route::get('/agents', [AdminAgentController::class, 'index'])->name('agents.inde
 Route::get('/agents/edit/{emp_id}', [AdminAgentController::class, 'edit'])->name('agents.edit');
 Route::post('/agents/update/{emp_id}', [AdminAgentController::class, 'update'])->name('agents.update');
 Route::post('/agents/delete/{emp_id}', [AdminAgentController::class, 'destroy'])->name('agents.destroy');
+Route::post('/groups', [AdminGroupController::class, 'store'])->name('group.store');
+Route::put('/groups/{group}', [AdminGroupController::class, 'update'])->name('group.update');
+Route::delete('groups/{id}', [AdminGroupController::class, 'destroy'])->name('group.destroy');
 
 
 //supervisor
@@ -51,11 +55,11 @@ Route::get('/supervisor-dashboard', [SupervisorChatHistory::class, 'render'])->n
 Route::get('/supervisor-chat-history', [SupervisorChatHistory::class, 'render'])->name('supervisor.chat.history');
 Route::get('/supervisor-agent', [SupervisorAgentManager::class, 'render'])->name('supervisor.agent');
 Route::get('/supervisor-profile', [SupervisorProfile::class, 'render'])->name('supervisor.profile');
-Route::post('admin/agents/store', [SupervisorAgentController::class, 'store'])->name('supervisor.agents.store');
-Route::get('/agents', [SupervisorAgentController::class, 'index'])->name('agents.index');
-Route::get('/agents/edit/{emp_id}', [SupervisorAgentController::class, 'edit'])->name('agents.edit');
-Route::post('/agents/update/{emp_id}', [SupervisorAgentController::class, 'update'])->name('agents.update');
-Route::post('/agents/delete/{emp_id}', [SupervisorAgentController::class, 'destroy'])->name('agents.destroy');
+Route::post('supervisor/agents/store', [SupervisorAgentController::class, 'store'])->name('supervisor.agents.store');
+Route::get('supervisor/agents', [SupervisorAgentController::class, 'index'])->name('supervisor.agents.index');
+Route::get('supervisor/agents/edit/{emp_id}', [SupervisorAgentController::class, 'edit'])->name('supervisor.agents.edit');
+Route::post('supervisor/agents/update/{emp_id}', [SupervisorAgentController::class, 'update'])->name('supervisor.agents.update');
+Route::post('supervisor/agents/delete/{emp_id}', [SupervisorAgentController::class, 'destroy'])->name('supervisor.agents.destroy');
 
 //reporter
 Route::get('/reporter-dashboard', [ReporterChatHistory::class, 'render'])->name('reporter.dashboard');

@@ -26,13 +26,13 @@
             </div>
 
             <table
-                id="table"
-                class="table table-bordered"
-                data-toggle="table"
-                data-search="false"
-                data-pagination="true"
-                data-page-size="5"
-                data-sortable="false"
+                    id="table"
+                    class="table table-bordered"
+                    data-toggle="table"
+                    data-search="false"
+                    data-pagination="true"
+                    data-page-size="2"
+                    data-sortable="false"
             >
                 <thead class="table-success">
                     <tr>
@@ -54,7 +54,7 @@
                             <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateAgentModal" onclick="editAgent('{{ $agent->emp_id }}')">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <form action="{{ route('agents.destroy', $agent->emp_id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
+                            <form action="{{ route('supervisor.agents.destroy', $agent->emp_id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
                                 @csrf
                                 <button type="submit" class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i>
@@ -210,7 +210,7 @@ function editAgent(empId) {
             });
 
             saveButton.disabled = true;
-            updateForm.action = `/agents/update/${agent.emp_id}`;
+            updateForm.action = `supervisor/agents/update/${agent.emp_id}`;
             setInitialData(); // Set initial data after populating the form
         })
         .catch(error => {
