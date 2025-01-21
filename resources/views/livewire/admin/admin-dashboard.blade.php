@@ -31,8 +31,8 @@
                     <i class="fa fa-comments fa-2x me-2"></i>
                         <h4 class="card-title mb-0">Agent</h4>
                     </div>
-                    <div class="circle mx-auto mb-3">95</div>
-                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addAgentModal">
+                    <div class="circle mx-auto mb-3">{{ $agentCount }}</div>
+                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addAgentModal" onclick="openAddAgentForm()">
                         <i class="fa fa-plus-circle me-2"></i> Add
                     </button>
                 </div>
@@ -119,13 +119,27 @@
                     <!-- Skills Section -->
                     <div class="mb-3">
                         <label for="skills" class="form-label">Skills</label>
-                        @foreach($skills as $skill)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="skills[]" value="{{ $skill->id }}" id="update_skill_{{ $skill->id }}">
-                                <label class="form-check-label" for="update_skill_{{ $skill->id }}">
-                                    {{ $skill->name }}
-                                </label>
+                        @php
+                            // Get unique languages dynamically from the skills collection
+                            $languages = $skills->pluck('language')->unique();
+                            // Group skills by language
+                            $skillsGroupedByLanguage = $skills->groupBy('language');
+                        @endphp
+
+                        @foreach($languages as $language)
+                            <div class="mb-2">
+                                <strong>{{ $language }}</strong>
                             </div>
+                            @if(isset($skillsGroupedByLanguage[$language]))
+                                @foreach($skillsGroupedByLanguage[$language] as $skill)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="skills[]" value="{{ $skill->id }}" id="add_skill_{{ $skill->id }}">
+                                        <label class="form-check-label" for="add_skill_{{ $skill->id }}">
+                                            {{ $skill->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @endif
                         @endforeach
                     </div>
 
@@ -379,7 +393,26 @@
         </div>
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
+
+function openAddAgentForm() {
+    const addAgentForm = document.getElementById('addAgentForm');
+
+    // Reset the form fields
+    addAgentForm.reset();
+
+    // Uncheck all skill checkboxes
+    const addSkillCheckboxes = addAgentForm.querySelectorAll('input[type="checkbox"]');
+    addSkillCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    // Show the Add Agent Modal
+    const addAgentModal = new bootstrap.Modal(document.getElementById('addAgentModal'));
+    addAgentModal.show();
+}
+
 
 function resetForm() {
     // Reset text input fields

@@ -42,7 +42,7 @@
                     <thead class="table-success">
                         <tr>
                             <th>Chat ID</th>
-                            <th>Category</th>
+                            <th>Skill</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Actions</th>

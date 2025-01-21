@@ -10,13 +10,13 @@ class AdminSkillManager extends Component
 {
     public $skills;
     public $name;
-    public $category;
+    public $language;
     public $description;
     public $skillId;
 
     protected $rules = [
         'name' => 'required|string|max:255',
-        'category' => 'required|string',
+        'language' => 'required|string',
         'description' => 'required|string',
     ];
 

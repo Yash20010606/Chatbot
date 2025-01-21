@@ -18,9 +18,28 @@ class AdminAgentController extends Controller
         return view('livewire.admin.admin-dashboard');
     }
 
+    public function filter(Request $request)
+    {
+        $query = User::where('role', 'agent')
+            ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
+            ->select('users.name', 'users.emp_id', 'users.email', 'agent.group_code as group');
+
+        if ($request->filled('empID')) {
+            $query->where('users.emp_id', $request->empID);
+        }
+
+        if ($request->filled('group')) {
+            $query->where('agent.group_code', $request->group);
+        }
+
+        $agents = $query->get();
+
+        // Return agents as JSON
+        return response()->json($agents);
+    }
+
     public function store(Request $request)
     {
-
          \Log::info($request->all());
         // Validate the request
         $request->validate([
@@ -73,7 +92,6 @@ class AdminAgentController extends Controller
         return view('livewire.admin.admin-agent-manager', compact('agents', 'groups', 'skills'));
     }
 
-
     public function edit($emp_id)
     {
         $agent = User::where('emp_id', $emp_id)->firstOrFail();
@@ -86,6 +104,7 @@ class AdminAgentController extends Controller
             'skills' => $skills,
         ]);
     }
+
     public function update(Request $request, $emp_id)
     {
         $request->validate([

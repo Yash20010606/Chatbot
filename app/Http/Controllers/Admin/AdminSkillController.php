@@ -14,13 +14,13 @@ class AdminSkillController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'language' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
 
         Skill::create([
             'name' => $request->name,
-            'category' => $request->category,
+            'language' => $request->language,
             'description' => $request->description,
         ]);
 
@@ -32,14 +32,14 @@ class AdminSkillController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'language' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
 
         $skill = Skill::findOrFail($id);
         $skill->update([
             'name' => $request->name,
-            'category' => $request->category,
+            'language' => $request->language,
             'description' => $request->description,
         ]);
 

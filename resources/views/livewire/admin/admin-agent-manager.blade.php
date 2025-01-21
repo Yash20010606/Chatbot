@@ -85,8 +85,7 @@
     </div>
 </div>
 
-
-   <!-- Update Skill Modal -->
+   <!-- Update Agent Modal -->
     <div class="modal" id="updateAgentModal" tabindex="-1" aria-labelledby="updateAgentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -117,17 +116,32 @@
                         </div>
                         <div class="mb-3">
                             <label for="skills" class="form-label">Skills</label>
-                            <div id="skillsContainer">
-                                @foreach($skills as $skill)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="skills[]" value="{{ $skill->id }}" id="skill_{{ $skill->id }}" />
-                                        <label class="form-check-label" for="skill_{{ $skill->id }}">
-                                            {{ $skill->name }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
+                            @php
+                                // Get unique languages dynamically from the skills collection
+                                $languages = $skills->pluck('language')->unique();
+                                // Group skills by language
+                                $skillsGroupedByLanguage = $skills->groupBy('language');
+                            @endphp
+
+                            @foreach($languages as $language)
+                                <div class="mb-2">
+                                    <strong>{{ $language }}</strong>
+                                </div>
+                                @if(isset($skillsGroupedByLanguage[$language]))
+                                    @foreach($skillsGroupedByLanguage[$language] as $skill)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="skills[]" value="{{ $skill->id }}" id="update_skill_{{ $skill->id }}">
+                                            <label class="form-check-label" for="update_skill_{{ $skill->id }}">
+                                                {{ $skill->name }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted ms-3">No skills available</p>
+                                @endif
+                            @endforeach
                         </div>
+
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
@@ -137,6 +151,55 @@
 </div>
 
 <script>
+
+    // Function to reset form values and redirect
+    function resetForm() {
+        document.getElementById("empID").value = "";
+        document.getElementById("group-filter").value = "";
+
+        // Redirect to the desired route
+        window.location.href = "{{ route('agents.index') }}";
+    }
+
+    // Fetch filtered agents
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        const empID = document.getElementById("empID").value;
+        const group = document.getElementById("group-filter").value;
+
+        // Fetch filtered data via AJAX
+        fetch(`{{ route('agents.filter') }}?empID=${empID}&group=${group}`)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#table tbody');
+                if (data.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center">No records found</td>
+                        </tr>`;
+                } else {
+                    tableBody.innerHTML = data.map(agent => `
+                        <tr>
+                            <td>${agent.name}</td>
+                            <td>${agent.emp_id}</td>
+                            <td>${agent.group}</td>
+                            <td>${agent.email}</td>
+                            <td>
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateAgentModal" onclick="editAgent('${agent.emp_id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="{{ route('agents.destroy', '') }}/${agent.emp_id}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            });
+    });
+
 // Disable "Save Changes" button if no changes
 const updateForm = document.getElementById('updateAgentForm');
 const saveButton = updateForm.querySelector('button[type="submit"]');

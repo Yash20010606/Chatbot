@@ -20,9 +20,9 @@ class Agent extends Model
 
     // Relationship to AgentSkill model
     public function skills()
-{
-    return $this->belongsToMany(Skill::class, 'agent_skills', 'emp_id', 'skill_id');
-}
+    {
+        return $this->belongsToMany(Skill::class, 'agent_skills', 'emp_id', 'skill_id');
+    }
 
     // Relationship to Group model (assuming group is another table with group_code as primary)
     public function group()

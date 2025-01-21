@@ -36,8 +36,9 @@
     color: white; /* Text color on hover */
 }
 
-/* Active link styling */
-#sidebar .nav-link.active {
-    background-color: #004080; /* Background color for active link */
-    color: white;
+/* Style for Active Link */
+#sidebar .nav-link:active {
+    background-color: #004080; /* Background color for the active link */
+    color: white !important; /* Text color for the active link */
+    font-weight: bold; /* Optional: Make the text bold */
 }

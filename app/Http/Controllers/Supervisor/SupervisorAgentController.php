@@ -18,9 +18,28 @@ class SupervisorAgentController extends Controller
         return view('livewire.supervisor.supervisor-dashboard');
     }
 
+    public function filter(Request $request)
+    {
+        $query = User::where('role', 'agent')
+            ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
+            ->select('users.name', 'users.emp_id', 'users.email', 'agent.group_code as group');
+
+        if ($request->filled('empID')) {
+            $query->where('users.emp_id', $request->empID);
+        }
+
+        if ($request->filled('group')) {
+            $query->where('agent.group_code', $request->group);
+        }
+
+        $agents = $query->get();
+
+        // Return agents as JSON
+        return response()->json($agents);
+    }
+
     public function store(Request $request)
     {
-
         $request->validate([
             'employeeId' => 'required|unique:users,emp_id',
             'name' => 'required|string',
@@ -84,6 +103,7 @@ class SupervisorAgentController extends Controller
             'skills' => $skills,
         ]);
     }
+
     public function update(Request $request, $emp_id)
     {
         $request->validate([

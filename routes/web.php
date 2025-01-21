@@ -45,21 +45,22 @@ Route::get('/agents', [AdminAgentController::class, 'index'])->name('agents.inde
 Route::get('/agents/edit/{emp_id}', [AdminAgentController::class, 'edit'])->name('agents.edit');
 Route::post('/agents/update/{emp_id}', [AdminAgentController::class, 'update'])->name('agents.update');
 Route::post('/agents/delete/{emp_id}', [AdminAgentController::class, 'destroy'])->name('agents.destroy');
+Route::get('/agents/filter', [AdminAgentController::class, 'filter'])->name('agents.filter');
 Route::post('/groups', [AdminGroupController::class, 'store'])->name('group.store');
 Route::put('/groups/{group}', [AdminGroupController::class, 'update'])->name('group.update');
 Route::delete('groups/{id}', [AdminGroupController::class, 'destroy'])->name('group.destroy');
-
 
 //supervisor
 Route::get('/supervisor-dashboard', [SupervisorChatHistory::class, 'render'])->name('supervisor.dashboard');
 Route::get('/supervisor-chat-history', [SupervisorChatHistory::class, 'render'])->name('supervisor.chat.history');
 Route::get('/supervisor-agent', [SupervisorAgentManager::class, 'render'])->name('supervisor.agent');
 Route::get('/supervisor-profile', [SupervisorProfile::class, 'render'])->name('supervisor.profile');
-Route::post('supervisor/agents/store', [SupervisorAgentController::class, 'store'])->name('supervisor.agents.store');
-Route::get('supervisor/agents', [SupervisorAgentController::class, 'index'])->name('supervisor.agents.index');
-Route::get('supervisor/agents/edit/{emp_id}', [SupervisorAgentController::class, 'edit'])->name('supervisor.agents.edit');
-Route::post('supervisor/agents/update/{emp_id}', [SupervisorAgentController::class, 'update'])->name('supervisor.agents.update');
-Route::post('supervisor/agents/delete/{emp_id}', [SupervisorAgentController::class, 'destroy'])->name('supervisor.agents.destroy');
+Route::post('/supervisor/agents/store', [SupervisorAgentController::class, 'store'])->name('supervisor.agents.store');
+Route::get('/supervisor/agents', [SupervisorAgentController::class, 'index'])->name('supervisor.agents.index');
+Route::get('/supervisor/agents/edit/{emp_id}', [SupervisorAgentController::class, 'edit'])->name('supervisor.agents.edit');
+Route::post('/supervisor/agents/update/{emp_id}', [SupervisorAgentController::class, 'update'])->name('supervisor.agents.update');
+Route::post('/supervisor/agents/delete/{emp_id}', [SupervisorAgentController::class, 'destroy'])->name('supervisor.agents.destroy');
+Route::get('/supervisor/agents/filter', [SupervisorAgentController::class, 'filter'])->name('supervisor.agents.filter');
 
 //reporter
 Route::get('/reporter-dashboard', [ReporterChatHistory::class, 'render'])->name('reporter.dashboard');

@@ -9,7 +9,7 @@ class Skill extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category', 'description'];
+    protected $fillable = ['name', 'language', 'description'];
     protected $primaryKey = 'id';
 
     public function agents()

@@ -15,13 +15,6 @@
 @section('content')
 <body>
     <div class="container mt-3">
-
-        @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
         <div class="card shadow bg-white">
             <div class="card-header bg-white">
                 <h4 class="text-success mb-0">Skills</h4>
@@ -37,13 +30,14 @@
                             <input type="text" id="skillName" name="name" class="form-control" placeholder="Enter skill name" required>
                         </div>
                 
-                        <!-- Category -->
+                        <!-- language -->
                         <div class="col-md-6 d-flex justify-content-end align-items-center">
-                            <label for="category" class="form-label me-2">Category:</label>
-                            <select id="category" name="category" class="form-select" required>
-                                <option value="">Select Category</option>
-                                <option value="Language">Language</option>
-                                <option value="Service and Product">Service and Product</option>
+                            <label for="language" class="form-label me-2">Language:</label>
+                            <select id="language" name="language" class="form-select" required>
+                                <option value="">Select Language</option>
+                                <option value="Sinhala">Sinhala</option>
+                                <option value="English">English</option>
+                                <option value="Tamil">Tamil</option>
                             </select>
                         </div>
                     </div>
@@ -77,7 +71,7 @@
                         <thead class="table-success">
                             <tr>
                                 <th>Skills</th>
-                                <th>Category</th>
+                                <th>Language</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>
@@ -86,7 +80,7 @@
                             @foreach ($skills as $skill)
                             <tr>
                                 <td>{{ $skill->name }}</td>
-                                <td>{{ $skill->category }}</td>
+                                <td>{{ $skill->language }}</td>
                                 <td>{{ Str::limit($skill->description, 50) }}</td>
                                 <td>
                                     <!-- Edit button -->
@@ -106,8 +100,6 @@
                                 </td>
                             </tr>
                         @endforeach
-                        
-
                         </tbody>
                     </table>
                 </div>
@@ -116,7 +108,7 @@
     </div>
 
    <!-- Update Skill Modal -->
-<div class="modal" id="updateSkillModal" tabindex="-1" aria-labelledby="updateSkillModalLabel" aria-hidden="true">
+<div class="modal" id="updateSkillModal" tabindex="-1" aria-labelledby="updateSkillModalLabel" aria-hidden="true"data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
@@ -133,10 +125,12 @@
                         <input type="text" id="updateName" class="form-control" name="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="updateCategory" class="form-label">Category</label>
-                        <select id="updateCategory" class="form-select" name="category" required>
-                            <option value="language">Languages</option>
-                            <option value="Service and Product">Service and Product</option>
+                        <label for="updatelanguage" class="form-label">Language</label>
+                        <select id="updatelanguage" name="language" class="form-select" required>
+                            <option value="">Select Language</option>
+                            <option value="Sinhala">Sinhala</option>
+                            <option value="English">English</option>
+                            <option value="Tamil">Tamil</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -162,20 +156,21 @@ function openUpdateModal(skill) {
     const formAction = '{{ route('skills.update', ':id') }}'.replace(':id', skill.id);
     document.getElementById('updateSkillForm').action = formAction;
 
-    // Set the form input values
+    // Populate the modal fields
     document.getElementById('updateSkillId').value = skill.id;
     document.getElementById('updateName').value = skill.name;
-    document.getElementById('updateCategory').value = skill.category;
+    document.getElementById('updatelanguage').value = skill.language; // Corrected ID
     document.getElementById('updateDescription').value = skill.description;
 
-    // Show the modal
+    // Initialize and show the modal
     const modal = new bootstrap.Modal(document.getElementById('updateSkillModal'));
     modal.show();
 }
+
 // JavaScript to reset the skill form
 function resetForm() {
     document.getElementById("skillName").value = "";
-    document.getElementById("category").value = "";
+    document.getElementById("language").value = "";
     document.getElementById("description").value = "";
 }
 
