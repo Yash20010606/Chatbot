@@ -1,11 +1,6 @@
 <body>
     <div class="container py-3">
-        @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
+      
         <div class="row gy-1 justify-content-center">
               <!-- Supervisor Section -->
             <div class="col-md-3">
@@ -172,75 +167,89 @@
     </div>
 </div>
         <!-- Add Supervisor Modal -->
-        <div class="modal" id="addSupervisortModal" tabindex="-1" aria-labelledby="addSupervisortModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal" id="addSupervisortModal" tabindex="-1" aria-labelledby="addSupervisortModalLabel" aria-hidden="true">
             <div class="modal-dialog">
+
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
-                        <h5 class="modal-title" id="addSupervisorModalLabel">Add Supervisor</h5>
+                        <h5 class="modal-title" id="addSupervisorModalLabel">Add Supervior</h5>
                         <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <form wire:submit.prevent="#">
-                            <div class="mb-3">
-                                <label for="employeeId" class="form-label">Employee ID</label>
-                                <input type="text" id="employeeId" class="form-control" wire:model="employeeId">
-                            </div>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" class="form-control" wire:model="name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" id="email" class="form-control" wire:model="email">
-                            </div>
-                            <div class="mb-3">
-                                <label for="callCenter" class="form-label">Group</label>
-                                <select id="callCenter" class="form-select" wire:model="callCenter">
-                                    <option value="">Select</option>
-                                    <option value="1">Group 1</option>
-                                    <option value="2">Group 2</option>
-                                    <option value="3">Group 3</option>
-                                    <option value="4">Group 4</option>
-                                    <option value="5">Group 5</option>
-                                    <option value="6">Group 6</option>
-                                    <option value="7">Group 7</option>
-                                    <option value="8">Group 8</option>
-                                    <option value="9">Group 9</option>
-                                    <option value="10">Group 10</option>
-                                    <option value="11">Group 11</option>
-                                    <option value="12">Group 12</option>
-                                    <option value="19">Group 13</option>
-                                </select>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <div class="input-group">
-                                    <input type="password" id="passwords" class="form-control" wire:model="password" placeholder="Enter your password" aria-describedby="togglePassword">
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswords" onclick="togglePasswordVisibilitys()">
-                                        <i class="fa fa-eye" id="passwordIcons"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                <div class="input-group">
-                                    <input type="password" id="confirmPasswords" class="form-control" wire:model="confirmPassword" placeholder="Confirm your password" aria-describedby="toggleConfirmPassword">
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswords" onclick="toggleConfirmPasswordVisibilitys()">
-                                        <i class="fa fa-eye" id="confirmPasswordIcons"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-success">Add</button>
-                            </div>
-                        </form>
+            <div class="modal-body">
+            @if (session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
                     </div>
-                </div>
+                @endif
+                <!-- Change wire:submit.prevent to a regular form submission -->
+                <form method="POST" action="{{ route('admin.supervisor.add') }}">
+                    @csrf <!-- Add CSRF token for security -->
+                    
+                    <div class="mb-3">
+                        <label for="emp_id" class="form-label">Employee ID</label>
+                        <input type="text" id="emp_id" name="emp_id" class="form-control" value="{{ old('emp_id') }}" required>
+                        @error('emp_id') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
+                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                        @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="callCenter" class="form-label">Group</label>
+                        <select id="callCenter" name="callCenter" class="form-select" required>
+                            <option value="">Select</option>
+                            @foreach ($groups as $group)
+                                <option value="{{ $group->group_code }}" {{ old('callCenter') == $group->group_code ? 'selected' : '' }}>
+                                    {{ $group->group_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('callCenter') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword" onclick="togglePasswordVisibility()">
+                                <i class="fa fa-eye" id="passwordIcon"></i>
+                            </button>
+                        </div>
+                        @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
+                                <i class="fa fa-eye" id="confirmPasswordIcon"></i>
+                            </button>
+                        </div>
+                        @error('confirmPassword') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </div>
+                </form>
             </div>
         </div>
-    
+    </div>
+</div>
+
+
 
     
         <!-- Add Reporter Modal -->

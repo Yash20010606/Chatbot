@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\Admin\AdminSupervisorController;
 use App\Http\Controllers\Admin\AdminSkillController;
 use App\Http\Controllers\Admin\AdminAgentController;
 use App\Http\Controllers\Admin\AdminGroupController;
@@ -49,6 +49,14 @@ Route::get('/agents/filter', [AdminAgentController::class, 'filter'])->name('age
 Route::post('/groups', [AdminGroupController::class, 'store'])->name('group.store');
 Route::put('/groups/{group}', [AdminGroupController::class, 'update'])->name('group.update');
 Route::delete('groups/{id}', [AdminGroupController::class, 'destroy'])->name('group.destroy');
+Route::get('/admin/supervisor', [AdminSupervisorController::class, 'index'])->name('admin.supervisor');
+Route::post('/admin/supervisor/add', [AdminSupervisorController::class, 'addSupervisor'])->name('admin.supervisor.add');
+Route::get('/admin/supervisors/{id}/edit', [AdminSupervisorController::class, 'edit'])->name('admin.supervisor.edit');
+Route::put('/admin/supervisors/{id}', [AdminSupervisorController::class, 'update'])->name('admin.supervisor.update');
+Route::delete('/admin/supervisor/{id}', [AdminSupervisorController::class, 'delete'])->name('admin.supervisor.delete');
+Route::get('/supervisor/search', [AdminSupervisorController::class, 'search'])->name('admin.supervisor.search');
+
+
 
 //supervisor
 Route::get('/supervisor-dashboard', [SupervisorChatHistory::class, 'render'])->name('supervisor.dashboard');

@@ -13,199 +13,237 @@
 @endsection
 
 @section('content')
-    <div class="container mt-4">
-        <div class="card shadow bg-white border-white">
-            <div class="card-header bg-white">
-                <h5 class="text-success mb-0">Supervisors</h5>
+<body>
+<div class="container mt-4">
+@if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="card-body bg-white">
-                <div class="row mb-3">
-                    <div class="col-md-4 search-section">
-                        <input type="text" id="employee-id" class="form-control" placeholder="Employee ID">
-                    </div>
-                    <div class="col-md-4 search-section">
-                        <select class="form-select">
-                            <option selected>Group</option>
-                            <option value="1">G001</option> 
-                            <option value="2">G002</option> 
-                            <option value="3">G003</option> 
-                            <option value="3">G004</option> 
-                            <option value="3">G005</option> 
-                            <option value="3">G006</option> 
-                            <option value="3">G007</option> 
-                            <option value="3">G008</option> 
-                            <option value="3">G009</option> 
-                            <option value="3">G0010</option> 
-                            <option value="3">G0011</option> 
-                            <option value="3">G0012</option> 
-                            <option value="3">G0013</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-success w-100">Search</button>
-                    </div>
-                </div>
-                <!-- Table -->
-                <table
-                    id="table"
-                    class="table table-bordered"
-                    data-toggle="table"
-                    data-search="false"
-                    data-pagination="true"
-                    data-page-size="2"
-                    data-sortable="false"
-                >
-                    <thead class="table-success">
-                        <tr>
-                            <th data-field="name" data-sortable="true">Name</th>
-                            <th data-field="emp_id" data-sortable="true">Employee ID</th>
-                            <th data-field="group" data-sortable="true">Group</th>
-                            <th data-field="email" data-sortable="true">Email</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-group="Colombo" class="group">
-                            <td>Rasika Sampath</td>
-                            <td>23234</td>
-                            <td>Colombo</td>
-                            <td>rasika@gmail.com</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Kurunegala" class="group">
-                            <td>Roshel Perise</td>
-                            <td>23453</td>
-                            <td>Kurunegala</td>
-                            <td>rosheperis@gmail.com</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Colombo" class="group">
-                            <td>Anne Silva</td>
-                            <td>34567</td>
-                            <td>Colombo</td>
-                            <td>annes12@gmail.com</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Gampha" class="group">
-                            <td>Jerry Wilson</td>
-                            <td>34568</td>
-                            <td>Gampha</td>
-                            <td>jerrywilson@gmail.com</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                        <tr data-group="Colombo" class="group">
-                            <td>Madawa Silva</td>
-                            <td>23589</td>
-                            <td>Colombo</td>
-                            <td>madawa@gmail.com</td>
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateSupervisortModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a href="#" title="Delete"><i class="fas fa-trash text-danger"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        @endif
+        
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
+        
+    <div class="card shadow bg-white border-white">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="text-success mb-0">Supervisors</h5>
+        </div>
+        <div class="card-body bg-white">
+    <!-- Search Form -->
+    <form method="GET" action="{{ route('admin.supervisor.search') }}">
+    <div class="row mb-3">
+        <!-- Search by emp_id -->
+        <div class="col-md-4">
+            <input type="text" name="emp_id" class="form-control" placeholder="Employee ID"
+                   value="{{ request('emp_id') }}">
+        </div>
+        
+        <!-- Filter by Group Code -->
+        <div class="col-md-4">
+            <select name="group_code" class="form-select">
+                <option value="">Select Group</option>
+                @foreach ($groups as $group)
+                    <option value="{{ $group->group_code }}" 
+                        {{ request('group_code') == $group->group_code ? 'selected' : '' }}>
+                        {{ $group->group_name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-success w-100">Search</button>
         </div>
     </div>
+</form>
+           
+            <!-- Table -->
+            <table id="table" class="table table-bordered" data-toggle="table" data-search="false" data-pagination="true" data-page-size="2" data-sortable="false">
+    <thead class="table-success">
+        <tr>
+            <th>Name</th>
+            <th>Employee ID</th>
+            <th>Group Code</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($supervisors as $supervisor)
+            <tr>
+                <td>{{ $supervisor->user->name ?? 'N/A' }}</td>
+                <td>{{ $supervisor->user->emp_id ?? 'N/A' }}</td>
+                <td>{{ $supervisor->group->group_code ?? 'N/A' }}</td>
+                <td>{{ $supervisor->user->email ?? 'N/A' }}</td>
+                <td>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateSupervisorModal" onclick="fetchSupervisorData({{ $supervisor->id }})">
+                <i class="fas fa-edit"></i>
+            </button>
 
-   <!-- Update Supervisor Modal -->
-<div class="modal" id="updateSupervisortModal" tabindex="-1" aria-labelledby="updateSupervisortModalLabel" aria-hidden="true">
+
+        <form id="deleteForm_{{ $supervisor->id }}" action="{{ route('admin.supervisor.delete', $supervisor->id) }}" method="POST" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button type="button" class="btn btn-link text-danger" onclick="confirmDelete({{ $supervisor->id }})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>
+              </td>
+               </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">No Supervisors Found</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <div class="pagination">
+    {{ $supervisors->links() }}
+</div>
+                </div>
+            </div>
+
+   
+   
+   <!-- Supervisor Update Modal -->
+   <div class="modal fade" id="updateSupervisorModal" tabindex="-1" aria-labelledby="updateSupervisorLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
-                <h5 class="modal-title" id="updateSupervisorModalLabel">Update Supervisor</h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form wire:submit.prevent="#">
+        <form id="updateSupervisorForm" method="POST" action="{{ route('admin.supervisor.update', $supervisor->id) }}">
+                @csrf
+                @method('PUT')
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateSupervisorLabel">Update Supervisor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Display Employee ID (read-only) -->
                     <div class="mb-3">
-                        <label for="employeeId" class="form-label">Employee ID</label>
-                        <input type="text" id="employeeId" class="form-control" wire:model="employeeId">
+                        <label for="updateEmpId" class="form-label">Employee ID</label>
+                        <input type="text" id="updateEmpId" name="emp_id" class="form-control"readonly>
                     </div>
+
+                    <!-- Name -->
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" class="form-control" wire:model="name">
+                        <label for="updateName" class="form-label">Name</label>
+                        <input type="text" id="updateName" name="name" class="form-control" required>
                     </div>
+
+                    <!-- Email -->
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" class="form-control" wire:model="email">
+                        <label for="updateEmail" class="form-label">Email</label>
+                        <input type="email" id="updateEmail" name="email" class="form-control" required>
                     </div>
+                    
+                    <!-- Group -->
                     <div class="mb-3">
-                        <label for="callCenter" class="form-label">Group</label>
-                        <select id="callCenter" class="form-select" wire:model="callCenter">
+                        <label for="updateGroupCode" class="form-label">Group</label>
+                        <select id="updateGroupCode" class="form-select" name="group_code" required>
                             <option value="">Select</option>
-                            <option value="1">Group 1</option>
-                            <option value="2">Group 2</option>
-                            <option value="3">Group 3</option>
-                            <option value="4">Group 4</option>
-                            <option value="5">Group 5</option>
-                            <option value="6">Group 6</option>
-                            <option value="7">Group 7</option>
-                            <option value="8">Group 8</option>
-                            <option value="9">Group 9</option>
-                            <option value="10">Group 10</option>
-                            <option value="11">Group 11</option>
-                            <option value="12">Group 12</option>
-                            <option value="19">Group 13</option>
+                            @foreach($groups as $group)
+                                <option value="{{ $group->group_code }}">{{ $group->group_name }}</option>
+                            @endforeach
                         </select>
                     </div>
+
+                    <!-- Password -->
                     <div class="mb-3">
-                        <label for="passwordSupervisorUpdate" class="form-label">Password</label>
-                        <div class="input-group">
-                            <input type="password" id="passwordsSupervisorUpdate" class="form-control" wire:model="passwordSupervisorUpdate" placeholder="Enter your password" aria-describedby="togglePasswordSupervisorUpdate">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordsSupervisorUpdate" onclick="togglePasswordVisibility()">
-                                <i class="fa fa-eye" id="passwordIconsSupervisorUpdate"></i>
-                            </button>
-                        </div>
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control" name="password">
                     </div>
+
+                    <!-- Confirm Password -->
                     <div class="mb-3">
-                        <label for="confirmPasswordSupervisorUpdate" class="form-label">Confirm Password</label>
-                        <div class="input-group">
-                            <input type="password" id="confirmPasswordsSupervisorUpdate" class="form-control" wire:model="confirmPasswordSupervisorUpdate" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordSupervisorUpdate">
-                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordsSupervisorUpdate" onclick="toggleConfirmPasswordVisibility()">
-                                <i class="fa fa-eye" id="confirmPasswordIconsSupervisorUpdate"></i>
-                            </button>
-                        </div>
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirm_password" class="form-control" name="password_confirmation">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Update</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+
+    
 <script>
+    // Function to fetch supervisor data for editing
+    function fetchSupervisorData(supervisorId) {
+        fetch(`/admin/supervisors/${supervisorId}/edit`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Populate modal fields with supervisor data
+                document.getElementById('updateEmpId').value = data.emp_id;
+                document.getElementById('updateName').value = data.name;
+                document.getElementById('updateEmail').value = data.email;
+                document.getElementById('updateGroupCode').value = data.group_code;
+
+                // Set the form's action attribute dynamically
+                document.getElementById('updateSupervisorForm').action = `/admin/supervisors/${supervisorId}`;
+            })
+            .catch(error => {
+                console.error('Error fetching supervisor data:', error);
+                alert('Failed to load supervisor data.');
+            });
+    }
+
+    // Function to reset the form fields and redirect to the first pagination row
+    window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Reset fields if filters are applied
+        if (urlParams.has('emp_id') || urlParams.has('group_code')) {
+            document.querySelector('input[name="emp_id"]').value = urlParams.get('emp_id') || '';
+            document.querySelector('select[name="group_code"]').value = urlParams.get('group_code') || '';
+        } else {
+            // Reset the input fields if no filters are applied
+            document.querySelector('input[name="emp_id"]').value = '';
+            document.querySelector('select[name="group_code"]').value = '';
+        }
+
+        // Find the first pagination link and click it to reload the first page
+        const paginationLinks = document.querySelectorAll('.pagination a');
+        if (paginationLinks.length > 0) {
+            // Trigger click on the first pagination link (to show the first page)
+            paginationLinks[0].click();
+        }
+    };
+
+    // Function to clear the filters (optional - if you have a reset button)
+    function clearFilters() {
+        document.querySelector('input[name="emp_id"]').value = '';
+        document.querySelector('select[name="group_code"]').value = '';
+    }
+
+    // Function to confirm delete action
+    function confirmDelete(id) {
+        if (confirm('Are you sure you want to delete this supervisor?')) {
+            document.getElementById('deleteForm_' + id).submit();
+        }
+    }
+</script>
+
+
+   <script>
     function togglePasswordVisibility() {
         const passwordField = document.getElementById('passwordsSupervisorUpdate');
         const passwordIcon = document.getElementById('passwordIconsSupervisorUpdate');
@@ -220,7 +258,7 @@
             passwordIcon.classList.add('fa-eye');
         }
     }
-
+       
     function toggleConfirmPasswordVisibility() {
         const confirmPasswordField = document.getElementById('confirmPasswordsSupervisorUpdate');
         const confirmPasswordIcon = document.getElementById('confirmPasswordIconsSupervisorUpdate');
@@ -238,4 +276,8 @@
 </script>
 
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
 @endsection
