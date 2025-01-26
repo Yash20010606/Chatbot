@@ -13,9 +13,9 @@ class AdminDashboard extends Component
     public $skills;
     public $groups;
     public $agentCount;
-    public $emp_id, $name, $email, $password, $confirmPassword, $callCenter;
-
-
+    public $supervisorCount;
+    public $groupCount;
+    public $emp_id, $name, $email, $password, $confirmPassword, $group;
 
     public function mount()
     {
@@ -29,21 +29,27 @@ class AdminDashboard extends Component
             ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
             ->count();
 
+        // Fetch the supervisor count
+        $this->supervisorCount = Supervisor::count();
+
+        // Fetch the group count
+        $this->groupCount = Group::count();
+
         // Handle the redirection if no groups are available
         if ($this->groups->isEmpty()) {
             session()->flash('error', 'No groups available.');
             redirect()->route('admin.group');
         }
     }
+
     public function loadGroup()
     {
         $this->groups = Group::all(); // Load groups from the database
     }
-
-   
 
     public function render()
     {
         return view('livewire.admin.admin-dashboard');
     }
 }
+

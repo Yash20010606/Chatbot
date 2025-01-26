@@ -5,7 +5,9 @@
         <img src="{{ asset('assets/Logo.png') }}" alt="SLT Logo" height="40">
     </div>
     <div class="d-flex align-items-center">
-        <a href="#" class="group-code text-decoration-none me-3">GROUP: COLOMBO-G001</a>
+        <a href="#" class="group-code text-decoration-none me-3">
+            GROUP: {{ session('supervisor_group', 'No Group Assigned') }}
+        </a>
         <form action="{{ route('logout') }}" method="POST" class="d-inline">
             @csrf
             <button type="submit" class="btn btn-danger me-3">Logout</button>

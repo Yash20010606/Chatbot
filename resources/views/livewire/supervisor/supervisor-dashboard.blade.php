@@ -97,17 +97,8 @@
 
                     <!-- Group Section -->
                     <div class="mb-3">
-                        <label for="callCenter" class="form-label">Group</label>
-                        <select id="callCenter" class="form-select" name="group">
-                            @if($groups->isEmpty())
-                                <option value="">No groups available</option>
-                            @else
-                                <option value="">Select</option>
-                                @foreach($groups as $group)
-                                    <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
-                                @endforeach
-                            @endif
-                        </select>
+                        <label for="group" class="form-label">Group</label>
+                        <input type="text" id="group" class="form-control" name="group" value="{{ session('supervisor_group') }}" readonly>
                     </div>
 
                     <!-- Skills Section -->
@@ -167,6 +158,7 @@
         </div>
     </div>
 </div>
+
           
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -200,7 +192,7 @@ function resetForm() {
     document.getElementById("confirmPassword").value = "";
 
     // Reset the group dropdown to the default option
-    document.getElementById("callCenter").selectedIndex = 0;
+    document.getElementById("group").selectedIndex = 0;
 
     // Uncheck all skills checkboxes
     const skillCheckboxes = document.querySelectorAll("input[name='skills[]']");

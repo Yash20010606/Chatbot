@@ -73,67 +73,52 @@ class SupervisorAgentController extends Controller
         }
 
         // Return a success response or redirect
-        return redirect()->route('supervisor.agents.index')->with('success', 'Agent added successfully');
+        return redirect()->route('supervisor.agent')->with('success', 'Agent added successfully');
     }
-
-    // Display all agents
-    public function index()
-    {
-        $agents = User::where('role', 'agent')
-            ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
-            ->select('users.name', 'users.emp_id', 'users.email', 'agent.group_code as group')
-            ->get();
-
-        $groups = Group::all();
-        $skills = Skill::all();
-
-        return view('livewire.supervisor.supervisor-agent-manager', compact('agents', 'groups', 'skills'));
-    }
-
 
     public function edit($emp_id)
-    {
-        $agent = User::where('emp_id', $emp_id)->firstOrFail();
-        $group = Agent::where('emp_id', $emp_id)->value('group_code');
-        $skills = AgentSkill::where('emp_id', $emp_id)->pluck('skill_id')->toArray();
+{
+    $agent = User::where('emp_id', $emp_id)->firstOrFail();
+    $group = Agent::where('emp_id', $emp_id)->value('group_code');
+    $skills = AgentSkill::where('emp_id', $emp_id)->pluck('skill_id')->toArray();
 
-        return response()->json([
-            'agent' => $agent,
-            'group' => $group,
-            'skills' => $skills,
+    return view('your-view', [
+        'agent' => $agent,
+        'group' => $group,
+        'skills' => $skills,
+    ]);
+}
+
+
+public function update(Request $request, $emp_id)
+{
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email',
+        'skills' => 'required|array',
+    ]);
+
+    $user = User::where('emp_id', $emp_id)->firstOrFail();
+    $user->update([
+        'name' => $request->name,
+        'email' => $request->email,
+    ]);
+
+    // No need to update the group_code, just leave it as is
+    // Ensure group_code stays the same by not updating it here
+
+    // Update skills
+    AgentSkill::where('emp_id', $emp_id)->delete();
+    foreach ($request->skills as $skillId) {
+        AgentSkill::create([
+            'emp_id' => $emp_id,
+            'skill_id' => $skillId,
         ]);
     }
 
-    public function update(Request $request, $emp_id)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'group' => 'required|string',
-            'skills' => 'required|array',
-        ]);
+    return redirect()->route('supervisor.agent')->with('success', 'Agent updated successfully.');
+}
 
-        $user = User::where('emp_id', $emp_id)->firstOrFail();
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
-
-        Agent::updateOrCreate(
-            ['emp_id' => $emp_id],
-            ['group_code' => $request->group]
-        );
-
-        AgentSkill::where('emp_id', $emp_id)->delete();
-        foreach ($request->skills as $skillId) {
-            AgentSkill::create([
-                'emp_id' => $emp_id,
-                'skill_id' => $skillId,
-            ]);
-        }
-
-        return redirect()->route('supervisor.agents.index')->with('success', 'Agent updated successfully.');
-    }
 
     // Delete an agent
     public function destroy($emp_id)
@@ -142,7 +127,7 @@ class SupervisorAgentController extends Controller
         Agent::where('emp_id', $emp_id)->delete();
         AgentSkill::where('emp_id', $emp_id)->delete();
 
-        return redirect()->route('supervisor.agents.index')->with('success', 'Agent deleted successfully.');
+        return redirect()->route('supervisor.agent')->with('success', 'Agent deleted successfully.');
     }
 
 }

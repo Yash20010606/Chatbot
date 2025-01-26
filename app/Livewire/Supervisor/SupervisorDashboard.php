@@ -12,6 +12,7 @@ class SupervisorDashboard extends Component
     public $skills;
     public $groups;
     public $agentCount;
+    public $supervisorGroup; // Add this property
 
     public function mount()
     {
@@ -19,20 +20,24 @@ class SupervisorDashboard extends Component
         $this->skills = Skill::all();
         $this->groups = Group::all();
 
-        // Fetch the agent count
-        $this->agentCount = User::where('role', 'agent')
-            ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
-            ->count();
+        // Access the supervisor group from the session
+        $this->supervisorGroup = session('supervisor_group');
 
-        // Handle the redirection if no groups are available
-        if ($this->groups->isEmpty()) {
-            session()->flash('error', 'No groups available.');
-            redirect()->route('admin.group');
+        // Fetch the agent count for the supervisor's group
+        if ($this->supervisorGroup) {
+            $this->agentCount = User::where('role', 'agent')
+                ->join('agent', 'users.emp_id', '=', 'agent.emp_id') // Assuming agent table is named 'agents'
+                ->where('agent.group_code', $this->supervisorGroup) // Filter by supervisor's group code
+                ->count();
+        } else {
+            $this->agentCount = 0; // If no supervisor group, set agent count to 0
         }
     }
 
     public function render()
     {
-        return view('livewire.supervisor.supervisor-dashboard');
+        return view('livewire.supervisor.supervisor-dashboard', [
+            'supervisorGroup' => $this->supervisorGroup, // Pass it to the view explicitly (optional)
+        ]);
     }
 }

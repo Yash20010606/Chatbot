@@ -1,6 +1,5 @@
 <body>
-    <div class="container py-3">
-      
+    <div class="container py-3">  
         <div class="row gy-1 justify-content-center">
               <!-- Supervisor Section -->
             <div class="col-md-3">
@@ -10,7 +9,7 @@
                             <i class="fa fa-comments fa-2x me-2"></i>
                         <h4 class="card-title mb-0">Supervisor</h4>
                     </div>
-                    <div class="circle mx-auto mb-3">10</div>
+                    <div class="circle mx-auto mb-3">{{ $supervisorCount }}</div>
                     <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addSupervisortModal">
                         <i class="fa fa-plus-circle me-2"></i> Add
                     </button>
@@ -59,7 +58,7 @@
                             <i class="fa fa-comments fa-2x me-2"></i>
                                 <h4 class="card-title mb-0">Group</h4>
                             </div>
-                            <div class="circle mx-auto mb-3">13</div>
+                            <div class="circle mx-auto mb-3">{{ $groupCount }}</div>
                             <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addGroupModal">
                                 <i class="fa fa-plus-circle me-2"></i> Add
                             </button>
@@ -78,11 +77,8 @@
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addAgentForm" action="{{ route('admin.agents.store') }}" method="POST">
+                <form id="addAgentForm" action="{{ route('agents.store') }}" method="POST">
                     @csrf
-                    <!-- Error Message -->
-                    <div id="error-message" class="text-danger" style="display: none;"></div>
-
                     <div class="mb-3">
                         <label for="employeeId" class="form-label">Employee ID</label>
                         <input type="text" id="employeeId" class="form-control" name="employeeId">
@@ -98,8 +94,8 @@
 
                     <!-- Group Section -->
                     <div class="mb-3">
-                        <label for="callCenter" class="form-label">Group</label>
-                        <select id="callCenter" class="form-select" name="group">
+                        <label for="group" class="form-label">Group</label>
+                        <select id="group" class="form-select" name="group">
                             @if($groups->isEmpty())
                                 <option value="">No groups available</option>
                             @else
@@ -139,26 +135,25 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="passwordAgent" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" aria-describedby="togglePassword">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword" onclick="togglePasswordVisibility()">
-                                <i class="fa fa-eye" id="passwordIcon"></i>
+                            <input type="password" id="passwordAgent" class="form-control" name="password" placeholder="Enter your password" aria-describedby="togglePasswordAgent">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordAgent" onclick="togglePasswordVisibility('passwordAgent', 'passwordIconAgent')">
+                                <i class="fa fa-eye" id="passwordIconAgent"></i>
                             </button>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <label for="confirmPasswordAgent" class="form-label">Confirm Password</label>
                         <div class="input-group">
-                            <input type="password" id="confirmPassword" class="form-control" name="password_confirmation" placeholder="Confirm your password" aria-describedby="toggleConfirmPassword">
-                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
-                                <i class="fa fa-eye" id="confirmPasswordIcon"></i>
+                            <input type="password" id="confirmPasswordAgent" class="form-control" name="password_confirmation" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordAgent">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordAgent" onclick="togglePasswordVisibility('confirmPasswordAgent', 'confirmPasswordIconAgent')">
+                                <i class="fa fa-eye" id="confirmPasswordIconAgent"></i>
                             </button>
                         </div>
                     </div>
-
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm('addAgentModal')">Clear</button>
                         <button type="submit" class="btn btn-success">Add</button>
                     </div>
                 </form>
@@ -166,8 +161,9 @@
         </div>
     </div>
 </div>
+
         <!-- Add Supervisor Modal -->
-        <div class="modal" id="addSupervisortModal" tabindex="-1" aria-labelledby="addSupervisortModalLabel" aria-hidden="true">
+        <div class="modal" id="addSupervisortModal" tabindex="-1" aria-labelledby="addSupervisortModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
 
                 <div class="modal-content">
@@ -177,15 +173,9 @@
                     </div>
 
             <div class="modal-body">
-            @if (session()->has('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
                 <!-- Change wire:submit.prevent to a regular form submission -->
                 <form method="POST" action="{{ route('admin.supervisor.add') }}">
-                    @csrf <!-- Add CSRF token for security -->
-                    
+                    @csrf
                     <div class="mb-3">
                         <label for="emp_id" class="form-label">Employee ID</label>
                         <input type="text" id="emp_id" name="emp_id" class="form-control" value="{{ old('emp_id') }}" required>
@@ -205,42 +195,39 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="callCenter" class="form-label">Group</label>
-                        <select id="callCenter" name="callCenter" class="form-select" required>
+                        <label for="group" class="form-label">Group</label>
+                        <select id="group" name="group" class="form-select" required>
                             <option value="">Select</option>
                             @foreach ($groups as $group)
-                                <option value="{{ $group->group_code }}" {{ old('callCenter') == $group->group_code ? 'selected' : '' }}>
-                                    {{ $group->group_name }}
+                                <option value="{{ $group->group_code }}" {{ old('group') == $group->group_code ? 'selected' : '' }}>
+                                    {{ $group->group_code }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('callCenter') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('group') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="passwordSupervisor" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword" onclick="togglePasswordVisibility()">
-                                <i class="fa fa-eye" id="passwordIcon"></i>
+                            <input type="password" id="passwordSupervisor" class="form-control" name="password" placeholder="Enter your password" aria-describedby="togglePasswordSupervisor">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordSupervisor" onclick="togglePasswordVisibility('passwordSupervisor', 'passwordIconSupervisor')">
+                                <i class="fa fa-eye" id="passwordIconSupervisor"></i>
                             </button>
                         </div>
-                        @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-
                     <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <label for="confirmPasswordSupervisor" class="form-label">Confirm Password</label>
                         <div class="input-group">
-                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
-                                <i class="fa fa-eye" id="confirmPasswordIcon"></i>
+                            <input type="password" id="confirmPasswordSupervisor" class="form-control" name="password_confirmation" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordSupervisor">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordSupervisor" onclick="togglePasswordVisibility('confirmPasswordSupervisor', 'confirmPasswordIconSupervisor')">
+                                <i class="fa fa-eye" id="confirmPasswordIconSupervisor"></i>
                             </button>
                         </div>
-                        @error('confirmPassword') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm('addSupervisortModal')">Clear</button>
                         <button type="submit" class="btn btn-success">Add</button>
                     </div>
                 </form>
@@ -249,9 +236,6 @@
     </div>
 </div>
 
-
-
-    
         <!-- Add Reporter Modal -->
         <div class="modal" id="addReporterModal" tabindex="-1" aria-labelledby="addReporterModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
@@ -333,25 +317,26 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="passwordReporter" class="form-label">Password</label>
                                 <div class="input-group">
-                                    <input type="password" id="passwordr" class="form-control" wire:model="password" placeholder="Enter your password" aria-describedby="togglePassword">
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordr" onclick="togglePasswordVisibilityr()">
-                                        <i class="fa fa-eye" id="passwordIconr"></i>
+                                    <input type="password" id="passwordReporter" class="form-control" name="password" placeholder="Enter your password" aria-describedby="togglePasswordReporter">
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordReporter" onclick="togglePasswordVisibility('passwordReporter', 'passwordIconReporter')">
+                                        <i class="fa fa-eye" id="passwordIconReporter"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <label for="confirmPasswordReporter" class="form-label">Confirm Password</label>
                                 <div class="input-group">
-                                    <input type="password" id="confirmPasswordr" class="form-control" wire:model="confirmPassword" placeholder="Confirm your password" aria-describedby="toggleConfirmPassword">
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordr" onclick="toggleConfirmPasswordVisibilityr()">
-                                        <i class="fa fa-eye" id="confirmPasswordIconr"></i>
+                                    <input type="password" id="confirmPasswordReporter" class="form-control" name="password_confirmation" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordReporter">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordReporter" onclick="togglePasswordVisibility('confirmPasswordReporter', 'confirmPasswordIconReporter')">
+                                        <i class="fa fa-eye" id="confirmPasswordIconReporter"></i>
                                     </button>
                                 </div>
                             </div>
+
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetForm('addReporterModal')">Clear</button>
                                 <button type="submit" class="btn btn-success">Add</button>
                             </div>
                         </form>
@@ -361,7 +346,7 @@
         </div>
 
        <!-- Add Group Modal -->
-       <div class="modal" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
+       <div class="modal" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
@@ -392,7 +377,7 @@
                             </div>
         
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetForm('addGroupModal')">Clear</button>
                                 <button type="submit" class="btn btn-success">Add</button>
                             </div>
                         </form>
@@ -423,119 +408,50 @@ function openAddAgentForm() {
 }
 
 
-function resetForm() {
+function resetForm(modalId) {
+    const modal = document.getElementById(modalId);
+
     // Reset text input fields
-    document.getElementById("employeeId").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("password").value = "";
-    document.getElementById("confirmPassword").value = "";
+    const textInputs = modal.querySelectorAll("input[type='text'], input[type='email'], input[type='password']");
+    textInputs.forEach(input => {
+        input.value = "";
+    });
 
-    // Reset the group dropdown to the default option
-    document.getElementById("callCenter").selectedIndex = 0;
+    // Reset dropdowns
+    const dropdowns = modal.querySelectorAll("select");
+    dropdowns.forEach(dropdown => {
+        dropdown.selectedIndex = 0;
+    });
 
-    // Uncheck all skills checkboxes
-    const skillCheckboxes = document.querySelectorAll("input[name='skills[]']");
-    skillCheckboxes.forEach(checkbox => {
+    // Uncheck all checkboxes
+    const checkboxes = modal.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach(checkbox => {
         checkbox.checked = false;
     });
 
-    // Reset error message display
-    document.getElementById("error-message").style.display = 'none';
-    document.getElementById("error-message").textContent = '';
+    // Reset error messages if applicable
+    const errorMessage = modal.querySelector("#error-message");
+    if (errorMessage) {
+        errorMessage.style.display = 'none';
+        errorMessage.textContent = '';
+    }
 }
 
+        function togglePasswordVisibility(passwordFieldId, passwordIconId) {
+        const passwordField = document.getElementById(passwordFieldId);
+        const passwordIcon = document.getElementById(passwordIconId);
 
-        function togglePasswordVisibility() {
-            const passwordField = document.getElementById('password');
-            const passwordIcon = document.getElementById('passwordIcon');
-        
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                passwordIcon.classList.remove('fa-eye');
-                passwordIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                passwordIcon.classList.remove('fa-eye-slash');
-                passwordIcon.classList.add('fa-eye');
-            }
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            passwordIcon.classList.remove('fa-eye');
+            passwordIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            passwordIcon.classList.remove('fa-eye-slash');
+            passwordIcon.classList.add('fa-eye');
         }
-        
-        function toggleConfirmPasswordVisibility() {
-            const confirmPasswordField = document.getElementById('confirmPassword');
-            const confirmPasswordIcon = document.getElementById('confirmPasswordIcon');
-        
-            if (confirmPasswordField.type === 'password') {
-                confirmPasswordField.type = 'text';
-                confirmPasswordIcon.classList.remove('fa-eye');
-                confirmPasswordIcon.classList.add('fa-eye-slash');
-            } else {
-                confirmPasswordField.type = 'password';
-                confirmPasswordIcon.classList.remove('fa-eye-slash');
-                confirmPasswordIcon.classList.add('fa-eye');
-            }
-        }
+    }
 
-        function togglePasswordVisibilitys() {
-            const passwordField = document.getElementById('passwords');
-            const passwordIcon = document.getElementById('passwordIcons');
-        
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                passwordIcon.classList.remove('fa-eye');
-                passwordIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                passwordIcon.classList.remove('fa-eye-slash');
-                passwordIcon.classList.add('fa-eye');
-            }
-        }
-        
-        function toggleConfirmPasswordVisibilitys() {
-            const confirmPasswordField = document.getElementById('confirmPasswords');
-            const confirmPasswordIcon = document.getElementById('confirmPasswordIcons');
-        
-            if (confirmPasswordField.type === 'password') {
-                confirmPasswordField.type = 'text';
-                confirmPasswordIcon.classList.remove('fa-eye');
-                confirmPasswordIcon.classList.add('fa-eye-slash');
-            } else {
-                confirmPasswordField.type = 'password';
-                confirmPasswordIcon.classList.remove('fa-eye-slash');
-                confirmPasswordIcon.classList.add('fa-eye');
-            }
-        }
-
-        function togglePasswordVisibilityr() {
-            const passwordField = document.getElementById('passwordr');
-            const passwordIcon = document.getElementById('passwordIconr');
-        
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                passwordIcon.classList.remove('fa-eye');
-                passwordIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                passwordIcon.classList.remove('fa-eye-slash');
-                passwordIcon.classList.add('fa-eye');
-            }
-        }
-        
-        function toggleConfirmPasswordVisibilityr() {
-            const confirmPasswordField = document.getElementById('confirmPasswordr');
-            const confirmPasswordIcon = document.getElementById('confirmPasswordIconr');
-        
-            if (confirmPasswordField.type === 'password') {
-                confirmPasswordField.type = 'text';
-                confirmPasswordIcon.classList.remove('fa-eye');
-                confirmPasswordIcon.classList.add('fa-eye-slash');
-            } else {
-                confirmPasswordField.type = 'password';
-                confirmPasswordIcon.classList.remove('fa-eye-slash');
-                confirmPasswordIcon.classList.add('fa-eye');
-            }
-        }
-        
         </script>
 
 </body>

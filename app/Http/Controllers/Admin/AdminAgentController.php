@@ -40,8 +40,6 @@ class AdminAgentController extends Controller
 
     public function store(Request $request)
     {
-         \Log::info($request->all());
-        // Validate the request
         $request->validate([
             'employeeId' => 'required|unique:users,emp_id',
             'name' => 'required|string',
@@ -75,21 +73,7 @@ class AdminAgentController extends Controller
         }
 
         // Return a success response or redirect
-        return redirect()->route('agents.index')->with('success', 'Agent added successfully');
-    }
-
-    // Display all agents
-    public function index()
-    {
-        $agents = User::where('role', 'agent')
-            ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
-            ->select('users.name', 'users.emp_id', 'users.email', 'agent.group_code as group')
-            ->get();
-
-        $groups = Group::all();
-        $skills = Skill::all();
-
-        return view('livewire.admin.admin-agent-manager', compact('agents', 'groups', 'skills'));
+        return redirect()->route('admin.agent')->with('success', 'Agent added successfully');
     }
 
     public function edit($emp_id)
@@ -133,7 +117,7 @@ class AdminAgentController extends Controller
             ]);
         }
 
-        return redirect()->route('agents.index')->with('success', 'Agent updated successfully.');
+        return redirect()->route('admin.agent')->with('success', 'Agent updated successfully.');
     }
 
     // Delete an agent
@@ -143,7 +127,7 @@ class AdminAgentController extends Controller
         Agent::where('emp_id', $emp_id)->delete();
         AgentSkill::where('emp_id', $emp_id)->delete();
 
-        return redirect()->route('agents.index')->with('success', 'Agent deleted successfully.');
+        return redirect()->route('admin.agent')->with('success', 'Agent deleted successfully.');
     }
 
 }

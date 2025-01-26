@@ -15,6 +15,21 @@
 @section('content')
 <body>
     <div class="container mt-3">
+        @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
         <div class="card shadow bg-white">
             <div class="card-header bg-white">
                 <h4 class="text-success mb-0">Skills</h4>
@@ -139,7 +154,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -147,26 +162,85 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const updateForm = document.getElementById('updateSkillForm');
+        const saveButton = updateForm.querySelector('button[type="submit"]');
+        const modalElement = document.getElementById('updateSkillModal');
+        const closeModalButton = modalElement.querySelector('.btn-close');
+        const cancelButton = modalElement.querySelector('.btn-secondary');
 
+        let initialData = {};
+
+        // Function to set initial form data
+        function setInitialData() {
+            initialData = {
+                name: document.getElementById('updateName').value,
+                language: document.getElementById('updatelanguage').value,
+                description: document.getElementById('updateDescription').value,
+            };
+        }
+
+        // Function to check if there are unsaved changes
+        function hasUnsavedChanges() {
+            const currentData = {
+                name: document.getElementById('updateName').value,
+                language: document.getElementById('updatelanguage').value,
+                description: document.getElementById('updateDescription').value,
+            };
+            return JSON.stringify(initialData) !== JSON.stringify(currentData);
+        }
+
+        // Function to handle unsaved changes confirmation
+        function handleUnsavedChanges(event) {
+            if (hasUnsavedChanges()) {
+                const confirmDiscard = confirm('You have unsaved changes. Do you want to discard them?');
+                if (!confirmDiscard) {
+                    event.preventDefault(); // Prevent modal close
+                    event.stopPropagation(); // Stop Bootstrap's closing behavior
+                } else {
+                    setInitialData(); // Reset initial data to avoid repeated prompts
+                }
+            }
+        }
+
+        // Disable "Save Changes" button initially
+        saveButton.disabled = true;
+
+        // Enable "Save Changes" button only if there are changes
+        function checkForChanges() {
+            saveButton.disabled = !hasUnsavedChanges();
+        }
+
+        // Attach event listeners to track input changes
+        updateForm.addEventListener('input', checkForChanges);
+
+        // Attach unsaved changes handler to modal close events
+        modalElement.addEventListener('hide.bs.modal', handleUnsavedChanges);
+
+        // JavaScript to populate the modal with the selected skill data
+        window.openUpdateModal = function (skill) {
+            // Set the form action URL with the skill ID
+            const formAction = '{{ route('skills.update', ':id') }}'.replace(':id', skill.id);
+            document.getElementById('updateSkillForm').action = formAction;
+
+            // Populate the form fields with skill data
+            document.getElementById('updateSkillId').value = skill.id;
+            document.getElementById('updateName').value = skill.name;
+            document.getElementById('updatelanguage').value = skill.language;
+            document.getElementById('updateDescription').value = skill.description;
+
+            // Set the initial data for unsaved changes tracking
+            setInitialData();
+
+            // Show the modal
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        };
+    });
+</script>
 
 <script>
-// JavaScript to populate the modal with the selected skill data
-function openUpdateModal(skill) {
-    // Set the form action URL with the skill ID
-    const formAction = '{{ route('skills.update', ':id') }}'.replace(':id', skill.id);
-    document.getElementById('updateSkillForm').action = formAction;
-
-    // Populate the modal fields
-    document.getElementById('updateSkillId').value = skill.id;
-    document.getElementById('updateName').value = skill.name;
-    document.getElementById('updatelanguage').value = skill.language; // Corrected ID
-    document.getElementById('updateDescription').value = skill.description;
-
-    // Initialize and show the modal
-    const modal = new bootstrap.Modal(document.getElementById('updateSkillModal'));
-    modal.show();
-}
-
 // JavaScript to reset the skill form
 function resetForm() {
     document.getElementById("skillName").value = "";

@@ -7,23 +7,17 @@
             <h5 class="text-success mb-0">Agents</h5>
         </div>
         <div class="card-body bg-white">
-            <div class="row mb-3">
-                <div class="col-md-4 search-section">
-                    <input type="text" id="empID" class="form-control" placeholder="Employee ID">
-                </div>
-                <div class="col-md-4 search-section">
-                    <select class="form-select" id="group-filter">
-                        <option selected value="">Select Group</option>
-                        @foreach($groups as $group)
-                        <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <button id="searchBtn" class="btn btn-success w-100">Search</button>
-                    <button type="button" class="btn btn-secondary w-100 mt-2" onclick="resetForm()">Clear</button>
-                </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <input type="text" id="empID" class="form-control" placeholder="Employee ID">
             </div>
+            <div class="col-md-3">
+                <button id="searchBtn" class="btn btn-success w-100">Search</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-secondary w-100" onclick="resetForm()">Clear</button>
+            </div>
+        </div>
 
             <table
                     id="table"
@@ -56,7 +50,7 @@
                             </button>
                             <form action="{{ route('agents.destroy', $agent->emp_id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
                                 @csrf
-                                <button type="submit" class="btn btn-danger btn-sm">
+                                <button type="submit" class="btn btn-link text-danger">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -96,13 +90,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="group" class="form-label">Group</label>
-                            <select id="group" class="form-select" name="group" required>
-                                <option value="">Select</option>
-                                @foreach($groups as $group)
-                                    <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <input type="text" id="group" class="form-control" name="group" value="{{ session('supervisor_group') }}" readonly>                            </div>
                         <!-- Skills Section -->
                         <div class="mb-3">
                             <label for="skills" class="form-label">Skills</label>
@@ -144,19 +132,17 @@
     // Function to reset form values and redirect
     function resetForm() {
         document.getElementById("empID").value = "";
-        document.getElementById("group-filter").value = "";
 
         // Redirect to the desired route
-        window.location.href = "{{ route('supervisor.agents.index') }}";
+        window.location.href = "{{ route('supervisor.agent') }}";
     }
 
     // Fetch filtered agents
     document.getElementById('searchBtn').addEventListener('click', function () {
         const empID = document.getElementById("empID").value;
-        const group = document.getElementById("group-filter").value;
 
         // Fetch filtered data via AJAX
-        fetch(`{{ route('supervisor.agents.filter') }}?empID=${empID}&group=${group}`)
+        fetch(`{{ route('supervisor.agents.filter') }}?empID=${empID}`)
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.querySelector('#table tbody');
@@ -258,7 +244,7 @@ function editAgent(empId) {
 
             const nameField = document.getElementById('updateName');
             const emailField = document.getElementById('updateEmail');
-            const groupField = document.getElementById('group');
+            const groupField = document.getElementById('group'); // This is where group_code will be set
 
             nameField.value = agent.name;
             nameField.dataset.initialValue = agent.name;
@@ -266,8 +252,8 @@ function editAgent(empId) {
             emailField.value = agent.email;
             emailField.dataset.initialValue = agent.email;
 
-            groupField.value = group || '';
-            groupField.dataset.initialValue = group || '';
+            groupField.value = group || ''; // Set group_code here
+            groupField.dataset.initialValue = group || ''; // Set initial value for group field
 
             skillsCheckboxes.forEach(input => {
                 input.checked = skills.map(skill => parseInt(skill)).includes(parseInt(input.value));

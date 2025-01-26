@@ -14,7 +14,7 @@
 
 @section('content')
 <div class="container mt-3">
-@if(session('success'))
+        @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -83,8 +83,8 @@
                             </button>
                             <form action="{{ route('agents.destroy', $agent->emp_id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
                                 @csrf
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
+                                <button type="submit" class="btn btn-link text-danger">
+                                    <i class="fas fa-trash text-danger"></i>
                                 </button>
                             </form>
                         </td>
@@ -157,8 +157,10 @@
                             @endforeach
                         </div>
 
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
                 </form>
             </div>
         </div>
@@ -173,7 +175,7 @@
         document.getElementById("group-filter").value = "";
 
         // Redirect to the desired route
-        window.location.href = "{{ route('agents.index') }}";
+        window.location.href = "{{ route('admin.agent') }}";
     }
 
     // Fetch filtered agents

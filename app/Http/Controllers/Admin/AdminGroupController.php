@@ -12,10 +12,14 @@ class AdminGroupController extends Controller
     public function store(Request $request){
         $validated = $request->validate([
             'group_name' => 'required|string|max:255',
-            'group_code' => 'required|string|max:4|unique:group',
+            'group_code' => 'required|string|max:8|unique:group',
             'address' => 'required|string|max:255',
-            'contact_number' => 'required|string|max:255',
-        ]);
+            'contact_number' => ['required','numeric','digits:10', 
+    ],
+], [
+    'contact_number.numeric' => 'The contact number must contain only digits.', // Message for non-numeric characters
+    'contact_number.digits' => 'The contact number must be exactly 10 digits.', // Message for incorrect digit length
+]);
     
         Group::create($validated);
         return redirect()->route('admin.group')->with('success', 'Group added successfully!');
@@ -25,10 +29,14 @@ class AdminGroupController extends Controller
     public function update(Request $request, $id){
         $validated = $request->validate([
             'group_name' => 'required|string|max:255',
-            'group_code' => 'required|string|max:4|unique:group,group_code,' . $id,
+            'group_code' => 'required|string|max:8|unique:group,group_code,' . $id,
             'address' => 'required|string|max:255',
-            'contact_number' => 'required|string|max:255',
-        ]);
+            'contact_number' => ['required','numeric','digits:10', 
+        ],
+    ], [
+        'contact_number.numeric' => 'The contact number must contain only digits.', // Message for non-numeric characters
+        'contact_number.digits' => 'The contact number must be exactly 10 digits.', // Message for incorrect digit length
+    ]);
     
         $group = Group::findOrFail($id);
         $group->update($validated);

@@ -14,7 +14,7 @@ class AdminSupervisorManager extends Component
     public $emp_id = '';
     public $name = '';
     public $email = '';
-    public $callCenter = '';
+    public $group = '';
     public $passwordSupervisorUpdate = '';
     public $confirmPasswordSupervisorUpdate = '';
 
@@ -35,7 +35,7 @@ class AdminSupervisorManager extends Component
     $this->emp_id = $supervisor->user->emp_id;
     $this->name = $supervisor->user->name;
     $this->email = $supervisor->user->email;
-    $this->callCenter = $supervisor->group_code;
+    $this->group = $supervisor->group_code;
 }
 
  
@@ -49,8 +49,8 @@ public function render()
                 $query->where('emp_id', 'like', '%' . $this->emp_id . '%');
             });
         })
-        ->when($this->callCenter, function ($query) {
-            $query->where('group_code', 'like', '%' . $this->callCenter . '%');
+        ->when($this->group, function ($query) {
+            $query->where('group_code', 'like', '%' . $this->group . '%');
         })
         ->when($this->search, function ($query) {
             $query->whereHas('user', function ($userQuery) {
@@ -68,7 +68,7 @@ public function render()
     return view('livewire.admin.admin-supervisor-manager', [
         'supervisors' => $supervisors,
         'groups' => $groups,
-        'callCenter' => $this->callCenter,
+        'group' => $this->group,
     ]);
 }
 

@@ -12,79 +12,99 @@
     <!-- Exclude dashboard for this page -->
 @endsection
 
-@section('content')  
-    <div class="card shadow bg-white border-white">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-    <h5 class="text-success mb-0">Groups</h5>
-    <a href="#" class="nav-link text-green py-2"><i class="bi bi-geo-alt"></i> View Groups</a>
-    </div>
-
-            <div class="card-body bg-white">
-                <div class="row mb-3">
-                    <div class="col-md-4 search-section">
-                    <select class="form-select" id="group-filter">
-                        <option selected value="">Select Group</option>
-                        @foreach($groups as $group)
-                        <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
-                        @endforeach
-                    </select>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-success w-100">Search</button>
-                    </div>
-                </div>
-        
-                <!-- Table -->
-                <table
-                    id="table"
-                    class="table table-bordered"
-                    data-toggle="table"
-                    data-search="false"
-                    data-pagination="true"
-                    data-page-size="2"
-                    data-sortable="false"
-                >
-                    <thead class="table-success">
-                        <tr>
-                            <th data-field="name" data-sortable="true">Group Name</th>
-                            <th data-field="emp_id" data-sortable="true">Group Code</th>
-                            <th data-field="group" data-sortable="true">Address</th>
-                            <th data-field="email" data-sortable="true">Contact Number</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($groups as $group)
-                        <tr>
-                            <td>{{ $group->group_name }}</td>
-                            <td>{{ $group->group_code }}</td>
-                            <td>{{ $group->address }}</td>
-                            <td>{{ $group->contact_number }}</td>
-                            <td>
-                                <!-- Edit button -->
-                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateGroupModal" onclick="openUpdateModal({{ json_encode($group) }})">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                
-                                <!-- Delete button -->
-                                <form action="{{ route('group.destroy', $group->id) }}" method="POST" style="display:inline;" id="deleteForm{{ $group->id }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" title="Delete" class="btn btn-link text-danger" onclick="confirmDelete({{ $group->id }})">
-                                        <i class="fas fa-trash"></i>
-                                    </button> 
-                                </form>       
-                            </td>
-                        </tr>   
-                        @endforeach
-                    </tbody>
-                </table>
+@section('content')
+<div class="container mt-3">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
+        
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
+    <div class="card shadow bg-white border-white">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="text-success mb-0">Groups</h5>
+            <a href="#" class="nav-link text-green py-2"><i class="bi bi-geo-alt"></i> View Groups</a>
+        </div>
+            <div class="card-body bg-white">
+            <div class="row mb-3">
+        <div class="col-md-4 search-section">
+            <select class="form-select" id="group-filter">
+                <option selected value="">Select Group</option>
+                @foreach($groups as $group)
+                <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
+                @endforeach
+            </select>
+        </div>
+        <!-- Submit Button -->
+        <div class="col-md-3">
+            <button id="searchBtn" class="btn btn-success w-100">Search</button>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-secondary w-100" onclick="resetForm()">Clear</button>
         </div>
     </div>
 
+    <!-- Table -->
+    <table
+        id="table"
+        class="table table-bordered"
+        data-toggle="table"
+        data-search="false"
+        data-pagination="true"
+        data-page-size="3"
+        data-sortable="false"
+    >
+        <thead class="table-success">
+            <tr>
+                <th data-field="name" data-sortable="true">Group Name</th>
+                <th data-field="emp_id" data-sortable="true">Group Code</th>
+                <th data-field="group" data-sortable="true">Address</th>
+                <th data-field="email" data-sortable="true">Contact Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            @foreach ($groups as $group)
+            <tr>
+                <td>{{ $group->group_name }}</td>
+                <td>{{ $group->group_code }}</td>
+                <td>{{ $group->address }}</td>
+                <td>{{ $group->contact_number }}</td>
+                <td>
+                    <!-- Edit button -->
+                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateGroupModal" onclick="openUpdateModal({{ json_encode($group) }})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    
+                    <!-- Delete button -->
+                    <form action="{{ route('group.destroy', $group->id) }}" method="POST" style="display:inline;" id="deleteForm{{ $group->id }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" title="Delete" class="btn btn-link text-danger" onclick="confirmDelete({{ $group->id }})">
+                            <i class="fas fa-trash"></i>
+                        </button> 
+                    </form>       
+                </td>
+            </tr>   
+            @endforeach
+        </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
     <!-- Update group Modal -->
-    <div class="modal" id="updateGroupModal" tabindex="-1" aria-labelledby="updateGroupModalLabel" aria-hidden="true">
+    <div class="modal" id="updateGroupModal" tabindex="-1" aria-labelledby="updateGroupModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
@@ -118,16 +138,96 @@
     
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-success">Update</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
+
+    function resetForm() {
+    document.getElementById("group-filter").value = "";
+
+    // Redirect to the desired route
+    window.location.href = "{{ route('admin.group') }}";
+    }
+
+    document.getElementById("searchBtn").addEventListener("click", function () {
+    const filterValue = document.getElementById("group-filter").value;
+    const rows = document.querySelectorAll("#table-body tr");
+    
+    rows.forEach(row => {
+        const groupCode = row.cells[1].textContent.trim();
+        if (filterValue === "" || groupCode === filterValue) {
+            row.style.display = ""; // Show row
+        } else {
+            row.style.display = "none"; // Hide row
+        }
+    });
+});
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const updateForm = document.getElementById('updateGroupForm');
+        const saveButton = updateForm.querySelector('button[type="submit"]');
+        const modalElement = document.getElementById('updateGroupModal');
+        const cancelButton = modalElement.querySelector('.btn-secondary');
+        const closeModalButton = modalElement.querySelector('.btn-close');
+
+        let initialData = {};
+
+        // Function to set initial form data
+        function setInitialData() {
+            initialData = {
+                group_code: document.getElementById('updateGroupCode').value,
+                group_name: document.getElementById('updateName').value,
+                address: document.getElementById('updateAddress').value,
+                contact_number: document.getElementById('updateContactNumber').value,
+            };
+        }
+
+        // Function to check if there are unsaved changes
+        function hasUnsavedChanges() {
+            const currentData = {
+                group_code: document.getElementById('updateGroupCode').value,
+                group_name: document.getElementById('updateName').value,
+                address: document.getElementById('updateAddress').value,
+                contact_number: document.getElementById('updateContactNumber').value,
+            };
+            return JSON.stringify(initialData) !== JSON.stringify(currentData);
+        }
+
+        // Function to handle unsaved changes confirmation
+        function handleUnsavedChanges(event) {
+            if (hasUnsavedChanges()) {
+                const confirmDiscard = confirm('You have unsaved changes. Do you want to discard them?');
+                if (!confirmDiscard) {
+                    event.preventDefault(); // Prevent modal close
+                    event.stopPropagation(); // Stop Bootstrap's closing behavior
+                } else {
+                    setInitialData(); // Reset initial data to avoid repeated prompts
+                }
+            }
+        }
+
+        // Disable "Save Changes" button initially
+        saveButton.disabled = true;
+
+        // Enable "Save Changes" button only if there are changes
+        function checkForChanges() {
+            saveButton.disabled = !hasUnsavedChanges();
+        }
+
+        // Attach event listeners
+        updateForm.addEventListener('input', checkForChanges);
+
+        // Attach unsaved changes handler to modal close events
+        modalElement.addEventListener('hide.bs.modal', handleUnsavedChanges);
+
         // JavaScript to populate the modal with the selected group data
-        function openUpdateModal(group) {
+        window.openUpdateModal = function (group) {
             // Set the form action URL with the group ID
             const formAction = '{{ route('group.update', ':id') }}'.replace(':id', group.id);
             document.getElementById('updateGroupForm').action = formAction;
@@ -139,11 +239,16 @@
             document.getElementById('updateAddress').value = group.address;
             document.getElementById('updateContactNumber').value = group.contact_number;
 
+            // Set the initial data
+            setInitialData();
+
             // Show the modal
             const modal = new bootstrap.Modal(document.getElementById('updateGroupModal'));
             modal.show();
-        }
-    </script>
+        };
+    });
+</script>
+
 
     <script>
         // JavaScript to show a confirmation dialog before deleting a group

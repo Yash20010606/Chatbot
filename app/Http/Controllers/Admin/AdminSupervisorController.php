@@ -12,22 +12,20 @@ class AdminSupervisorController extends Controller
 {
     public function index()
     {    
-        $callCenter = ''; // Provide a default value or fetch it dynamically
+        $group = ''; // Provide a default value or fetch it dynamically
         $supervisors = Supervisor::with(['user', 'group'])->paginate(10);
         $groups = Group::all(); 
-        return view('livewire.admin.admin-supervisor-manager', compact('supervisors', 'callCenter', 'groups'));
+        return view('livewire.admin.admin-supervisor-manager', compact('supervisors', 'group', 'groups'));
     }
    
-
-
     public function addSupervisor(Request $request)
     {
         $validated = $request->validate([
             'emp_id' => 'required|unique:users,emp_id',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|same:confirmPassword',
-            'callCenter' => 'required|exists:group,group_code',
+            'password' => 'required|confirmed|min:8',
+            'group' => 'required|exists:group,group_code|unique:supervisors,group_code', // Ensure group_code is unique in supervisors table
         ]);
 
         $user = User::create([
@@ -40,12 +38,13 @@ class AdminSupervisorController extends Controller
 
         Supervisor::create([
             'emp_id' => $user->emp_id,
-            'group_code' => $validated['callCenter'],
+            'group_code' => $validated['group'],
         ]);
 
         return redirect()->route('admin.supervisor')->with('success', 'Supervisor added successfully.');
 
     }
+
     public function edit($id)
     {
         // Fetch supervisor with related user and group
@@ -70,14 +69,12 @@ public function update(Request $request, $id)
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email,' . $supervisor->user->id,
         'group_code' => 'required|exists:group,group_code',
-        'password' => 'nullable|min:6|confirmed',
     ]);
 
     $user = $supervisor->user;
     $user->update([
         'name' => $validated['name'],
         'email' => $validated['email'],
-        'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
     ]);
 
     $supervisor->update([
@@ -103,34 +100,33 @@ public function delete($id)
     $supervisor->delete();
 
 
-    return redirect()->route('admin.supervisor')->with('success', 'Supervisor and associated user deleted successfully!');
+    return redirect()->route('admin.supervisor')->with('success', 'Supervisor deleted successfully!');
 }
+
 public function search(Request $request)
-    {
-        
-        $query = Supervisor::with(['user', 'group']);
+{
+    $query = Supervisor::with(['user', 'group']);
 
-        
-        if ($request->filled('emp_id')) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('emp_id', $request->emp_id);
-            });
-        }
-
-       
-        if ($request->filled('group_code')) {
-            $query->where('group_code', $request->group_code);
-        }
-
-       
-        $supervisors = $query->paginate(10);
-
-        // Fetch all groups to show in the select dropdown
-        $groups = Group::all();
-
-        // Return the view with the filtered results
-        return view('livewire.admin.admin-supervisor-manager', compact('supervisors', 'groups'));
+    if ($request->filled('emp_id')) {
+        $query->whereHas('user', function ($q) use ($request) {
+            $q->where('emp_id', $request->emp_id);
+        });
     }
+
+    if ($request->filled('group_code')) {
+        $query->where('group_code', $request->group_code);
+    }
+
+    // Paginate the results
+    $supervisors = $query->paginate(10);
+
+    // Fetch all groups to show in the select dropdown
+    $groups = Group::all();
+
+    // Return the view with the filtered results
+    return view('livewire.admin.admin-supervisor-manager', compact('supervisors', 'groups'));
+}
+
 }
 
 
