@@ -236,115 +236,84 @@
     </div>
 </div>
 
-        <!-- Add Reporter Modal -->
-        <div class="modal" id="addReporterModal" tabindex="-1" aria-labelledby="addReporterModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
-                        <h5 class="modal-title" id="addReporterModalLabel">Add Reporter</h5>
-                        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form wire:submit.prevent="#">
-                            <div class="mb-3">
-                                <label for="employeeId" class="form-label">Employee ID</label>
-                                <input type="text" id="employeeId" class="form-control" wire:model="employeeId">
-                            </div>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" class="form-control" wire:model="name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" id="email" class="form-control" wire:model="email">
-                            </div>
+<!-- Add Reporter Modal -->
+<div class="modal" id="addReporterModal" tabindex="-1" aria-labelledby="addReporterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
+                <h5 class="modal-title" id="addReporterModalLabel">Add Reporter</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Change wire:submit.prevent to a regular form submission -->
+                <form method="POST" action="{{ route('reporters.store') }}">
+                    @csrf <!-- Add CSRF token for security -->
                     
-                            <!-- Language Group -->
-                            <div class="mb-3">
-                                <label class="form-label">Group</label>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 1" class="form-check-input" wire:model="group1">
-                                    <label for="Group 1" class="form-check-label">Group 1</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 2" class="form-check-input" wire:model="group2">
-                                    <label for="Group 2" class="form-check-label">Group 2</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 3" class="form-check-input" wire:model="group3">
-                                    <label for="Group 3" 1 class="form-check-label">Group 3</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 4" class="form-check-input" wire:model="group4">
-                                    <label for="Group 4" class="form-check-label">Group 4</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 5" class="form-check-input" wire:model="group5">
-                                    <label for="Group 5" class="form-check-label">Group 5</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 6" class="form-check-input" wire:model="group6">
-                                    <label for="Group 6" class="form-check-label">Group 6</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 7" class="form-check-input" wire:model="group7">
-                                    <label for="Group 7" class="form-check-label">Group 7</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 8" class="form-check-input" wire:model="group8">
-                                    <label for="Group 8" class="form-check-label">Group 8</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 9" class="form-check-input" wire:model="group9">
-                                    <label for="Group 9" class="form-check-label">Group 9</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 10" class="form-check-input" wire:model="group10">
-                                    <label for="Group 10" class="form-check-label">Group 10</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 11" class="form-check-input" wire:model="group11">
-                                    <label for="Group 11" class="form-check-label">Group 11</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 12" class="form-check-input" wire:model="group12">
-                                    <label for="Group 12" class="form-check-label">Group 12</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="Group 13" class="form-check-input" wire:model="group13">
-                                    <label for="Group 13" class="form-check-label">Group 13</label>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="passwordReporter" class="form-label">Password</label>
-                                <div class="input-group">
-                                    <input type="password" id="passwordReporter" class="form-control" name="password" placeholder="Enter your password" aria-describedby="togglePasswordReporter">
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordReporter" onclick="togglePasswordVisibility('passwordReporter', 'passwordIconReporter')">
-                                        <i class="fa fa-eye" id="passwordIconReporter"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmPasswordReporter" class="form-label">Confirm Password</label>
-                                <div class="input-group">
-                                    <input type="password" id="confirmPasswordReporter" class="form-control" name="password_confirmation" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordReporter">
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordReporter" onclick="togglePasswordVisibility('confirmPasswordReporter', 'confirmPasswordIconReporter')">
-                                        <i class="fa fa-eye" id="confirmPasswordIconReporter"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" onclick="resetForm('addReporterModal')">Clear</button>
-                                <button type="submit" class="btn btn-success">Add</button>
-                            </div>
-                        </form>
+                    <div class="mb-3">
+                        <label for="emp_id" class="form-label">Employee ID</label>
+                        <input type="text" id="emp_id" name="emp_id" class="form-control" value="{{ old('emp_id') }}" required>
+                        @error('emp_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-                </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <!-- Name should be editable if it's not a fixed value -->
+                        <input type="text" id="name" name="name" class="form-control" value="Reporter User" required>
+                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                        @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="group_code" class="form-label">Group</label>
+                        <div class="form-check">
+                            @foreach($groups as $group)
+                            <input class="form-check-input" type="checkbox" name="group_code[]" value="{{ $group->group_code }}" id="group_{{ $group->group_code }}"
+                            @if(in_array($group->group_code, old('group_code', $groupCodes ?? []))) checked @endif>
+                            <label class="form-check-label" for="group_{{ $group->group_code }}">
+                                {{ $group->group_code }}
+                            </label>
+                            <br>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword" onclick="togglePasswordVisibility()">
+                                <i class="fa fa-eye" id="passwordIcon"></i>
+                            </button>
+                        </div>
+                        @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
+                                <i class="fa fa-eye" id="confirmPasswordIcon"></i>
+                            </button>
+                        </div>
+                        @error('confirmPassword') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </div>
+                </form>
             </div>
         </div>
-
+    </div>
+</div>
        <!-- Add Group Modal -->
        <div class="modal" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">

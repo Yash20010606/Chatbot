@@ -2,6 +2,7 @@
 use App\Http\Controllers\Admin\AdminSupervisorController;
 use App\Http\Controllers\Admin\AdminSkillController;
 use App\Http\Controllers\Admin\AdminAgentController;
+use App\Http\Controllers\Admin\AdminReporterController;
 use App\Http\Controllers\Admin\AdminGroupController;
 use App\Http\Controllers\Supervisor\SupervisorAgentController;
 use App\Http\Controllers\AuthController;
@@ -33,7 +34,7 @@ Route::get('/dashboard', [AdminDashboardExtended::class, 'render'])->name('admin
 Route::get('/chat-history', [AdminChatHistory::class, 'render'])->name('admin.chat-history');
 Route::get('/agent', [AdminAgentManager::class, 'render'])->name('admin.agent');
 Route::get('/supervisors', [AdminSupervisorManager::class, 'render'])->name('admin.supervisor');
-Route::get('/reporters', [AdminReporterManager::class, 'render'])->name('admin.reporter');
+Route::get('/reporter', [AdminReporterManager::class, 'render'])->name('admin.reporter');
 Route::get('/groups', AdminGroupManager::class)->name('admin.group');
 Route::get('/skill-manager', AdminSkillManager::class)->name('admin.skill');
 Route::get('/profile', [AdminProfile::class, 'render'])->name('admin.profile');
@@ -57,6 +58,13 @@ Route::put('/admin/supervisors/{id}', [AdminSupervisorController::class, 'update
 Route::delete('/admin/supervisor/{id}', [AdminSupervisorController::class, 'delete'])->name('admin.supervisor.delete');
 Route::get('/supervisor/search', [AdminSupervisorController::class, 'search'])->name('admin.supervisor.search');
 
+
+Route::get('/reporters', [AdminReporterController::class, 'index'])->name('reporters.index');
+Route::get('/reporters/filter', [AdminReporterController::class, 'filter'])->name('reporters.filter');
+Route::post('/reporters/store', [AdminReporterController::class, 'store'])->name('reporters.store');
+Route::put('/reporters/update/{emp_id}', [AdminReporterController::class, 'update'])->name('reporters.update');
+Route::get('/reporters/{emp_id}/edit', [AdminReporterController::class, 'edit'])->name('reporters.edit');
+Route::post('/reporters/delete/{emp_id}', [AdminReporterController::class, 'destroy'])->name('reporters.destroy');
 
 
 
