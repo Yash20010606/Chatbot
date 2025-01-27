@@ -33,7 +33,6 @@
     <div class="card shadow bg-white border-white">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
             <h5 class="text-success mb-0">Groups</h5>
-            <a href="#" class="nav-link text-green py-2"><i class="bi bi-geo-alt"></i> View Groups</a>
         </div>
             <div class="card-body bg-white">
             <div class="row mb-3">
@@ -118,7 +117,7 @@
                         <input type="hidden" id="updateGroupId" name="id">
                         <div class="mb-3">
                             <label for="updateGroupCode" class="form-label">Group Code</label>
-                            <input type="text" id="updateGroupCode" class="form-control" name="group_code" required>
+                            <input type="text" id="updateGroupCode" class="form-control" name="group_code" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="updateName" class="form-label">Group Name</label>
@@ -146,8 +145,8 @@
         </div>
     </div>
 
-    <script>
 
+    <script>
     function resetForm() {
     document.getElementById("group-filter").value = "";
 
@@ -155,19 +154,88 @@
     window.location.href = "{{ route('admin.group') }}";
     }
 
-    document.getElementById("searchBtn").addEventListener("click", function () {
-    const filterValue = document.getElementById("group-filter").value;
-    const rows = document.querySelectorAll("#table-body tr");
-    
-    rows.forEach(row => {
-        const groupCode = row.cells[1].textContent.trim();
-        if (filterValue === "" || groupCode === filterValue) {
-            row.style.display = ""; // Show row
-        } else {
-            row.style.display = "none"; // Hide row
-        }
-    });
+
+    document.getElementById('searchBtn').addEventListener('click', function () {
+    const groupFilter = document.getElementById('group-filter').value;
+
+    fetch('{{ route('group.search') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ group_code: groupFilter })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); 
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = ''; // Clear the table
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5">No groups found</td></tr>`;
+            } else {
+                // Populate the table with new rows
+                data.forEach(group => {
+                    const row = `
+                        <tr id="group-${group.id}">
+                            <td>${group.group_name || ''}</td>
+                            <td>${group.group_code || ''}</td>
+                            <td>${group.address || ''}</td>
+                            <td>${group.contact_number || ''}</td>
+                            <td>
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateGroupModal"
+                                    onclick="openUpdateModals(${group.id},'${group.group_code || ''}', '${group.group_name || ''}', '${group.address || ''}', '${group.contact_number || ''}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="{{ route('group.destroy', ['id' => $group->id]) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete(event)">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link text-danger">
+                                   <i class="fas fa-trash"></i>
+                                </button>
+                                </form>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
 });
+
+function confirmDelete(event) {
+    // Display a confirmation dialog
+    const isConfirmed = confirm('Are you sure you want to delete this group?');
+
+    // Prevent the form submission if the user cancels
+    if (!isConfirmed) {
+        event.preventDefault();
+        return false;
+    }
+
+    // Allow the form submission if the user confirms
+    return true;
+}
+
+function openUpdateModals(id, groupCode, groupName,  address, contactNumber) {
+    console.log("ID:", id);
+    console.log("Group Code:", groupCode);
+    console.log("Group Name:", groupName);
+    console.log("Address:", address);
+    console.log("Contact Number:", contactNumber);
+
+    // Assign values to modal inputs
+    document.getElementById('updateGroupCode').value = groupCode || '';
+    document.getElementById('updateName').value = groupName || '';
+    document.getElementById('updateAddress').value = address || '';
+    document.getElementById('updateContactNumber').value = contactNumber || '';
+
+    // Set the form action dynamically
+    const formAction = '{{ route('group.update', ':id') }}'.replace(':id', id);
+    document.getElementById('updateGroupForm').action = formAction;
+}
 
     document.addEventListener('DOMContentLoaded', () => {
         const updateForm = document.getElementById('updateGroupForm');

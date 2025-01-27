@@ -51,5 +51,26 @@ class AdminGroupController extends Controller
 
         return redirect()->route('admin.group')->with('success', 'Group deleted successfully!');
     }
+
+    public function search(Request $request)
+   {
+    $groups = Group::where('group_code', $request->group_code)->get()->map(function ($group) {
+        return [
+            'id' => $group->id,
+            'group_name' => $group->group_name ?? '',
+            'group_code' => $group->group_code ?? '',
+            'address' => $group->address ?? '',
+            'contact_number' => $group->contact_number ?? '',
+        ];
+    });
+
+    if ($groups->isEmpty()) {
+        return response()->json([], 200);
+    }
+
+    return response()->json($groups, 200);
+    }
+
+    
 }
 

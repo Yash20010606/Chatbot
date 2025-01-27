@@ -41,7 +41,7 @@ class AdminSupervisorController extends Controller
             'group_code' => $validated['group'],
         ]);
 
-        return redirect()->route('admin.supervisor')->with('success', 'Supervisor added successfully.');
+        return redirect()->route('admin.supervisor.index')->with('success', 'Supervisor added successfully.');
 
     }
 
@@ -81,7 +81,7 @@ public function update(Request $request, $id)
         'group_code' => $validated['group_code'],
     ]);
 
-    return redirect()->route('admin.supervisor')->with('success', 'Supervisor updated successfully.');
+    return redirect()->route('admin.supervisor.index')->with('success', 'Supervisor updated successfully.');
 }
 
     
@@ -100,7 +100,7 @@ public function delete($id)
     $supervisor->delete();
 
 
-    return redirect()->route('admin.supervisor')->with('success', 'Supervisor deleted successfully!');
+    return redirect()->route('admin.supervisor.index')->with('success', 'Supervisor deleted successfully!');
 }
 
 public function search(Request $request)
