@@ -48,7 +48,7 @@
                             <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#updateAgentModal" onclick="editAgent('{{ $agent->emp_id }}')">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <form action="{{ route('agents.destroy', $agent->emp_id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
+                            <form action="{{ route('supervisor.agents.destroy', $agent->emp_id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
                                 @csrf
                                 <button type="submit" class="btn btn-link text-danger">
                                     <i class="fas fa-trash"></i>
