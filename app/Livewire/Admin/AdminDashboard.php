@@ -14,6 +14,7 @@ class AdminDashboard extends Component
     public $groups;
     public $agentCount;
     public $supervisorCount;
+    public $reporterCount;
     public $groupCount;
     public $emp_id, $name, $email, $password, $confirmPassword, $group;
 
@@ -26,14 +27,18 @@ class AdminDashboard extends Component
 
         // Fetch the agent count
         $this->agentCount = User::where('role', 'agent')
-            ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
             ->count();
 
         // Fetch the supervisor count
-        $this->supervisorCount = Supervisor::count();
+        $this->supervisorCount = User::where('role', 'supervisor')
+            ->count();
 
         // Fetch the group count
         $this->groupCount = Group::count();
+
+        // Fetch the reporter count
+        $this->reporterCount = User::where('role', 'reporter')
+            ->count();
 
         // Handle the redirection if no groups are available
         if ($this->groups->isEmpty()) {

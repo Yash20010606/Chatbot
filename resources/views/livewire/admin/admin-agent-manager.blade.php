@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-md-4">
                     <button id="searchBtn" class="btn btn-success w-100">Search</button>
-                    <button type="button" class="btn btn-secondary w-100 mt-2" onclick="resetForm()">Clear</button>
+                    <button type="button" class="btn btn-secondary w-100 mt-2" onclick="clearFilter()">Clear</button>
                 </div>
             </div>
 
@@ -122,7 +122,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="group" class="form-label">Group</label>
-                            <select id="group" class="form-select" name="group" required>
+                            <select id="updateGroup" class="form-select" name="group" required>
                                 <option value="">Select</option>
                                 @foreach($groups as $group)
                                     <option value="{{ $group->group_code }}">{{ $group->group_code }}</option>
@@ -170,7 +170,7 @@
 <script>
 
     // Function to reset form values and redirect
-    function resetForm() {
+    function clearFilter() {
         document.getElementById("empID").value = "";
         document.getElementById("group-filter").value = "";
 
@@ -230,7 +230,7 @@ function setInitialData() {
     initialData = {
         name: document.getElementById('updateName').dataset.initialValue,
         email: document.getElementById('updateEmail').dataset.initialValue,
-        group: document.getElementById('group').dataset.initialValue,
+        group: document.getElementById('updateGroup').dataset.initialValue,
         skills: Array.from(skillsCheckboxes)
             .filter(input => input.checked)
             .map(input => input.value),
@@ -241,7 +241,7 @@ function checkForChanges() {
     const currentData = {
         name: document.getElementById('updateName').value,
         email: document.getElementById('updateEmail').value,
-        group: document.getElementById('group').value,
+        group: document.getElementById('updateGroup').value,
         skills: Array.from(skillsCheckboxes)
             .filter(input => input.checked)
             .map(input => input.value),
@@ -286,7 +286,7 @@ function editAgent(empId) {
 
             const nameField = document.getElementById('updateName');
             const emailField = document.getElementById('updateEmail');
-            const groupField = document.getElementById('group');
+            const groupField = document.getElementById('updateGroup');
 
             nameField.value = agent.name;
             nameField.dataset.initialValue = agent.name;

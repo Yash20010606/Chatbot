@@ -8,31 +8,27 @@ use App\Models\Group;
 use App\Models\ReporterGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AdminReporterController extends Controller
 {
-    public function index()
-{
-    $reporters = User::where('role', 'reporter')
-        ->join('reporter_group', 'users.emp_id', '=', 'reporter_group.emp_id')
-        ->select('users.name', 'users.emp_id', 'users.email', 'reporter_group.group_code as group')
-        ->get();
-
-    $groups = Group::all();
-
-    return view('livewire.admin.admin-reporter-manager', compact('groups', 'reporters'));
-}
-
 // Store Method to add a new reporter
 public function store(Request $request)
 {
     $validated = $request->validate([
-        'emp_id' => 'required|unique:users,emp_id',
+        'emp_id' => 'required|unique:users,emp_id', // Ensure emp_id is unique in the users table
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
-        'group_code' => 'required|array',
-        'group_code.*' => 'exists:group,group_code',
-        'password' => 'required|min:6|same:confirmPassword',
+        'email' => 'required|email|unique:users,email', // Ensure email is unique in the users table
+        'group_code' => 'required|array', // group_code must be an array
+        'group_code.*' => [
+            'exists:group,group_code', // Ensure group_code exists in the group table
+            function ($attribute, $value, $fail) {
+                if (\App\Models\ReporterGroup::where('group_code', $value)->exists()) {
+                    $fail("The group '{$value}' is already assigned to another reporter.");
+                }
+            }
+        ],
+        'password' => 'required|confirmed|min:8',
     ]);
 
     // Create user
@@ -40,7 +36,7 @@ public function store(Request $request)
         'emp_id' => $validated['emp_id'],
         'name' => $validated['name'],
         'email' => $validated['email'],
-        'password' => Hash::make($validated['password']),
+        'password' => bcrypt($request->password),
         'role' => 'reporter',
     ]);
 
@@ -55,67 +51,65 @@ public function store(Request $request)
     return redirect()->route('admin.reporter')->with('success', 'Reporter added successfully.');
 }
 
-    public function edit($emp_id)
+
+public function edit($emp_id)
     {
-        // Fetch the reporter details based on the emp_id
         $reporter = User::where('emp_id', $emp_id)->firstOrFail();
         $groups = ReporterGroup::where('emp_id', $emp_id)->pluck('group_code')->toArray();
-        
-    
-        // Fetch the group from the reporter_group table
-        $group = ReporterGroup::where('emp_id', $emp_id)->value('group_code');
-    
+
         return response()->json([
             'reporter' => $reporter,
-            'group' => $group,
+            'groups' => $groups,
         ]);
-        
     }
-    
+
     public function update(Request $request, $emp_id)
 {
-    // Validate input with dynamic emp_id rules
-    $validated = $request->validate([
-        'emp_id' => 'required|string|unique:users,emp_id,' . $emp_id . ',emp_id',
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $emp_id . ',emp_id',
-        'group_code' => 'required|array|min:1',
-        'group_code.*' => 'exists:group,group_code',
-        'password' => 'nullable|min:6|same:confirmPassword',
+    // Validate the incoming data
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email',
+        'groups' => 'required|array', // Groups should be an array
+        'groups.*' => [
+            'exists:group,group_code', // Ensure group_code exists in the group table
+            function ($attribute, $value, $fail) use ($emp_id) {
+                // Check if the group_code is already assigned to another reporter (excluding current emp_id)
+                if (\App\Models\ReporterGroup::where('group_code', $value)
+                    ->where('emp_id', '!=', $emp_id)
+                    ->exists()) {
+                    $fail("The group '{$value}' is already assigned to another reporter.");
+                }
+            }
+        ]
     ]);
-    
-    // Fetch the current user
+
+    // Find the reporter using emp_id
     $user = User::where('emp_id', $emp_id)->firstOrFail();
-    
-    // If emp_id changes, update it in both tables
-    if ($user->emp_id !== $validated['emp_id']) {
-        // Allow emp_id to be updated
-        ReporterGroup::where('emp_id', $emp_id)->update(['emp_id' => $validated['emp_id']]);
-        $user->update(['emp_id' => $validated['emp_id']]);
-    }
 
     // Update user details
     $user->update([
-        'name' => $validated['name'],
-        'email' => $validated['email'],
+        'name' => $request->name,
+        'email' => $request->email,
     ]);
 
-    // Update or create reporter group assignment
-    ReporterGroup::where('emp_id', $validated['emp_id'])->delete();
-    
-    foreach ($validated['group_code'] as $group_code) {
-        ReporterGroup::updateOrCreate(
-            ['emp_id' => $validated['emp_id'], 'group_code' => $group_code]
-        );
+    // Check if validation passed before modifying group associations
+    if ($request->has('groups')) {
+        // Delete old group associations for this reporter (Only if validation passes)
+        ReporterGroup::where('emp_id', $emp_id)->delete();
+
+        // Add new group associations
+        foreach ($request->groups as $group_code) {
+            ReporterGroup::create([
+                'emp_id' => $emp_id,
+                'group_code' => $group_code,
+            ]);
+        }
     }
 
-    // Update password if provided
-    if (!empty($validated['password'])) {
-        $user->update(['password' => Hash::make($validated['password'])]);
-    }
-
+    // Redirect with success message
     return redirect()->route('admin.reporter')->with('success', 'Reporter updated successfully.');
 }
+    
 
     
     public function destroy($emp_id)

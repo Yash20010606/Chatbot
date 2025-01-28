@@ -61,7 +61,7 @@
         <!-- Submit Button -->
         <div class="col-md-4">
             <button type="submit" class="btn btn-success w-100">Search</button>
-            <button type="clear" class="btn btn-secondary w-100 mt-2" onclick="resetForm()">Clear</button>
+            <button type="clear" class="btn btn-secondary w-100 mt-2" onclick="clearFilter()">Clear</button>
         </div>
     </div>
 </form>
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
     // Function to reset form values and redirect
-    function resetForm() {
+    function clearFilter() {
         document.getElementById("employeeID").value = "";
         document.getElementById("group-filter").value = "";
 

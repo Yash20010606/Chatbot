@@ -10,7 +10,7 @@
                         <h4 class="card-title mb-0">Supervisor</h4>
                     </div>
                     <div class="circle mx-auto mb-3">{{ $supervisorCount }}</div>
-                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addSupervisortModal">
+                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addSupervisorModal" onclick="openAddForm('Supervisor')">
                         <i class="fa fa-plus-circle me-2"></i> Add
                     </button>
                 </div>
@@ -26,7 +26,7 @@
                         <h4 class="card-title mb-0">Agent</h4>
                     </div>
                     <div class="circle mx-auto mb-3">{{ $agentCount }}</div>
-                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addAgentModal" onclick="openAddAgentForm()">
+                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addAgentModal" onclick="openAddForm('Agent')">
                         <i class="fa fa-plus-circle me-2"></i> Add
                     </button>
                 </div>
@@ -42,8 +42,8 @@
                         <i class="fa fa-comments fa-2x me-2"></i>
                             <h4 class="card-title mb-0">Reporter</h4>
                         </div>
-                        <div class="circle mx-auto mb-3">20</div>
-                        <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addReporterModal">
+                        <div class="circle mx-auto mb-3">{{ $reporterCount }}</div>
+                        <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addReporterModal" onclick="openAddForm('Reporter')">
                             <i class="fa fa-plus-circle me-2"></i> Add
                         </button>
                     </div>
@@ -59,7 +59,7 @@
                                 <h4 class="card-title mb-0">Group</h4>
                             </div>
                             <div class="circle mx-auto mb-3">{{ $groupCount }}</div>
-                            <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addGroupModal">
+                            <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addGroupModal" onclick="openAddForm('Group')">
                                 <i class="fa fa-plus-circle me-2"></i> Add
                             </button>
                         </div>
@@ -163,7 +163,7 @@
 </div>
 
         <!-- Add Supervisor Modal -->
-        <div class="modal" id="addSupervisortModal" tabindex="-1" aria-labelledby="addSupervisortModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal" id="addSupervisorModal" tabindex="-1" aria-labelledby="addSupervisorModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
 
                 <div class="modal-content">
@@ -178,20 +178,17 @@
                     @csrf
                     <div class="mb-3">
                         <label for="emp_id" class="form-label">Employee ID</label>
-                        <input type="text" id="emp_id" name="emp_id" class="form-control" value="{{ old('emp_id') }}" required>
-                        @error('emp_id') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input type="text" id="emp_id" class="form-control" name="emp_id">
                     </div>
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input type="text" id="name" class="form-control" name="name">
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required>
-                        @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input type="text" id="email" class="form-control" name="email">
                     </div>
 
                     <div class="mb-3">
@@ -204,7 +201,6 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('group') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-3">
@@ -227,7 +223,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="resetForm('addSupervisortModal')">Clear</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm('addSupervisorModal')">Clear</button>
                         <button type="submit" class="btn btn-success">Add</button>
                     </div>
                 </form>
@@ -237,7 +233,7 @@
 </div>
 
 <!-- Add Reporter Modal -->
-<div class="modal" id="addReporterModal" tabindex="-1" aria-labelledby="addReporterModalLabel" aria-hidden="true">
+<div class="modal" id="addReporterModal" tabindex="-1" aria-labelledby="addReporterModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: white; color: rgb(4, 167, 4);">
@@ -252,29 +248,25 @@
                     
                     <div class="mb-3">
                         <label for="emp_id" class="form-label">Employee ID</label>
-                        <input type="text" id="emp_id" name="emp_id" class="form-control" value="{{ old('emp_id') }}" required>
-                        @error('emp_id') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input type="text" id="emp_id" class="form-control" name="emp_id">
                     </div>
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <!-- Name should be editable if it's not a fixed value -->
-                        <input type="text" id="name" name="name" class="form-control" value="Reporter User" required>
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input type="text" id="name" class="form-control" name="name">
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required>
-                        @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                        <input type="text" id="email" class="form-control" name="email">
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3"> 
                         <label for="group_code" class="form-label">Group</label>
                         <div class="form-check">
                             @foreach($groups as $group)
                             <input class="form-check-input" type="checkbox" name="group_code[]" value="{{ $group->group_code }}" id="group_{{ $group->group_code }}"
-                            @if(in_array($group->group_code, old('group_code', $groupCodes ?? []))) checked @endif>
+                            @if(isset($groupCodes) && in_array($group->group_code, $groupCodes)) checked @endif>
                             <label class="form-check-label" for="group_{{ $group->group_code }}">
                                 {{ $group->group_code }}
                             </label>
@@ -284,29 +276,26 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="passwordReporter" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword" onclick="togglePasswordVisibility()">
-                                <i class="fa fa-eye" id="passwordIcon"></i>
+                            <input type="password" id="passwordReporter" class="form-control" name="password" placeholder="Enter your password" aria-describedby="togglePasswordReporter">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordReporter" onclick="togglePasswordVisibility('passwordReporter', 'passwordIconReporter')">
+                                <i class="fa fa-eye" id="passwordIconReporter"></i>
                             </button>
                         </div>
-                        @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-
                     <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <label for="confirmPasswordReporter" class="form-label">Confirm Password</label>
                         <div class="input-group">
-                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
-                                <i class="fa fa-eye" id="confirmPasswordIcon"></i>
+                            <input type="password" id="confirmPasswordReporter" class="form-control" name="password_confirmation" placeholder="Confirm your password" aria-describedby="toggleConfirmPasswordReporter">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPasswordReporter" onclick="togglePasswordVisibility('confirmPasswordReporter', 'confirmPasswordIconReporter')">
+                                <i class="fa fa-eye" id="confirmPasswordIconReporter"></i>
                             </button>
                         </div>
-                        @error('confirmPassword') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm('addReporterModal')">Clear</button>
                         <button type="submit" class="btn btn-success">Add</button>
                     </div>
                 </form>
@@ -359,23 +348,32 @@
 
 <script>
 
-function openAddAgentForm() {
-    const addAgentForm = document.getElementById('addAgentForm');
+function openAddForm(type) {
+    // Identify the modal and form based on the type
+    const modalId = `add${type}Modal`;
+    const formId = `add${type}Form`;
 
-    // Reset the form fields
-    addAgentForm.reset();
+    // Get the form and modal elements
+    const form = document.getElementById(formId);
+    const modalElement = document.getElementById(modalId);
 
-    // Uncheck all skill checkboxes
-    const addSkillCheckboxes = addAgentForm.querySelectorAll('input[type="checkbox"]');
-    addSkillCheckboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
+    if (form) {
+        // Reset the form fields
+        form.reset();
 
-    // Show the Add Agent Modal
-    const addAgentModal = new bootstrap.Modal(document.getElementById('addAgentModal'));
-    addAgentModal.show();
+        // Uncheck all checkboxes (if any exist)
+        const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    }
+
+    if (modalElement) {
+        // Show the modal using Bootstrap's Modal API
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    }
 }
-
 
 function resetForm(modalId) {
     const modal = document.getElementById(modalId);
@@ -398,6 +396,12 @@ function resetForm(modalId) {
         checkbox.checked = false;
     });
 
+    // Clear textarea fields
+    const textareas = modal.querySelectorAll("textarea");
+    textareas.forEach(textarea => {
+        textarea.value = ""; // Clear the content of the textarea
+    });
+
     // Reset error messages if applicable
     const errorMessage = modal.querySelector("#error-message");
     if (errorMessage) {
@@ -405,6 +409,7 @@ function resetForm(modalId) {
         errorMessage.textContent = '';
     }
 }
+
 
         function togglePasswordVisibility(passwordFieldId, passwordIconId) {
         const passwordField = document.getElementById(passwordFieldId);

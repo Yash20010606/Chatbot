@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('supervisors', function (Blueprint $table) {
             $table->id();
             $table->string('emp_id')->unique();
-            $table->string('group_code');
+            $table->string('group_code')->unique();
             $table->foreign('emp_id')->references('emp_id')->on('users')->onDelete('cascade');
             $table->foreign('group_code')->references('group_code')->on('group');
             $table->timestamps();

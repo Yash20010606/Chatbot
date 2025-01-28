@@ -49,7 +49,7 @@
             <button id="searchBtn" class="btn btn-success w-100">Search</button>
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-secondary w-100" onclick="resetForm()">Clear</button>
+            <button type="button" class="btn btn-secondary w-100" onclick="clearFilter()">Clear</button>
         </div>
     </div>
 
@@ -147,7 +147,7 @@
 
 
     <script>
-    function resetForm() {
+    function clearFilter() {
     document.getElementById("group-filter").value = "";
 
     // Redirect to the desired route

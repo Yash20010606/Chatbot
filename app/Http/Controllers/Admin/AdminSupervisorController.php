@@ -20,6 +20,7 @@ class AdminSupervisorController extends Controller
    
     public function addSupervisor(Request $request)
     {
+        // Validate the request data
         $validated = $request->validate([
             'emp_id' => 'required|unique:users,emp_id',
             'name' => 'required|string|max:255',
@@ -27,7 +28,8 @@ class AdminSupervisorController extends Controller
             'password' => 'required|confirmed|min:8',
             'group' => 'required|exists:group,group_code|unique:supervisors,group_code', // Ensure group_code is unique in supervisors table
         ]);
-
+    
+        // Create the user (supervisor) entry in the users table
         $user = User::create([
             'emp_id' => $validated['emp_id'],
             'name' => $validated['name'],
@@ -35,15 +37,17 @@ class AdminSupervisorController extends Controller
             'password' => Hash::make($validated['password']),
             'role' => 'supervisor',
         ]);
-
+    
+        // Create the supervisor entry and associate it with the user
         Supervisor::create([
             'emp_id' => $user->emp_id,
             'group_code' => $validated['group'],
         ]);
-
+    
+        // Return a success message
         return redirect()->route('admin.supervisor.index')->with('success', 'Supervisor added successfully.');
-
     }
+    
 
     public function edit($id)
     {
@@ -60,30 +64,35 @@ class AdminSupervisorController extends Controller
         ]);
     }
     
-public function update(Request $request, $id)
-{
-    $supervisor = Supervisor::with('user')->findOrFail($id);
-
-    $validated = $request->validate([
-        
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $supervisor->user->id,
-        'group_code' => 'required|exists:group,group_code',
-    ]);
-
-    $user = $supervisor->user;
-    $user->update([
-        'name' => $validated['name'],
-        'email' => $validated['email'],
-    ]);
-
-    $supervisor->update([
-        'group_code' => $validated['group_code'],
-    ]);
-
-    return redirect()->route('admin.supervisor.index')->with('success', 'Supervisor updated successfully.');
-}
-
+    public function update(Request $request, $id)
+    {
+        // Find the supervisor and their related user
+        $supervisor = Supervisor::with('user')->findOrFail($id);
+    
+        // Validate the incoming request data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $supervisor->user->id,  // Exclude the current user's email
+            'group_code' => 'required|exists:group,group_code|unique:supervisors,group_code,' . $supervisor->id, // Ensure group_code is unique across supervisors
+        ]);
+    
+        // Get the user associated with the supervisor
+        $user = $supervisor->user;
+    
+        // Update the user details (name and email)
+        $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+    
+        // Update the supervisor's group code
+        $supervisor->update([
+            'group_code' => $validated['group_code'],
+        ]);
+    
+        // Redirect with success message
+        return redirect()->route('admin.supervisor.index')->with('success', 'Supervisor updated successfully.');
+    }
     
 public function delete($id)
 {
