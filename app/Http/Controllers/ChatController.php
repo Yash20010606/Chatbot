@@ -14,6 +14,7 @@ class ChatController extends Controller
         
         $user = Auth::user();
         $emp_id = $user->emp_id ?? null;
+        $username = $user->name;
 
         
         if (!$emp_id) {
@@ -22,7 +23,7 @@ class ChatController extends Controller
 
         $contacts = Customer::where('phone_number', '!=', $emp_id)->get();  // Adjust query if necessary
 
-        return view('chat.index', compact('emp_id', 'contacts'));
+        return view('chat.index', compact('emp_id', 'contacts', 'username'));
     }
 
     

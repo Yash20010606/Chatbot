@@ -18,7 +18,7 @@
 
         </div>
         <div class="user-info d-flex align-items-center">
-            <span class="me-2"><b>Nadun Silva</b></span>
+            <span class="me-2"><b>{{ $username }}</b></span>
             <img src="{{ asset('assets/icon_green.jpeg') }}" alt="User Image" class="rounded-circle">
         </div>
     </div>
@@ -27,7 +27,9 @@
             <!-- Sidebar -->
             <div class="option-sidebar">
                 <div class="icon-option">
-                    <i class="bi bi-chat-dots"></i>
+                    <a href="{{ route('agent.chat') }}">
+                        <i class="bi bi-chat-dots text-white"></i>
+                    </a>
                 </div>
                 <div class="icon-option">
                     <i class="bi bi-gear"></i>
