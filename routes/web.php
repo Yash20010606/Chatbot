@@ -22,6 +22,7 @@ use App\Livewire\Reporter\ReporterUsers;
 use App\Livewire\Supervisor\SupervisorAgentManager;
 use App\Livewire\Supervisor\SupervisorChatHistory;
 use App\Livewire\Supervisor\SupervisorProfile;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -83,5 +84,8 @@ Route::get('/reporter-profile', [ReporterProfile::class, 'render'])->name('repor
 Route::get('/reporter-users', [ ReporterUsers::class, 'render'])->name('reporter.reporter-users');
 
 
-
+//Agent
+Route::get('/chat', [ChatController::class, 'index'])->name('agent.chat');
+Route::post('/send-message', [ChatController::class, 'sendMessage']);
+Route::get('/messages/{phoneNumber}', [ChatController::class, 'getMessages']);
 

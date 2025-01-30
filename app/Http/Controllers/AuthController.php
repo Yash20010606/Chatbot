@@ -41,6 +41,9 @@ class AuthController extends Controller
         elseif ($user->role == 'reporter') {
             return redirect()->route('reporter.dashboard');
         }
+       elseif ($user->role == 'agent') {
+            return redirect()->route('agent.chat');
+        }
         else {
             return redirect()->route('user.dashboard');
         }

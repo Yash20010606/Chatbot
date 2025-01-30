@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -47,8 +47,8 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
@@ -61,6 +61,19 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+
+
+        'mongodb' => [
+    'driver'   => 'mongodb',
+    'host'     => env('SECOUND_DB_HOST', 'localhost'),
+    'port'     => env('SECOUND_DB_PORT', 27017),
+    'database' => env('SECOUND_DB_DATABASE', 'chatbot_db'),
+    'username' => env('SECOUND_DB_USERNAME', ''),
+    'password' => env('SECOUND_DB_PASSWORD', ''),
+    'options'  => [
+        'database' => env('SECOUND_DB_DATABASE', 'chatbot_db') // sets the authentication database
+    ]
+],
 
         'mariadb' => [
             'driver' => 'mariadb',
