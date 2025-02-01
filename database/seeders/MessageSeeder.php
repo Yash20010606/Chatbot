@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Events\MessageSent;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Message;
@@ -15,12 +16,15 @@ class MessageSeeder extends Seeder
      */
     public function run(): void
     {
+        
         DB::connection('mongodb')->table('messages')->insert([
-            'from' => '0719667029',
+            'from' => '0702345167',
             'to' => '123456',
             'message' => 'Good mornning!',
             'timestamp' => now(),
         ]);
         $this->command->info('Message inserted successfully!');
-    }
-}
+
+
+
+}}

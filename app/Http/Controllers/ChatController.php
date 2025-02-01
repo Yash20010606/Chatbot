@@ -6,46 +6,85 @@ use App\Models\Customer;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\MessageSent;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ChatController extends Controller
 {
+    
     public function index()
-    {
-        
-        $user = Auth::user();
-        $emp_id = $user->emp_id ?? null;
-        $username = $user->name;
+{
+    $user = Auth::user();
+    $emp_id = $user->emp_id ?? null;
+    $agentName = $user->name ?? 'Agent';
 
-        
-        if (!$emp_id) {
-            return redirect()->back()->with('error', 'Employee ID not found.');
-        }
-
-        $contacts = Customer::where('phone_number', '!=', $emp_id)->get();  // Adjust query if necessary
-
-        return view('chat.index', compact('emp_id', 'contacts', 'username'));
+    if (!$emp_id) {
+        return redirect()->back()->with('error', 'Employee ID not found.');
     }
+
+    $contactNumbers = Message::where('from', $emp_id)
+        ->orWhere('to', $emp_id)
+        ->pluck('from')
+        ->merge(Message::where('to', $emp_id)->pluck('to'))
+        ->unique();
+
+    if ($contactNumbers->isEmpty()) {
+        return redirect()->back()->with('error', 'No contacts found.');
+    }
+
+    // Retrieve customer details and sort them by the latest message timestamp
+    $contacts = Customer::whereIn('phone_number', $contactNumbers->toArray())
+        ->get()
+        ->map(function ($customer) use ($emp_id) {
+            $latestMessage = Message::where(function ($query) use ($customer, $emp_id) {
+                $query->where('from', $emp_id)->where('to', $customer->phone_number);
+            })
+            ->orWhere(function ($query) use ($customer, $emp_id) {
+                $query->where('from', $customer->phone_number)->where('to', $emp_id);
+            })
+            ->latest('timestamp')
+            ->first();
+
+            // Attach the latest message timestamp to each contact
+            $customer->latest_timestamp = $latestMessage ? $latestMessage->timestamp : null;
+            return $customer;
+        })
+        ->sortByDesc('latest_timestamp');
+
+    return view('chat.index', compact('emp_id', 'contacts', 'agentName'));
+}
 
     
-    public function sendMessage(Request $request)
-    {
-        $message = Message::create([
-            'from' => $request->input('from'),
-            'to' => $request->input('to'),
-            'message' => $request->input('message'),
-            'timestamp' => now(),
-        ]);
+public function sendMessage(Request $request)
+{
+    $message = Message::create([
+        'from' => $request->input('from'),
+        'to' => $request->input('to'),
+        'message' => $request->input('message'),
+        'timestamp' => now(),  // Save the current timestamp
+    ]);
 
-        // Return the filtered messages as a JSON response
-        return response()->json($message);
-    }
+    // Format the timestamp for the response
+    $formattedTimestamp = Carbon::parse($message->timestamp)->format('h:i A');
+
+
+    broadcast(new MessageSent($message));
+
+    // Return the message with the formatted time
+    return response()->json([
+        'message' => $message->message,
+        'formatted_time' => $formattedTimestamp,  // Ensure this is passed back
+        'from' => $message->from,
+    ]);
+}
 
     public function getMessages($phoneNumber)
     {
-        // Get the logged-in agent's ID
+       
         $agentEmpId = Auth::user()->emp_id;
     
-        // Fetch messages where the agent is either the sender ('from') or the receiver ('to')
+    
         $messages = Message::where(function ($query) use ($agentEmpId, $phoneNumber) {
             $query->where('from', $agentEmpId)->where('to', $phoneNumber);
         })
