@@ -24,6 +24,7 @@ use App\Livewire\Supervisor\SupervisorChatHistory;
 use App\Livewire\Supervisor\SupervisorProfile;
 use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login.form');
@@ -88,4 +89,7 @@ Route::get('/reporter-users', [ ReporterUsers::class, 'render'])->name('reporter
 Route::get('/chat', [ChatController::class, 'index'])->name('agent.chat');
 Route::post('/send-message', [ChatController::class, 'sendMessage']);
 Route::get('/messages/{phoneNumber}', [ChatController::class, 'getMessages']);
+Route::get('/get-latest-contacts', [ChatController::class, 'getLatestContacts'])->name('get.latest.contacts');
 
+
+Broadcast::routes(['middleware' => ['auth:sanctum']]);

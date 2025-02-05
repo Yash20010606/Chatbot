@@ -18,9 +18,9 @@ class MessageSeeder extends Seeder
     {
         
         DB::connection('mongodb')->table('messages')->insert([
-            'from' => '0702345167',
+            'from' => '0766427589',
             'to' => '123456',
-            'message' => 'Good mornning!',
+            'message' => 'Hello..Good mornning!',
             'timestamp' => now(),
         ]);
         $this->command->info('Message inserted successfully!');

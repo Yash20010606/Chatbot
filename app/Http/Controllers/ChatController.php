@@ -58,6 +58,7 @@ class ChatController extends Controller
     
 public function sendMessage(Request $request)
 {
+    
     $message = Message::create([
         'from' => $request->input('from'),
         'to' => $request->input('to'),
@@ -67,15 +68,17 @@ public function sendMessage(Request $request)
 
     // Format the timestamp for the response
     $formattedTimestamp = Carbon::parse($message->timestamp)->format('h:i A');
-
-
+    
     broadcast(new MessageSent($message));
 
     // Return the message with the formatted time
     return response()->json([
+        'from' => $message->from,
+        'to'=> $message->to,
         'message' => $message->message,
         'formatted_time' => $formattedTimestamp,  // Ensure this is passed back
-        'from' => $message->from,
+        
+
     ]);
 }
 
@@ -101,5 +104,57 @@ public function sendMessage(Request $request)
         // Return the filtered messages as a JSON response
         return response()->json($messages);
     }
+
+    public function getLatestContacts()
+{
+    try {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
+
+        $emp_id = $user->emp_id ?? null;
+        if (!$emp_id) {
+            return response()->json(['error' => 'Employee ID not found'], 400);
+        }
+
+        // Fetch contacts with the latest message timestamp
+        $contactNumbers = Message::where('from', $emp_id)
+            ->orWhere('to', $emp_id)
+            ->pluck('from')
+            ->merge(Message::where('to', $emp_id)->pluck('to'))
+            ->unique();
+
+        if ($contactNumbers->isEmpty()) {
+            return response()->json(['contacts' => []]);
+        }
+
+        $contacts = Customer::whereIn('phone_number', $contactNumbers->toArray())
+            ->get()
+            ->map(function ($customer) use ($emp_id) {
+                $latestMessage = Message::where(function ($query) use ($customer, $emp_id) {
+                    $query->where('from', $emp_id)->where('to', $customer->phone_number);
+                })
+                ->orWhere(function ($query) use ($customer, $emp_id) {
+                    $query->where('from', $customer->phone_number)->where('to', $emp_id);
+                })
+                ->latest('timestamp')
+                ->first();
+
+                return [
+                    'phone_number' => $customer->phone_number,
+                    'latest_timestamp' => $latestMessage ? $latestMessage->timestamp : null,
+                    'unread_count' => 0, // Update this later if unread messages need to be tracked
+                ];
+            })
+            ->sortByDesc('latest_timestamp')
+            ->values();
+
+        return response()->json(['contacts' => $contacts]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
     
 }

@@ -50,7 +50,7 @@
             <!-- Contact List -->
             <div class="col-md-3 contact-sidebar">
                 <div class="d-flex align-items-center p-3" style="background-color: #2e3a84;">
-                    <img src="https://via.placeholder.com/40" alt="" class="me-2">
+                    <img src="#" alt="" class="me-2">
                     <span>Contacts</span>
                 </div>
                 <ul id="contacts" class="contact-list">
@@ -69,7 +69,7 @@
             <!-- Chat Box -->
             <div class="col-md-8 chat-section">
                 <div id="contact-info" class="contact-info">
-                    <img src="{{ asset('images/human_icon2.jpeg') }}" alt="">
+                    <img src="#" alt="">
                     <span>Select a contact to start chatting</span>
                 </div>
     
@@ -97,6 +97,7 @@
     
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        
 
         <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -109,45 +110,61 @@ document.addEventListener('DOMContentLoaded', () => {
     const predefinedMessageDropdown = document.getElementById('predefined-message-dropdown');
     const contactInfo = document.getElementById('contact-info');
     const contactList = document.getElementById('contacts');
-    let currentContact = '';
+    // let currentContact = '';
+    
 
-    // Initialize Pusher
-    Pusher.logToConsole = true;
-    const pusher = new Pusher('8b8cd58f044da646b71a', {
-        cluster: 'ap2',
-        encrypted: true
-    });
+//     // Initialize Pusher
+//     Pusher.logToConsole = true;
+//     const pusher = new Pusher('8b8cd58f044da646b71a', {
+//         cluster: 'ap2',
+//         encrypted: true
+//     });
+  
 
-    let channel = null;
+//     // // Request notification permission on page load
+//     // if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+//     //     Notification.requestPermission().then(permission => {
+//     //         console.log(permission); // Log permission status: 'granted' or 'denied'
+//     //     });
+//     // }
 
-    // Request notification permission on page load
-    if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-        Notification.requestPermission().then(permission => {
-            console.log(permission); // Log permission status: 'granted' or 'denied'
-        });
-    }
+//     // Declare channel outside of any function
+// let channel = null;
 
-    function subscribeToChannel(contact) {
-        if (channel) {
-            channel.unbind('message.sent');
-            pusher.unsubscribe(channel.name);
-        }
+// function subscribeToChannel(contact) {
+//     if (channel) {
+//         console.log("Unsubscribing from previous channel:", channel.name);
+//         channel.unbind('message.sent');
+//         pusher.unsubscribe(channel.name);
+//     }
 
-        channel = pusher.subscribe('chat.' + contact);
-        channel.bind('message.sent', function (data) {
-    appendMessage(data.message, data.message.from === emp_id);
+//     console.log("Subscribing to channel:", 'chat.' + contact);
+//     channel = pusher.subscribe('chat.' + contact);
 
-    // Move sender to the top immediately, regardless of whether their chat is open
-    moveContactToTop(data.message.from);
+//     // Bind the 'message.sent' event after subscription
+//     channel.bind('message.sent', function (data) {
+//     console.log("Raw received data:", data); // Should log: {from: "0719667029", to: "1212", message: "Hello world", created_at: "2025-02-04 12:30:00"}
 
-    // If the message is from someone other than the current user
-    if (data.message.from !== emp_id) {
-        showNotification(data.message);
-        updateUnreadCount(data.message.from);
-    }
-});
+//     // Check if data exists and has a 'from' property
+//     if (!data || !data.from) {
+//         console.error("Error: 'from' property is missing in the received data", data);
+//         return;
+//     }
 
-    }
+//     console.log("Received message:", data.message);
+
+//     // Pass the received data to your functions directly
+//     appendMessage(data, data.from === emp_id);
+//     moveContactToTop(data.from);
+
+//     // if (data.from !== emp_id) {
+//     //     showNotification(data);
+//     //     updateUnreadCount(data.from);
+//     // }
+// });
+
+
+// }
 
     // Handle predefined message selection
     predefinedMessageBtn.addEventListener('click', () => {
@@ -162,25 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function appendMessage(data, isSent) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message ' + (isSent ? 'sent' : 'received');
-        messageDiv.innerHTML = `
-            <div>${data.message}</div>
-            <small class="text-muted" style="display: block; margin-top: 5px; font-size: 0.8rem;">
-                ${data.formatted_time}
-            </small>
-        `;
-
-        chatBox.appendChild(messageDiv);
-        scrollToBottom();
-
-        // Mark the message as unread for the current contact
-        if (data.message.from !== emp_id) {
-            markAsUnread(data.message.from);
-        }
-    }
-
+   
 // Save the updated order of contacts to localStorage
 function saveContactOrder() {
     const contactItems = document.querySelectorAll('.contact-item');
@@ -188,8 +187,6 @@ function saveContactOrder() {
     localStorage.setItem('contactOrder', JSON.stringify(contactOrder)); // Save to localStorage
 }
 
-
-let lastMessageTime = 0; // Initialize with 0 as a base timestamp
 
 //Function to move contact to the top based on phone number
 function moveContactToTop(phoneNumber) {
@@ -202,16 +199,6 @@ function moveContactToTop(phoneNumber) {
     }
 }
 
-// Function to move contact to the top based on phone number
-function moveContactToTops(phoneNumber) {
-    const contactList = document.querySelector('.contact-list');
-    const contactItem = document.querySelector(`.contact-item[data-phone="${phoneNumber}"]`);
-    
-    if (contactItem && contactList) {
-        // Move the contact item to the top of the list
-        contactList.prepend(contactItem); 
-    }
-}
 
 // Load messages for a specific contact
 function loadMessages(phoneNumber) {
@@ -237,17 +224,14 @@ function loadMessages(phoneNumber) {
         .catch(error => console.error("Error loading messages!", error));
 }
 
-    // Update contact info when a contact is selected
     function updateContactInfo(phoneNumber) {
-        contactInfo.innerHTML = `<img src="https://via.placeholder.com/50" alt=""> ${phoneNumber}`;
+        contactInfo.innerHTML = `<img src="#" alt=""> ${phoneNumber}`;
     }
 
-    // Scroll to the bottom of the chat box
     function scrollToBottom() {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // Restore contact order from localStorage
     document.addEventListener('DOMContentLoaded', function () {
     const savedOrder = JSON.parse(localStorage.getItem('contactOrder'));
 
@@ -263,7 +247,7 @@ function loadMessages(phoneNumber) {
     });
 
     // Optimize contact selection with event delegation
-contactList.addEventListener('click', function (e) {
+    contactList.addEventListener('click', function (e) {
     const contact = e.target.closest('.contact-item');
     if (contact) {
         const phoneNumber = contact.getAttribute('data-phone');
@@ -271,7 +255,7 @@ contactList.addEventListener('click', function (e) {
         currentContact = phoneNumber;
         updateContactInfo(currentContact);
         loadMessages(currentContact);
-        subscribeToChannel(currentContact);
+        // subscribeToChannel(currentContact);
 
         // Reset the unread count
         const unreadCountElement = contact.querySelector('.unread-count');
@@ -283,67 +267,122 @@ contactList.addEventListener('click', function (e) {
     }
 });
 
-    // Send a message when the form is submitted
-    messageForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const message = messageInput.value.trim();
 
-        if (message && currentContact) {
-            axios.post('/send-message', { from: emp_id, to: currentContact, message: message })
-                .then(response => {
-                    appendMessage(response.data, true);
-                    messageInput.value = '';
-                    moveContactToTop(currentContact);
-                })
-                .catch(error => console.error("Error sending the message!", error));
-        } else {
-            alert('Please select a contact or enter a message.');
-        }
-    });
+let lastMessageTime = 0; // Track the timestamp of the last message
+let sentMessageIds = new Set(); // Store message IDs to prevent duplication
+let currentContact = null; // Track the current contact
 
-    setInterval(() => {
+// Append a message to the chat window
+function appendMessage(data, isSent) {
+    // Add the message ID to sentMessageIds set to prevent future duplicates
+    sentMessageIds.add(data.id);
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message ' + (isSent ? 'sent' : 'received');
+    messageDiv.dataset.id = data.id;
+    messageDiv.innerHTML = `
+        <div>${data.message}</div>
+        <small class="text-muted" style="display: block; margin-top: 5px; font-size: 0.8rem;">
+            ${data.formatted_time}
+        </small>
+    `;
+    chatBox.appendChild(messageDiv); // Append the message to the chat box
+    scrollToBottom(); // Scroll to the latest message
+    console.log("Message appended:", data);
+}
+
+
+function openChat(contactId) {
+    currentContact = contactId;
+
+    // Clear the sent message IDs and reset the last message time
+    sentMessageIds.clear();
+    lastMessageTime = 0;
+
+    // Clear the chat window
+    chatBox.innerHTML = '';
+
+    // Fetch all messages for the selected contact
+    axios.get(`/messages/${contactId}`)
+        .then(response => {
+            console.log("Fetched messages:", response.data); // Log the API response
+
+            const messages = response.data;
+
+            // Display all the messages
+            messages.forEach(msg => {
+                appendMessage(msg, msg.from === emp_id);
+            });
+
+            // Update the last message time
+            if (messages.length > 0) {
+                lastMessageTime = messages[messages.length - 1].timestamp;
+            }
+        })
+        .catch(error => console.error("Error fetching messages for this contact", error));
+}
+
+// Send a message to the contact
+messageForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const message = messageInput.value.trim();
+
+    if (message && currentContact) {
+        const sendButton = messageForm.querySelector('button[type="submit"]');
+        sendButton.disabled = true;
+
+        axios.post('/send-message', { from: emp_id, to: currentContact, message: message })
+            .then(response => {
+                const responseData = response.data;
+
+                // Append the sent message
+                appendMessage(responseData, true);
+
+                // Update the last sent message timestamp
+                lastMessageTime = responseData.timestamp;
+
+                messageInput.value = ''; // Clear the message input
+                moveContactToTop(currentContact); // Optionally, move contact to the top
+            })
+            .catch(error => console.error("Error sending the message", error))
+            .finally(() => {
+                sendButton.disabled = false; // Enable the send button
+            });
+    } else {
+        alert('Please select a contact or enter a message.');
+    }
+});
+
+
+setInterval(() => {
     if (currentContact) {
         axios.get(`/messages/${currentContact}`)
             .then(response => {
                 const messages = response.data;
+                console.log("Fetched new messages:", messages); // Log the API response for new messages
 
+                // If there are new messages
                 if (messages.length > 0) {
-                    // Get the most recent message
-                    const latestMessage = messages[messages.length - 1];
-                    const latestMessageTime = latestMessage.timestamp;
+                    // Filter out the messages that have already been sent
+                    const newMessages = messages.filter(msg => msg.timestamp > lastMessageTime && !sentMessageIds.has(msg.id));
 
-                    // Append new messages to the chat
-                    messages.forEach(msg => {
+                    // Append the new messages
+                    newMessages.forEach(msg => {
                         appendMessage(msg, msg.from === emp_id);
                     });
 
-                    // Check if the most recent message is new by comparing timestamps
-                    if (latestMessageTime > lastMessageTime) {
-                        // Update the last message timestamp
-                        lastMessageTime = latestMessageTime;
-
-                        // Move the contact to the top (based on the phone number)
-                        moveContactToTop(currentContact);
+                    // Update the last message time
+                    const latestMessage = messages[messages.length - 1];
+                    lastMessageTime = latestMessage.timestamp;
 
 
-                        // Optionally, add an unread count badge for the new message
-                        // const contactItem = document.querySelector(`.contact-item[data-phone="${currentContact}"]`);
-                        // const unreadCountElement = contactItem.querySelector('.unread-count');
-                        // if (!unreadCountElement) {
-                        //     const unreadBadge = document.createElement('span');
-                        //     unreadBadge.classList.add('unread-count');
-                        //     unreadBadge.textContent = '1'; // Adjust as needed for the number of new messages
-                        //     contactItem.appendChild(unreadBadge);
-                        // }
-                    }
                 }
-                
             })
-            .catch(error => console.error("Error fetching new messages!", error));
+            .catch(error => console.error("Error fetching new messages", error));
     }
 }, 5000);
-});
 
+});
 
 function markAsUnread(phoneNumber) {
     const contactItem = document.querySelector(`.contact-item[data-phone="${phoneNumber}"]`);
@@ -414,5 +453,37 @@ function updateUnreadCount(contactPhone) {
 });
 
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function refreshContacts() {
+        $.ajax({
+            url: "{{ route('get.latest.contacts') }}",
+            type: "GET",
+            success: function (response) {
+                if (response.contacts.length > 0) {
+                    let contactListHtml = "";
+                    response.contacts.forEach(contact => {
+                        contactListHtml += `
+                            <li class="contact-item" data-phone="${contact.phone_number}">
+                                <img src="{{ asset('assets/human_icon2.jpeg') }}" alt="">
+                                <span>${contact.phone_number}</span>
+                                <span class="unread-count" style="display: ${contact.unread_count > 0 ? 'inline-block' : 'none'};">
+                                    ${contact.unread_count}
+                                </span>
+                            </li>`;
+                    });
+
+                    $("#contacts").html(contactListHtml);
+                }
+            },
+            error: function (xhr) {
+                console.error("Error fetching contacts:", xhr.responseText);
+            }
+        });
+    }
+    setInterval(refreshContacts, 5000);
+</script>
+
+
 </body>
 </html>
