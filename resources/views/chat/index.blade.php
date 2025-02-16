@@ -58,7 +58,7 @@
                         <li class="contact-item" data-phone="{{ $contact->phone_number }}">
                             <img src="{{ asset('assets/human_icon2.jpeg') }}" alt="">
                             <span>{{ $contact->phone_number }}</span>
-                            <span class="unread-count" style="display: none;">0</span> <!-- Unread count -->
+                            <span class="unread-count" style="display: none;"></span> <!-- Unread count -->
                         </li>
                     @empty
                         <li>No contacts available</li>
@@ -98,8 +98,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
         
-
-        <script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     const emp_id = '{{ $emp_id }}';
     const contacts = @json($contacts);
@@ -119,16 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //         cluster: 'ap2',
 //         encrypted: true
 //     });
-  
 
-//     // // Request notification permission on page load
-//     // if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-//     //     Notification.requestPermission().then(permission => {
-//     //         console.log(permission); // Log permission status: 'granted' or 'denied'
-//     //     });
-//     // }
-
-//     // Declare channel outside of any function
 // let channel = null;
 
 // function subscribeToChannel(contact) {
@@ -157,12 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //     appendMessage(data, data.from === emp_id);
 //     moveContactToTop(data.from);
 
-//     // if (data.from !== emp_id) {
-//     //     showNotification(data);
-//     //     updateUnreadCount(data.from);
-//     // }
 // });
-
 
 // }
 
@@ -214,12 +199,7 @@ function loadMessages(phoneNumber) {
                 lastMessageTime = response.data[response.data.length - 1].timestamp; // Assuming 'timestamp' is in the message data
             }
 
-            // Reset the unread count when the contact is opened
-            const contactItem = document.querySelector(`.contact-item[data-phone="${phoneNumber}"]`);
-            const unreadBadge = contactItem.querySelector('.unread-count');
-            if (unreadBadge) {
-                unreadBadge.remove(); // Remove the badge when chat is opened
-            }
+            
         })
         .catch(error => console.error("Error loading messages!", error));
 }
@@ -256,21 +236,23 @@ function loadMessages(phoneNumber) {
         updateContactInfo(currentContact);
         loadMessages(currentContact);
         // subscribeToChannel(currentContact);
-
-        // Reset the unread count
-        const unreadCountElement = contact.querySelector('.unread-count');
-        if (unreadCountElement) {
-            unreadCountElement.textContent = 0;
-            unreadCountElement.style.display = 'none'; // Hide unread count if it's zero
-            contact.classList.remove('has-unread');
+       
+        // Remove the unread count when contact is clicked
+        const unreadBadge = contact.querySelector('.unread-count');
+        if (unreadBadge) {
+            unreadBadge.style.display = 'none'; // Hide the unread count
         }
+
+        // Open chat for the selected phone number
+        openChats(phoneNumber);
+        
     }
 });
 
 
-let lastMessageTime = 0; // Track the timestamp of the last message
-let sentMessageIds = new Set(); // Store message IDs to prevent duplication
-let currentContact = null; // Track the current contact
+let lastMessageTime = 0;
+let sentMessageIds = new Set();
+let currentContact = null;
 
 // Append a message to the chat window
 function appendMessage(data, isSent) {
@@ -288,7 +270,7 @@ function appendMessage(data, isSent) {
     `;
     chatBox.appendChild(messageDiv); // Append the message to the chat box
     scrollToBottom(); // Scroll to the latest message
-    console.log("Message appended:", data);
+    // console.log("Message appended:", data);
 }
 
 
@@ -341,8 +323,8 @@ messageForm.addEventListener('submit', (e) => {
                 // Update the last sent message timestamp
                 lastMessageTime = responseData.timestamp;
 
-                messageInput.value = ''; // Clear the message input
-                moveContactToTop(currentContact); // Optionally, move contact to the top
+                messageInput.value = ''; 
+                moveContactToTop(currentContact);
             })
             .catch(error => console.error("Error sending the message", error))
             .finally(() => {
@@ -359,11 +341,10 @@ setInterval(() => {
         axios.get(`/messages/${currentContact}`)
             .then(response => {
                 const messages = response.data;
-                console.log("Fetched new messages:", messages); // Log the API response for new messages
+                // console.log("Fetched new messages:", messages); // Log the API response for new messages
 
                 // If there are new messages
                 if (messages.length > 0) {
-                    // Filter out the messages that have already been sent
                     const newMessages = messages.filter(msg => msg.timestamp > lastMessageTime && !sentMessageIds.has(msg.id));
 
                     // Append the new messages
@@ -380,38 +361,74 @@ setInterval(() => {
             })
             .catch(error => console.error("Error fetching new messages", error));
     }
-}, 5000);
+}, 4000);
+
+
+// Fetch unread message counts
+function fetchUnreadMessages() {
+    axios.get('/unread-messages')
+        .then(response => {
+            const unreadMessages = response.data;
+            // console.log("Unread messages response:", unreadMessages); // Debug the server response
+
+            // Iterate through each contact and update the unread count in the UI
+            for (let phoneNumber in unreadMessages) {
+                const unreadCount = unreadMessages[phoneNumber];
+
+                if (!unreadCount && unreadCount !== 0) continue; // Skip undefined or null unreadCount
+
+                const contactElement = document.querySelector(`[data-phone="${phoneNumber}"]`);
+                
+                if (!contactElement) {
+                    console.error(`Contact element for ${phoneNumber} not found`);
+                    continue;
+                }
+
+                const unreadBadge = contactElement.querySelector('.unread-count');
+                
+                if (unreadCount > 0) {
+                    unreadBadge.textContent = unreadCount;
+                    unreadBadge.style.display = 'inline-block'; // Show the unread count
+                } else {
+                    unreadBadge.style.display = 'none'; // Hide unread count if there are no unread messages
+                }
+            }
+        })
+        .catch(error => console.error('Error fetching unread messages', error));
+}
+
+// Open chat for selected phone number
+function openChats(phoneNumber) {
+    axios.get(`/messages/${phoneNumber}`)
+        .then(response => {
+            if (!response.data || response.data.length === 0) {
+                // console.log("No messages found.");
+                return;
+            }
+
+            response.data.forEach(message => {
+                // appendMessage(message, message.from === phoneNumber);
+            });
+
+            // Wait for messages to load before marking them as read
+            return axios.post('/mark-messages-read', { phoneNumber });
+        })
+        .then(response => {
+            if (response && response.data.success) {
+                console.log(`Marked ${response.data.updatedCount} messages as read.`);
+                fetchUnreadMessages(); // Refresh unread count
+            } else {
+                // console.error("Failed to mark messages as read:", response?.data?.error);
+            }
+        })
+        .catch(error => console.error("Error loading messages!", error));
+}
+
+setInterval(fetchUnreadMessages, 2000);
+
+fetchUnreadMessages();
 
 });
-
-function markAsUnread(phoneNumber) {
-    const contactItem = document.querySelector(`.contact-item[data-phone="${phoneNumber}"]`);
-    if (contactItem) {
-        const unreadCountElement = contactItem.querySelector('.unread-count');
-        if (unreadCountElement) {
-            let unreadCount = parseInt(unreadCountElement.textContent) || 0;
-            unreadCountElement.textContent = unreadCount + 1;
-            contactItem.classList.add('has-unread');  // Optional: Add class to highlight contact with unread messages
-        }
-    }
-}
-
-function updateUnreadCount(contactPhone) {
-    const contactItem = document.querySelector(`.contact-item[data-phone="${contactPhone}"]`);
-    const unreadBadge = contactItem.querySelector('.unread-count');
-    
-    if (unreadBadge) {
-        // Increment the unread count if it exists
-        unreadBadge.textContent = parseInt(unreadBadge.textContent) + 1;
-    } else {
-        // Create a new unread count badge
-        const badge = document.createElement('span');
-        badge.classList.add('badge', 'bg-danger', 'unread-count');
-        badge.textContent = '1';
-        contactItem.appendChild(badge);
-    }
-}
-
 
     document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
@@ -453,6 +470,7 @@ function updateUnreadCount(contactPhone) {
 });
 
 </script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function refreshContacts() {
@@ -483,7 +501,6 @@ function updateUnreadCount(contactPhone) {
     }
     setInterval(refreshContacts, 5000);
 </script>
-
 
 </body>
 </html>

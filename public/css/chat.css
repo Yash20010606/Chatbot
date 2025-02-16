@@ -238,13 +238,33 @@ color: #9d95f7 !important;
 .dropdown-menu{
 margin-top: 400px;
 }
+/* Highlight unread messages */
 .contact-item.has-unread {
-    background-color: #f0f0f0; /* Change color for unread messages */
+    background-color: #f0f2f5; /* Light gray like WhatsApp Web */
 }
 
+/* Unread message count badge */
 .contact-item .unread-count {
+    background-color: #25D366; /* WhatsApp green */
+    color: white;
     font-size: 12px;
-    color: red;
-    margin-left: 10px;
-    display: inline-block;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; /* Makes it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto; /* Push to the right */
+    position: relative;
+    right: 15px; /* Adjust position */
+    top: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* Ensure the unread count is hidden when there are no unread messages */
+.contact-item .unread-count:empty {
+    display: none;
+}
+

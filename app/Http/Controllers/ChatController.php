@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class ChatController extends Controller
@@ -154,6 +155,54 @@ public function sendMessage(Request $request)
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
+public function getUnreadMessages()
+{
+    $emp_id = Auth::user()->emp_id; // Get logged-in user's employee ID
+
+    $unreadMessages = Message::raw(function ($collection) use ($emp_id) {
+        return $collection->aggregate([
+            ['$match' => ['to' => $emp_id, 'is_read' => false]],
+            ['$group' => [
+                '_id' => '$from',
+                'count' => ['$sum' => 1]
+            ]]
+        ]);
+    });
+
+    // Format the result, only including senders with unread messages
+    $result = [];
+    foreach ($unreadMessages as $message) {
+        $result[$message->_id] = $message->count;
+    }
+
+    return response()->json($result);
+}
+
+
+public function markMessagesRead(Request $request)
+{
+    // Log incoming request data
+    Log::debug('Incoming request data: ', $request->all());
+
+    $phoneNumber = $request->input('phoneNumber');
+    
+    // Log the phone number for debugging
+    Log::debug('Phone Number:', ['phoneNumber' => $phoneNumber]);
+
+    $updated = Message::where('from', $phoneNumber)
+                      ->where('is_read', false)
+                      ->update([
+                          'is_read' => true
+                      ]);
+
+    // Return response
+    return response()->json([
+        'success' => $updated > 0,
+        'updatedCount' => $updated,
+        'message' => $updated > 0 ? 'Messages marked as read successfully.' : 'No messages found to mark as read.'
+    ]);
 }
 
     
