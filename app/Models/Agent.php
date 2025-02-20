@@ -16,7 +16,9 @@ class Agent extends Model
     protected $primaryKey = 'emp_id';
 
     // Define fillable attributes (fields that are mass assignable)
-    protected $fillable = ['emp_id', 'group_code'];
+    // protected $fillable = ['emp_id', 'group_code'];
+
+    protected $fillable = ['emp_id', 'group_code', 'active_chats', 'is_online'];
 
     // Relationship to AgentSkill model
     public function skills()

@@ -93,7 +93,5 @@ Route::get('/messages/{phoneNumber}', [ChatController::class, 'getMessages']);
 Route::get('/get-latest-contacts', [ChatController::class, 'getLatestContacts'])->name('get.latest.contacts');
 Route::get('/unread-messages', [ChatController::class, 'getUnreadMessages']);
 Route::post('/mark-messages-read', [ChatController::class, 'markMessagesRead']);
+Route::post('/deactivate-chat', [ChatController::class, 'deactivateInactiveChat']);
 
-
-
-// Broadcast::routes(['middleware' => ['auth:sanctum']]);

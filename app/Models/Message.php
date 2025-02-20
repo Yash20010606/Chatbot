@@ -9,15 +9,15 @@ class Message extends Model
     protected $connection = 'mongodb';
     protected $collection = 'messages';
 
-    // protected $fillable = ['from', 'to', 'message', 'timestamp'];
+    
 
     public $timestamps = true;
 
     protected $dates = ['timestamp', 'created_at', 'updated_at'];
 
-    protected $fillable = [
-        'from', 'to', 'message', 'timestamp', 'is_read'
-    ];
+    
+    protected $fillable = ['from', 'to', 'message', 'timestamp', 'is_read', 'active_chat'];
+
 
     // protected $attributes = [
     //     'is_read' => false  // Default value when inserting new messages

@@ -18,11 +18,14 @@ class MessageSeeder extends Seeder
     {
         
         DB::connection('mongodb')->table('messages')->insert([
-            'from' => '0712341767',
-            'to' => '123456',
-            'message' => 'Hello..Good mornning!',
+            'from' => '0766427589',
+            'to' => '1212',
+            'message' => 'Hello.........',
             'timestamp' => now(),
+            'active_chat'=> true,
             'is_read' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         $this->command->info('Message inserted successfully!');
 

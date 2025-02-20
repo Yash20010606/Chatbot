@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // }
 
-    // Handle predefined message selection
+
     predefinedMessageBtn.addEventListener('click', () => {
         predefinedMessageDropdown.classList.toggle('show');
     });
@@ -173,13 +173,11 @@ function saveContactOrder() {
 }
 
 
-//Function to move contact to the top based on phone number
 function moveContactToTop(phoneNumber) {
     const contactList = document.querySelector('.contact-list');
     const contactItem = document.querySelector(`.contact-item[data-phone="${phoneNumber}"]`);
     
     if (contactItem && contactList) {
-        // Move the contact item to the top of the list
         contactList.prepend(contactItem);
     }
 }
@@ -240,10 +238,9 @@ function loadMessages(phoneNumber) {
         // Remove the unread count when contact is clicked
         const unreadBadge = contact.querySelector('.unread-count');
         if (unreadBadge) {
-            unreadBadge.style.display = 'none'; // Hide the unread count
+            unreadBadge.style.display = 'none';
         }
 
-        // Open chat for the selected phone number
         openChats(phoneNumber);
         
     }
@@ -253,6 +250,24 @@ function loadMessages(phoneNumber) {
 let lastMessageTime = 0;
 let sentMessageIds = new Set();
 let currentContact = null;
+
+// Load last active chat from localStorage
+let activeChat = localStorage.getItem('active_chat');
+    if (activeChat) {
+        openChat(activeChat);
+    }
+
+    // Function to update active chat UI
+    function updateActiveChatUI(phoneNumber) {
+        document.querySelectorAll('.contact-item').forEach(contact => {
+            contact.classList.remove('active-chat');
+        });
+
+        const activeContact = document.querySelector(`.contact-item[data-phone="${phoneNumber}"]`);
+        if (activeContact) {
+            activeContact.classList.add('active-chat');
+        }
+    }
 
 // Append a message to the chat window
 function appendMessage(data, isSent) {
@@ -269,7 +284,7 @@ function appendMessage(data, isSent) {
         </small>
     `;
     chatBox.appendChild(messageDiv); // Append the message to the chat box
-    scrollToBottom(); // Scroll to the latest message
+    scrollToBottom();
     // console.log("Message appended:", data);
 }
 
@@ -277,11 +292,9 @@ function appendMessage(data, isSent) {
 function openChat(contactId) {
     currentContact = contactId;
 
-    // Clear the sent message IDs and reset the last message time
     sentMessageIds.clear();
     lastMessageTime = 0;
 
-    // Clear the chat window
     chatBox.innerHTML = '';
 
     // Fetch all messages for the selected contact
@@ -304,6 +317,9 @@ function openChat(contactId) {
         .catch(error => console.error("Error fetching messages for this contact", error));
 }
 
+
+let timeoutId = null;
+
 // Send a message to the contact
 messageForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -317,46 +333,80 @@ messageForm.addEventListener('submit', (e) => {
             .then(response => {
                 const responseData = response.data;
 
-                // Append the sent message
+                
                 appendMessage(responseData, true);
-
-                // Update the last sent message timestamp
+            
                 lastMessageTime = responseData.timestamp;
 
                 messageInput.value = ''; 
                 moveContactToTop(currentContact);
+
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                }
+
+                timeoutId = setTimeout(() => {
+                    deactivateChat(responseData.message_id);
+                }, 5 * 60 * 1000);
+
             })
             .catch(error => console.error("Error sending the message", error))
             .finally(() => {
-                sendButton.disabled = false; // Enable the send button
+                sendButton.disabled = false;
             });
     } else {
         alert('Please select a contact or enter a message.');
     }
 });
 
+// Function to deactivate the chat after 5 minutes
+function deactivateChat(messageId) {
+    axios.post('/deactivate-chat', {
+        message_id: messageId,
+    })
+    .then(response => {
+        console.log('Chat deactivated:', response.data);
+    })
+    .catch(error => {
+        console.error('Error deactivating chat:', error);
+    });
+}
+
+
 
 setInterval(() => {
     if (currentContact) {
+        // Fetch new messages
         axios.get(`/messages/${currentContact}`)
             .then(response => {
                 const messages = response.data;
-                // console.log("Fetched new messages:", messages); // Log the API response for new messages
 
-                // If there are new messages
+                
                 if (messages.length > 0) {
                     const newMessages = messages.filter(msg => msg.timestamp > lastMessageTime && !sentMessageIds.has(msg.id));
 
-                    // Append the new messages
                     newMessages.forEach(msg => {
                         appendMessage(msg, msg.from === emp_id);
                     });
 
-                    // Update the last message time
                     const latestMessage = messages[messages.length - 1];
                     lastMessageTime = latestMessage.timestamp;
 
+                    
+                    messages.forEach(msg => {
+                        const messageTimestamp = new Date(msg.timestamp);
+                        const currentTime = new Date();
 
+                        if (msg.active_chat && (currentTime - messageTimestamp >= 2 * 60 * 1000)) {
+                            axios.post('/deactivate-chat', { message_id: msg.id })
+                                .then(response => {
+                                    console.log('Chat deactivated:', response.data);
+                                })
+                                .catch(error => {
+                                    console.error('Error deactivating chat:', error);
+                                });
+                        }
+                    });
                 }
             })
             .catch(error => console.error("Error fetching new messages", error));
@@ -375,7 +425,7 @@ function fetchUnreadMessages() {
             for (let phoneNumber in unreadMessages) {
                 const unreadCount = unreadMessages[phoneNumber];
 
-                if (!unreadCount && unreadCount !== 0) continue; // Skip undefined or null unreadCount
+                if (!unreadCount && unreadCount !== 0) continue;
 
                 const contactElement = document.querySelector(`[data-phone="${phoneNumber}"]`);
                 
@@ -388,9 +438,9 @@ function fetchUnreadMessages() {
                 
                 if (unreadCount > 0) {
                     unreadBadge.textContent = unreadCount;
-                    unreadBadge.style.display = 'inline-block'; // Show the unread count
+                    unreadBadge.style.display = 'inline-block';
                 } else {
-                    unreadBadge.style.display = 'none'; // Hide unread count if there are no unread messages
+                    unreadBadge.style.display = 'none';
                 }
             }
         })
@@ -410,7 +460,6 @@ function openChats(phoneNumber) {
                 // appendMessage(message, message.from === phoneNumber);
             });
 
-            // Wait for messages to load before marking them as read
             return axios.post('/mark-messages-read', { phoneNumber });
         })
         .then(response => {
@@ -501,6 +550,8 @@ fetchUnreadMessages();
     }
     setInterval(refreshContacts, 5000);
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </body>
 </html>

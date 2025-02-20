@@ -10,6 +10,8 @@ use App\Events\MessageSent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use MongoDB\BSON\ObjectId;
+
 
 class ChatController extends Controller
 {
@@ -56,32 +58,31 @@ class ChatController extends Controller
     return view('chat.index', compact('emp_id', 'contacts', 'agentName'));
 }
 
-    
+
 public function sendMessage(Request $request)
 {
-    
     $message = Message::create([
         'from' => $request->input('from'),
         'to' => $request->input('to'),
         'message' => $request->input('message'),
-        'timestamp' => now(),  // Save the current timestamp
+        'timestamp' => now(),
+        'active_chat' => true,
     ]);
 
-    // Format the timestamp for the response
-    $formattedTimestamp = Carbon::parse($message->timestamp)->format('h:i A');
     
-    broadcast(new MessageSent($message));
+    DB::table('agent')
+        ->where('emp_id', $request->input('from'))
+        ->increment('active_chats', 1);
 
-    // Return the message with the formatted time
+
     return response()->json([
         'from' => $message->from,
-        'to'=> $message->to,
+        'to' => $message->to,
         'message' => $message->message,
-        'formatted_time' => $formattedTimestamp,  // Ensure this is passed back
-        
-
+        'formatted_time' => Carbon::parse($message->timestamp)->format('h:i A'),
     ]);
 }
+
 
     public function getMessages($phoneNumber)
     {
@@ -101,7 +102,7 @@ public function sendMessage(Request $request)
             $message->formatted_time = $message->timestamp->setTimezone('Asia/Colombo')->format('h:i A');
             return $message;
         });
-    
+
         // Return the filtered messages as a JSON response
         return response()->json($messages);
     }
@@ -145,7 +146,7 @@ public function sendMessage(Request $request)
                 return [
                     'phone_number' => $customer->phone_number,
                     'latest_timestamp' => $latestMessage ? $latestMessage->timestamp : null,
-                    'unread_count' => 0, // Update this later if unread messages need to be tracked
+                    'unread_count' => 0,
                 ];
             })
             ->sortByDesc('latest_timestamp')
@@ -159,7 +160,7 @@ public function sendMessage(Request $request)
 
 public function getUnreadMessages()
 {
-    $emp_id = Auth::user()->emp_id; // Get logged-in user's employee ID
+    $emp_id = Auth::user()->emp_id;
 
     $unreadMessages = Message::raw(function ($collection) use ($emp_id) {
         return $collection->aggregate([
@@ -171,7 +172,7 @@ public function getUnreadMessages()
         ]);
     });
 
-    // Format the result, only including senders with unread messages
+    
     $result = [];
     foreach ($unreadMessages as $message) {
         $result[$message->_id] = $message->count;
@@ -204,6 +205,40 @@ public function markMessagesRead(Request $request)
         'message' => $updated > 0 ? 'Messages marked as read successfully.' : 'No messages found to mark as read.'
     ]);
 }
+
+
+public function deactivateInactiveChat(Request $request)
+{
+    $messageId = $request->input('message_id');
+
+    // Convert string to ObjectId if necessary
+    $messageId = new ObjectId($messageId);
+
+
+    $message = Message::find($messageId);
+
+    if ($message) {
+        $timeoutThreshold = Carbon::now('Asia/Colombo')->subMinutes(2)->utc();
+
+        if ($message->active_chat && $message->created_at <= $timeoutThreshold) {
+    
+            $message->update(['active_chat' => false]);
+
+            DB::table('agent')
+                ->where('emp_id', $message->from)
+                ->decrement('active_chats', 1);
+
+            return response()->json(['status' => 'success', 'message' => 'Chat deactivated']);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Chat is already inactive or not yet inactive']);
+    }
+
+    return response()->json(['status' => 'error', 'message' => 'Message not found']);
+}
+
+
+
 
     
 }
