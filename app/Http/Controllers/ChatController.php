@@ -7,6 +7,7 @@ use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
+use App\Models\Agent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -236,7 +237,6 @@ public function deactivateInactiveChat(Request $request)
 
     return response()->json(['status' => 'error', 'message' => 'Message not found']);
 }
-
 
 
 

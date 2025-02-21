@@ -6,6 +6,7 @@
     <title>Chat Application</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -518,6 +519,9 @@ fetchUnreadMessages();
     });
 });
 
+
+
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -552,6 +556,52 @@ fetchUnreadMessages();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+let pingUrl = '/agent-ping';
+
+// Get CSRF token from meta tag
+let csrfToken = document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : null;
+
+if (!csrfToken) {
+    console.error("CSRF token not found!");
+}
+
+
+// Periodically send a ping request to keep connection alive
+function startPing() {
+    setInterval(async () => {
+        try {
+            const response = await fetch(pingUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,  // Attach CSRF token here
+                },
+            });
+            if (response.ok) {
+                console.log("Agent is online");
+            }
+        } catch (error) {
+            console.log("Connection lost, setting agent offline...");
+            navigator.sendBeacon("/logout");
+        }
+    }, 5000);
+}
+document.addEventListener("DOMContentLoaded", startPing);
+
+
+window.addEventListener("beforeunload", function () {
+        let empId = "{{ Auth::user()->emp_id ?? '' }}"; 
+        if (empId) {
+            axios.post('/logout-agent', { emp_id: empId })
+                .then(response => console.log(response.data))
+                .catch(error => console.error("Logout error:", error));
+        }
+    });
+</script>
+
 
 </body>
 </html>

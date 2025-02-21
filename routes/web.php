@@ -24,9 +24,11 @@ use App\Livewire\Supervisor\SupervisorChatHistory;
 use App\Livewire\Supervisor\SupervisorProfile;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
+use App\Models\Agent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -94,4 +96,25 @@ Route::get('/get-latest-contacts', [ChatController::class, 'getLatestContacts'])
 Route::get('/unread-messages', [ChatController::class, 'getUnreadMessages']);
 Route::post('/mark-messages-read', [ChatController::class, 'markMessagesRead']);
 Route::post('/deactivate-chat', [ChatController::class, 'deactivateInactiveChat']);
+
+Route::post('/agent-ping', function (Request $request) {
+    if (Auth::check() && Auth::user()->role === 'agent') {
+        Agent::where('emp_id', Auth::user()->emp_id)->update(['is_online' => true]);
+    }
+    return response()->json(['status' => 'online']);
+})->middleware('web');
+
+Route::post('/logout-agent', function (Request $request) {
+    if ($request->emp_id) {
+        $agent = Agent::where('emp_id', $request->emp_id)->first();
+        if ($agent) {
+            $agent->update([
+                'is_online' => false,
+                'active_chats' => 0
+            ]);
+        }
+    }
+    return response()->json(['message' => 'Agent logged out']);
+})->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]); // Disable CSRF
+
 
