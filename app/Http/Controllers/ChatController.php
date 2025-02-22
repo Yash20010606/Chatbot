@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use MongoDB\BSON\ObjectId;
+use Illuminate\Support\Facades\Storage;
+use MongoDB\GridFS\GridFSBucket;
+use MongoDB\Client as MongoClient;
+use Illuminate\Support\Facades\Response;
+use MongoDB\Client;
 
 
 class ChatController extends Controller
@@ -22,6 +27,7 @@ class ChatController extends Controller
     $user = Auth::user();
     $emp_id = $user->emp_id ?? null;
     $agentName = $user->name ?? 'Agent';
+    $messages = Message::orderBy('created_at', 'desc')->get();
 
     if (!$emp_id) {
         return redirect()->back()->with('error', 'Employee ID not found.');
@@ -56,33 +62,76 @@ class ChatController extends Controller
         })
         ->sortByDesc('latest_timestamp');
 
-    return view('chat.index', compact('emp_id', 'contacts', 'agentName'));
+    return view('chat.index', compact('emp_id', 'contacts', 'agentName','messages'));
 }
 
 
 public function sendMessage(Request $request)
 {
-    $message = Message::create([
-        'from' => $request->input('from'),
-        'to' => $request->input('to'),
-        'message' => $request->input('message'),
-        'timestamp' => now(),
-        'active_chat' => true,
-    ]);
+    try {
+        $messageContent = $request->input('message');
+        $fileId = null;
 
-    
-    DB::table('agent')
-        ->where('emp_id', $request->input('from'))
-        ->increment('active_chats', 1);
+        // Check if a file is uploaded
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+
+            // Check if the file is valid
+            if (!$file->isValid()) {
+                return response()->json(['error' => 'File upload failed.'], 400);
+            }
+
+            $file = $request->file('document');
+            $mongoClient  = new Client("mongodb://localhost:27017");
+       
 
 
-    return response()->json([
-        'from' => $message->from,
-        'to' => $message->to,
-        'message' => $message->message,
-        'formatted_time' => Carbon::parse($message->timestamp)->format('h:i A'),
-    ]);
+            // Access the MongoDB database and GridFS bucket
+            $database = $mongoClient->chatbot_db;;
+            $bucket = $database->selectGridFSBucket();
+
+            // Store document in GridFS
+        $stream = fopen($file->getPathname(), 'rb');
+        $fileId = $bucket->uploadFromStream($file->getClientOriginalName(), $stream, [
+            'metadata' => [
+                'mimeType' => $file->getMimeType(),
+                'filename' => $file->getClientOriginalName(),
+            ]
+        ]);
+        fclose($stream);
+
+            // Update the message content with the document info
+            $messageContent = 'Document sent: ' . $file->getClientOriginalName();
+        }
+
+        // Create the message in the database
+        $message = Message::create([
+            'from' => $request->input('from'),
+            'to' => $request->input('to'),
+            'message' => $messageContent,
+            'document_id' => (string) $fileId,
+            'timestamp' => now(),
+            'active_chat' => true,
+        ]);
+
+        
+        DB::table('agent')
+            ->where('emp_id', $request->input('from'))
+            ->increment('active_chats', 1);
+
+        return response()->json([
+            'from' => $message->from,
+            'to' => $message->to,
+            'message' => $message->message,
+            'document_id' => (string) $fileId,
+            'formatted_time' => Carbon::parse($message->timestamp)->format('h:i A'),
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
+    }
 }
+
 
 
     public function getMessages($phoneNumber)

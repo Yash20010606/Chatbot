@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -116,5 +117,11 @@ Route::post('/logout-agent', function (Request $request) {
     }
     return response()->json(['message' => 'Agent logged out']);
 })->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]); // Disable CSRF
+
+
+
+Route::post('/send-document', [ChatController::class, 'sendDocument'])->name('send.document');
+Route::get('/document/{documentId}', [MessageController::class, 'download'])->name('document.download');
+Route::get('/document/view/{documentId}', [MessageController::class, 'view'])->name('document.view');
 
 

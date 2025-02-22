@@ -16,7 +16,7 @@ class Message extends Model
     protected $dates = ['timestamp', 'created_at', 'updated_at'];
 
     
-    protected $fillable = ['from', 'to', 'message', 'timestamp', 'is_read', 'active_chat'];
+    protected $fillable = ['from', 'to', 'message', 'timestamp', 'is_read', 'active_chat','document_id'];
 
 
     // protected $attributes = [

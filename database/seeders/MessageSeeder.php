@@ -19,7 +19,7 @@ class MessageSeeder extends Seeder
         
         DB::connection('mongodb')->table('messages')->insert([
             'from' => '0766427589',
-            'to' => '1212',
+            'to' => '123456',
             'message' => 'Hello.........',
             'timestamp' => now(),
             'active_chat'=> true,

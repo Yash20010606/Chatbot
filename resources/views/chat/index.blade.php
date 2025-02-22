@@ -75,6 +75,8 @@
                 </div>
     
                 <div id="chat-box" class="chat-box">
+
+                    
                 </div>
                 <div id="predefined-message-dropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="#">Hello! 👋 This is {{ $agentName }}.I’m here to assist you with any questions or concerns you may have.Let me know how I can help you today!</a>
@@ -84,11 +86,21 @@
                     <a class="dropdown-item" href="#">Thank you for your patience! 🙏 I’ll check this for you and be right back.</a>
                 </div>
     
+                
                 <form id="chat-form" class="message-input-group">
                     <button type="button" class="btn btn-outline-secondary me-2" id="predefined-message-btn">
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <input type="text" id="message" class="form-control" placeholder="Type a message">
+    <div class="custom-file-upload d-flex align-items-center gap-2">
+        <label for="document" class="btn btn-outline-primary d-flex align-items-center">
+            <i class="bi bi-paperclip"></i> Attach File
+        </label>
+        <input type="file" id="document" name="document" accept=".pdf,.xlsx,.xls,.jpg,.jpeg,.png,.gif,.webp"  class="d-none">
+        <span id="file-name" class="text-muted small">No file chosen</span>
+    </div>
+
+
                     <button type="submit">
                         <i class="bi bi-send"></i> Send
                     </button>
@@ -270,25 +282,49 @@ let activeChat = localStorage.getItem('active_chat');
         }
     }
 
-// Append a message to the chat window
 function appendMessage(data, isSent) {
-    // Add the message ID to sentMessageIds set to prevent future duplicates
+    console.log("Received message data:", data);
+
     sentMessageIds.add(data.id);
 
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message ' + (isSent ? 'sent' : 'received');
     messageDiv.dataset.id = data.id;
-    messageDiv.innerHTML = `
-        <div>${data.message}</div>
-        <small class="text-muted" style="display: block; margin-top: 5px; font-size: 0.8rem;">
-            ${data.formatted_time}
-        </small>
-    `;
-    chatBox.appendChild(messageDiv); // Append the message to the chat box
+
+    let messageContent = `<div>${data.message}</div>`;
+
+    // Check if document_id exists
+    if (data.document_id) {
+        console.log("Appending document link for ID:", data.document_id);
+        const viewUrl = `/document/view/${data.document_id}`;
+        const documentUrl = `/document/${data.document_id}`;
+
+        messageContent += `
+            <div class="document-links">
+    <a href="${viewUrl}" target="_blank" class="btn btn-primary text-white shadow-sm px-3">
+        📄 View Document
+    </a>
+    <a href="${documentUrl}" download class="btn btn-primary text-white shadow-sm px-3">
+        ⬇️ Download
+    </a>
+</div>
+
+        `;
+    } else {
+        console.log("No document ID found in message.");
+    }
+
+    messageContent += `<small class="text-muted"> ${data.formatted_time}</small>`;
+
+    messageDiv.innerHTML = messageContent;
+    chatBox.appendChild(messageDiv);
     scrollToBottom();
-    // console.log("Message appended:", data);
 }
 
+document.getElementById('document').addEventListener('change', function() {
+    const fileName = this.files.length > 0 ? this.files[0].name : "No file chosen";
+    document.getElementById('file-name').textContent = fileName;
+});
 
 function openChat(contactId) {
     currentContact = contactId;
@@ -321,25 +357,44 @@ function openChat(contactId) {
 
 let timeoutId = null;
 
-// Send a message to the contact
+
 messageForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const message = messageInput.value.trim();
 
-    if (message && currentContact) {
+    const message = messageInput.value.trim();
+    const documentInput = document.getElementById('document');
+    const documentFile = documentInput.files[0]; // Get the selected file (if any)
+
+    const formData = new FormData();
+    formData.append('from', emp_id);
+    formData.append('to', currentContact);
+
+    // If there's a message, append it
+    if (message) {
+        formData.append('message', message);
+    }
+
+    // If a file is selected, append it
+    if (documentFile) {
+        formData.append('document', documentFile);
+    }
+
+    if (message || documentFile) {
         const sendButton = messageForm.querySelector('button[type="submit"]');
         sendButton.disabled = true;
 
-        axios.post('/send-message', { from: emp_id, to: currentContact, message: message })
+        // Send the data to the server
+        axios.post('/send-message', formData)
             .then(response => {
                 const responseData = response.data;
 
-                
+                // Handle the response (append message or handle document)
                 appendMessage(responseData, true);
-            
                 lastMessageTime = responseData.timestamp;
 
                 messageInput.value = ''; 
+                documentInput.value = ''; // Reset the document input
+
                 moveContactToTop(currentContact);
 
                 if (timeoutId) {
@@ -349,16 +404,16 @@ messageForm.addEventListener('submit', (e) => {
                 timeoutId = setTimeout(() => {
                     deactivateChat(responseData.message_id);
                 }, 5 * 60 * 1000);
-
             })
             .catch(error => console.error("Error sending the message", error))
             .finally(() => {
                 sendButton.disabled = false;
             });
     } else {
-        alert('Please select a contact or enter a message.');
+        alert('Please enter a message or select a file to send.');
     }
 });
+
 
 // Function to deactivate the chat after 5 minutes
 function deactivateChat(messageId) {
@@ -521,7 +576,6 @@ fetchUnreadMessages();
 
 
 
-
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -553,6 +607,9 @@ fetchUnreadMessages();
         });
     }
     setInterval(refreshContacts, 5000);
+
+
+    
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -601,6 +658,8 @@ window.addEventListener("beforeunload", function () {
         }
     });
 </script>
+
+
 
 
 </body>

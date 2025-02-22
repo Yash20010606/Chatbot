@@ -268,3 +268,14 @@ margin-top: 400px;
     display: none;
 }
 
+.custom-file-upload label {
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+#file-name {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
