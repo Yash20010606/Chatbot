@@ -40,5 +40,4 @@
 #sidebar .nav-link:active {
     background-color: #004080; /* Background color for the active link */
     color: white !important; /* Text color for the active link */
-    font-weight: bold; /* Optional: Make the text bold */
 }

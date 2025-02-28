@@ -27,7 +27,9 @@ class AdminSkillManager extends Component
 
     public function loadSkills()
     {
-        $this->skills = Skill::all();
+        // $this->skills = Skill::all();
+        $this->skills = Skill::orderBy('created_at', 'desc')->get();
+
     }
 
     public function render()

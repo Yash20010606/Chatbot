@@ -28,7 +28,8 @@ class AdminGroupManager extends Component
 
     public function loadGroups()
     {
-        $this->groups = Group::all();
+        // $this->groups = Group::all();
+        $this->groups = Group::orderBy('created_at', 'desc')->get();
     }
     
     public function render()

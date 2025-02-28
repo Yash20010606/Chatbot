@@ -60,7 +60,7 @@
     data-toggle="table"
     data-search="false"
     data-pagination="true"
-    data-page-size="2"
+    data-page-size="8"
     data-sortable="true"
 >
     <thead class="table-success">
@@ -292,7 +292,7 @@ document.getElementById('searchBtn').addEventListener('click', function () {
                             </button>
                             <form action="{{ route('reporters.destroy', '') }}/${reporter.emp_id}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this reporter?');">
                                 @csrf
-                                <button type="submit" class="btn btn-danger btn-sm">
+                                <button type="submit" class="btn btn-link text-danger">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>

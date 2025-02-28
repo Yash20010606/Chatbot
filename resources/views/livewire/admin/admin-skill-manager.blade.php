@@ -80,7 +80,7 @@
                     data-toggle="table"
                     data-search="false"
                     data-pagination="true"
-                    data-page-size="2"
+                    data-page-size="8"
                     data-sortable="false"
                 >
                         <thead class="table-success">

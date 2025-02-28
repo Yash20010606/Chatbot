@@ -58,7 +58,7 @@
                     data-toggle="table"
                     data-search="false"
                     data-pagination="true"
-                    data-page-size="2"
+                    data-page-size="8"
                     data-sortable="false"
             >
                 <thead class="table-success">
@@ -206,7 +206,7 @@
                                 </button>
                                 <form action="{{ route('agents.destroy', '') }}/${agent.emp_id}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                    <button type="submit" class="btn btn-link text-danger">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

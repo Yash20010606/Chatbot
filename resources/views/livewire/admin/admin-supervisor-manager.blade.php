@@ -67,7 +67,7 @@
 </form>
            
 <!-- Table -->
-<table id="table" class="table table-bordered" data-toggle="table" data-search="false" data-pagination="true" data-page-size="2" data-sortable="false">
+<table id="table" class="table table-bordered" data-toggle="table" data-search="false" data-pagination="true" data-page-size="8" data-sortable="false">
     <thead class="table-success">
         <tr>
             <th>Name</th>

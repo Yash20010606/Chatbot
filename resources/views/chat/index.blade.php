@@ -57,7 +57,7 @@
                 <ul id="contacts" class="contact-list">
                     @forelse($contacts as $contact)
                         <li class="contact-item" data-phone="{{ $contact->phone_number }}">
-                            <img src="{{ asset('assets/human_icon2.jpeg') }}" alt="">
+                            <img src="{{ asset('assets/human_icon1.jpeg') }}" alt="">
                             <span>{{ $contact->phone_number }}</span>
                             <span class="unread-count" style="display: none;"></span> <!-- Unread count -->
                         </li>
@@ -70,7 +70,7 @@
             <!-- Chat Box -->
             <div class="col-md-8 chat-section">
                 <div id="contact-info" class="contact-info">
-                    <img src="#" alt="">
+                    <img src="{{ asset('assets/human_icon1.jpeg') }}" alt="">
                     <span>Select a contact to start chatting</span>
                 </div>
     
@@ -99,8 +99,6 @@
         <input type="file" id="document" name="document" accept=".pdf,.xlsx,.xls,.jpg,.jpeg,.png,.gif,.webp"  class="d-none">
         <span id="file-name" class="text-muted small">No file chosen</span>
     </div>
-
-
                     <button type="submit">
                         <i class="bi bi-send"></i> Send
                     </button>
@@ -216,7 +214,7 @@ function loadMessages(phoneNumber) {
 }
 
     function updateContactInfo(phoneNumber) {
-        contactInfo.innerHTML = `<img src="#" alt=""> ${phoneNumber}`;
+        contactInfo.innerHTML = `<img src="{{ asset('assets/human_icon1.jpeg') }}" alt=""> ${phoneNumber}`;
     }
 
     function scrollToBottom() {
@@ -283,7 +281,7 @@ let activeChat = localStorage.getItem('active_chat');
     }
 
 function appendMessage(data, isSent) {
-    console.log("Received message data:", data);
+    // console.log("Received message data:", data);
 
     sentMessageIds.add(data.id);
 
@@ -293,9 +291,8 @@ function appendMessage(data, isSent) {
 
     let messageContent = `<div>${data.message}</div>`;
 
-    // Check if document_id exists
+
     if (data.document_id) {
-        console.log("Appending document link for ID:", data.document_id);
         const viewUrl = `/document/view/${data.document_id}`;
         const documentUrl = `/document/${data.document_id}`;
 
@@ -311,7 +308,7 @@ function appendMessage(data, isSent) {
 
         `;
     } else {
-        console.log("No document ID found in message.");
+        // console.log("No document ID found in message.");
     }
 
     messageContent += `<small class="text-muted"> ${data.formatted_time}</small>`;
@@ -369,12 +366,12 @@ messageForm.addEventListener('submit', (e) => {
     formData.append('from', emp_id);
     formData.append('to', currentContact);
 
-    // If there's a message, append it
+    
     if (message) {
         formData.append('message', message);
     }
 
-    // If a file is selected, append it
+    
     if (documentFile) {
         formData.append('document', documentFile);
     }
@@ -388,12 +385,13 @@ messageForm.addEventListener('submit', (e) => {
             .then(response => {
                 const responseData = response.data;
 
-                // Handle the response (append message or handle document)
+                
                 appendMessage(responseData, true);
                 lastMessageTime = responseData.timestamp;
 
-                messageInput.value = ''; 
-                documentInput.value = ''; // Reset the document input
+                messageInput.value = '';
+                documentInput.value = '';
+                document.getElementById('file-name').textContent = "No file chosen";
 
                 moveContactToTop(currentContact);
 
@@ -415,7 +413,6 @@ messageForm.addEventListener('submit', (e) => {
 });
 
 
-// Function to deactivate the chat after 5 minutes
 function deactivateChat(messageId) {
     axios.post('/deactivate-chat', {
         message_id: messageId,
@@ -427,8 +424,6 @@ function deactivateChat(messageId) {
         console.error('Error deactivating chat:', error);
     });
 }
-
-
 
 setInterval(() => {
     if (currentContact) {
@@ -470,7 +465,7 @@ setInterval(() => {
 }, 4000);
 
 
-// Fetch unread message counts
+
 function fetchUnreadMessages() {
     axios.get('/unread-messages')
         .then(response => {
@@ -590,7 +585,7 @@ fetchUnreadMessages();
                     response.contacts.forEach(contact => {
                         contactListHtml += `
                             <li class="contact-item" data-phone="${contact.phone_number}">
-                                <img src="{{ asset('assets/human_icon2.jpeg') }}" alt="">
+                                <img src="{{ asset('assets/human_icon1.jpeg') }}" alt="">
                                 <span>${contact.phone_number}</span>
                                 <span class="unread-count" style="display: ${contact.unread_count > 0 ? 'inline-block' : 'none'};">
                                     ${contact.unread_count}
@@ -658,8 +653,6 @@ window.addEventListener("beforeunload", function () {
         }
     });
 </script>
-
-
 
 
 </body>

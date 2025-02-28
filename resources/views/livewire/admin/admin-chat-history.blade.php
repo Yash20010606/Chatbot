@@ -5,12 +5,13 @@
 @endsection
 
 @section('dashboard')
-    <!-- Exclude dashboard for this page -->
+    @livewire('admin.admin-dashboard')
 @endsection
 
 @section('chat-dashboard')
-    @livewire('admin.admin-chat-view-dashboard')
+    <!-- Exclude dashboard for this page -->
 @endsection
+
 
 @section('content')
 
@@ -67,7 +68,7 @@
                     class="table table-bordered"
                     data-toggle="table"
                     data-pagination="true"
-                    data-page-size="2"
+                    data-page-size="4"
                     data-sortable="false"
                 >
                     <thead class="table-success">

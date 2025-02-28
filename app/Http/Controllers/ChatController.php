@@ -22,7 +22,8 @@ use MongoDB\Client;
 class ChatController extends Controller
 {
     
-    public function index()
+
+public function index()
 {
     $user = Auth::user();
     $emp_id = $user->emp_id ?? null;
@@ -40,29 +41,27 @@ class ChatController extends Controller
         ->unique();
 
     if ($contactNumbers->isEmpty()) {
-        return redirect()->back()->with('error', 'No contacts found.');
+        $contacts = collect();
+    } else {
+        $contacts = Customer::whereIn('phone_number', $contactNumbers->toArray())
+            ->get()
+            ->map(function ($customer) use ($emp_id) {
+                $latestMessage = Message::where(function ($query) use ($customer, $emp_id) {
+                    $query->where('from', $emp_id)->where('to', $customer->phone_number);
+                })
+                ->orWhere(function ($query) use ($customer, $emp_id) {
+                    $query->where('from', $customer->phone_number)->where('to', $emp_id);
+                })
+                ->latest('timestamp')
+                ->first();
+
+                $customer->latest_timestamp = $latestMessage ? $latestMessage->timestamp : null;
+                return $customer;
+            })
+            ->sortByDesc('latest_timestamp');
     }
 
-    // Retrieve customer details and sort them by the latest message timestamp
-    $contacts = Customer::whereIn('phone_number', $contactNumbers->toArray())
-        ->get()
-        ->map(function ($customer) use ($emp_id) {
-            $latestMessage = Message::where(function ($query) use ($customer, $emp_id) {
-                $query->where('from', $emp_id)->where('to', $customer->phone_number);
-            })
-            ->orWhere(function ($query) use ($customer, $emp_id) {
-                $query->where('from', $customer->phone_number)->where('to', $emp_id);
-            })
-            ->latest('timestamp')
-            ->first();
-
-            // Attach the latest message timestamp to each contact
-            $customer->latest_timestamp = $latestMessage ? $latestMessage->timestamp : null;
-            return $customer;
-        })
-        ->sortByDesc('latest_timestamp');
-
-    return view('chat.index', compact('emp_id', 'contacts', 'agentName','messages'));
+    return view('chat.index', compact('emp_id', 'contacts', 'agentName', 'messages'));
 }
 
 
@@ -72,7 +71,6 @@ public function sendMessage(Request $request)
         $messageContent = $request->input('message');
         $fileId = null;
 
-        // Check if a file is uploaded
         if ($request->hasFile('document')) {
             $file = $request->file('document');
 
@@ -85,9 +83,8 @@ public function sendMessage(Request $request)
             $mongoClient  = new Client("mongodb://localhost:27017");
        
 
-
             // Access the MongoDB database and GridFS bucket
-            $database = $mongoClient->chatbot_db;;
+            $database = $mongoClient->chatbot_db;
             $bucket = $database->selectGridFSBucket();
 
             // Store document in GridFS
@@ -118,6 +115,7 @@ public function sendMessage(Request $request)
         DB::table('agent')
             ->where('emp_id', $request->input('from'))
             ->increment('active_chats', 1);
+            
 
         return response()->json([
             'from' => $message->from,
@@ -133,29 +131,38 @@ public function sendMessage(Request $request)
 }
 
 
-
     public function getMessages($phoneNumber)
-    {
-       
-        $agentEmpId = Auth::user()->emp_id;
-    
-    
-        $messages = Message::where(function ($query) use ($agentEmpId, $phoneNumber) {
-            $query->where('from', $agentEmpId)->where('to', $phoneNumber);
-        })
-        ->orWhere(function ($query) use ($agentEmpId, $phoneNumber) {
-            $query->where('from', $phoneNumber)->where('to', $agentEmpId);
-        })
-        ->orderBy('timestamp', 'asc') 
-        ->get()
-        ->map(function ($message) {
-            $message->formatted_time = $message->timestamp->setTimezone('Asia/Colombo')->format('h:i A');
-            return $message;
-        });
+{
+    $agentEmpId = Auth::user()->emp_id;
 
-        // Return the filtered messages as a JSON response
-        return response()->json($messages);
-    }
+    $messages = Message::where(function ($query) use ($agentEmpId, $phoneNumber) {
+        $query->where('from', $agentEmpId)->where('to', $phoneNumber);
+    })
+    ->orWhere(function ($query) use ($agentEmpId, $phoneNumber) {
+        $query->where('from', $phoneNumber)->where('to', $agentEmpId);
+    })
+    ->orderBy('timestamp', 'asc')
+    ->get()
+    ->map(function ($message) {
+        $message->formatted_time = $message->timestamp->setTimezone('Asia/Colombo')->format('h:i A');
+        
+        // Check if there is a document attached to the message
+        if ($message->document_id) {
+            // Generate the view and download URLs based on the document ID
+            $message->document_view_url = url('/documents/view/' . $message->document_id);
+            $message->document_download_url = url('/documents/' . $message->document_id);
+        } else {
+            $message->document_view_url = null;
+            $message->document_download_url = null;
+        }
+
+        return $message;
+    });
+
+    // Return the filtered messages as a JSON response
+    return response()->json($messages);
+}
+
 
     public function getLatestContacts()
 {

@@ -143,6 +143,11 @@ background-color: #b1aafb;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* .top-bar {
+    background: linear-gradient(90deg, #b1aafb, #28a745);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
 .top-bar .logo {
 display: flex;
 align-items: center;

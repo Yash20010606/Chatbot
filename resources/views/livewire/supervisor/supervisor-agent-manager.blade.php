@@ -164,7 +164,7 @@
                                 </button>
                                 <form action="{{ route('supervisor.agents.destroy', '') }}/${agent.emp_id}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this agent?');">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                    <button type="submit" class="btn btn-link text-danger">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

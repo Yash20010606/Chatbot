@@ -59,6 +59,7 @@ public function render()
                     ->orWhere('email', 'like', '%' . $this->search . '%');
             });
         })
+        ->orderBy('created_at', 'desc')  // Order supervisors by created_at in descending order
         ->paginate(10);
 
     // Fetch all groups for dropdown options

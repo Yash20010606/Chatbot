@@ -21,6 +21,7 @@ class SupervisorAgentManager extends Component
             ->join('agent', 'users.emp_id', '=', 'agent.emp_id') // Assuming the agent table is named 'agents'
             ->where('agent.group_code', $supervisorGroup) // Filter by the supervisor's group code
             ->select('users.name', 'users.emp_id', 'users.email', 'agent.group_code as group')
+            ->orderBy('users.created_at', 'desc')  // Order by created_at in descending order
             ->get();
 
         // Retrieve all groups and skills

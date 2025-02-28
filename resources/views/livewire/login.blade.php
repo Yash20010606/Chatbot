@@ -20,7 +20,7 @@
         }
         .login-container {
             max-width: 900px;
-            margin: 50px auto;
+            margin: 95px auto;
             display: flex;
             border-radius: 20px;
             overflow: hidden;

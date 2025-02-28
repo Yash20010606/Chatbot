@@ -41,7 +41,7 @@ public function login(Request $request)
         } elseif ($user->role == 'reporter') {
             return redirect()->route('reporter.dashboard');
         } elseif ($user->role == 'agent') {
-            // Set the agent's 'is_online' to true
+            
             $agent = Agent::where('emp_id', $user->emp_id)->first();
             if ($agent) {
                 // Set is_online to false and reset active_chats to 0
@@ -81,9 +81,6 @@ public function logout()
 }
 
 
-// if ($agent) {
-        //     $agent->is_online = false;
-        //     $agent->save();
-        // }
+
 }
 

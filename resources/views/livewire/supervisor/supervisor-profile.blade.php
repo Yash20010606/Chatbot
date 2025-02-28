@@ -21,7 +21,7 @@
                 <div class="profile-picture text-center">
                     <i class="fa-solid fa-user-circle fa-4x"></i>
                     <h5 class="mt-2">{{ auth()->user()->name }}</h5> <!-- Display user's name -->
-                    <button class="btn btn-dark mt-2">Change Profile Picture</button>
+                    {{-- <button class="btn btn-dark mt-2">Change Profile Picture</button> --}}
                 </div>
                 <div class="profile-details">
                     <p><strong>Role:</strong> {{ auth()->user()->role }}</p> <!-- Display user's role -->

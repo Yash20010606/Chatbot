@@ -16,6 +16,7 @@ class AdminAgentManager extends Component
         $agents = User::where('role', 'agent')
             ->join('agent', 'users.emp_id', '=', 'agent.emp_id')
             ->select('users.name', 'users.emp_id', 'users.email', 'agent.group_code as group')
+            ->orderBy('users.created_at', 'desc')  // Order by created_at in descending order
             ->get();
 
         $groups = Group::all(); // Retrieve all groups
